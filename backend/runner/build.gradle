@@ -19,19 +19,42 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// H2 Database
 	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+	// MySQL Database
+//	runtimeOnly 'mysql:mysql-connector-java'
+	// Redis
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// AWS  : https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	// JPA Hibernate
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// java-jwt : https://github.com/auth0/java-jwt
+	implementation 'com.auth0:java-jwt:3.18.2'
+	// OAuth
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// Spring Security
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Dev Tools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// p6spy : https://github.com/gavlyukovskiy/spring-boot-data-source-decorator
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+//	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
