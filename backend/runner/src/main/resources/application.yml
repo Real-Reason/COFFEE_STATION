@@ -32,3 +32,6 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+jwt:
+  secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
