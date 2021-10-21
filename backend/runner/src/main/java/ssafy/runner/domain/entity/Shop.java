@@ -1,8 +1,11 @@
 package ssafy.runner.domain.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class Shop {
 
     @Id
@@ -29,6 +32,5 @@ public class Shop {
     private String close_at;
     private String intro;
     private String instagram;
-
 
 }
