@@ -20,14 +20,15 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("ssafy.runner"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Coffee Station")
                 .version("1.0.0")
-                .description("Coffee pickup service")
+                .description("커피 테이크 아웃을 위한 서비스 입니다.")
                 .build();
     }
 }
