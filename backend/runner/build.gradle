@@ -48,6 +48,10 @@ dependencies {
 	// Spring Security
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 
+	// swagger
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
 	// Dev Tools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	// p6spy : https://github.com/gavlyukovskiy/spring-boot-data-source-decorator
