@@ -1,8 +1,9 @@
-package domain.entity;
+package ssafy.runner.domain.entity;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssafy.runner.dto.PartnerDto;
 
 import javax.persistence.*;
 
@@ -24,5 +25,13 @@ public class Partner {
         this.id = id;
         this.email = email;
         this.password = password;
+    }
+
+    public PartnerDto entityToDto(){
+        return PartnerDto.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .build();
     }
 }
