@@ -1,11 +1,11 @@
-package controller.partner;
+package ssafy.runner.controller.partner;
 
-import domain.entity.Partner;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import service.PartnerService;
+import ssafy.runner.dto.PartnerDto;
+import ssafy.runner.service.PartnerService;
 
 @RestController
 @RequestMapping("/partner")
@@ -19,7 +19,7 @@ public class PartnerController {
 
     // 테스트용 partner DB 입력
     @PostMapping("/join")
-    public Object join(@RequestBody Object params) {
+    public Object join(@RequestBody PartnerDto params) {
         return partnerService.join(params);
     }
 }

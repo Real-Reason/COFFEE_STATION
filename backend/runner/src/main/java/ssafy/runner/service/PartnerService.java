@@ -1,11 +1,33 @@
-package service;
+package ssafy.runner.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.entity.Partner;
+import ssafy.runner.dto.PartnerDto;
+import ssafy.runner.repository.PartnerRepository;
+
+import javax.servlet.http.Part;
+import java.util.Properties;
 
 @Service
 public class PartnerService {
 
-    public Object join(Object params) {
+    private final PartnerRepository partnerRepository;
 
+    public PartnerService(PartnerRepository partnerRepository) {
+        this.partnerRepository = partnerRepository;
     }
+
+    @Transactional
+    public Object join(PartnerDto params) {
+        Partner partner = partnerRepository.save(Partner.builder()
+                .id(params.getId())
+                .email(params.getEmail())
+                .password(params.getPassword())
+                .build());
+
+        return partner.entityToDto();
+    }
+
+
 }
