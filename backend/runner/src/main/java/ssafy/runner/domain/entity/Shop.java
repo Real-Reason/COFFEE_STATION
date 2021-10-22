@@ -13,8 +13,8 @@ public class Shop {
     @Column(name = "shop_id")
     private Long id;
 
-    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
-    private Partner partner;
+//    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
+//    private Partner partner;
 
     private String name;
     private String business_no;
