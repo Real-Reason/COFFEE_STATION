@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         log.warn("필터 실행");
         String token = request.getHeader("Authorization"); // 요청의 헤더에 토큰이 들어있다.
         // 헤더 중 Authorization 시작하는 키가 없거나, Bearer 시작하는 값이 아니라면
-        if (token != null && !token.startsWith("Bearer ")) {
+        if (token != null && token.startsWith("Bearer ")) {
             try {
                 log.warn("JwtAuthenticationFilter try 실행");
                 DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
@@ -43,9 +43,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                 // DB 검색도 다 마치고, 유저가 있다고 가정하자
                 // 정상 유저인 경우, UsernamePasswordAuthenticationToken 생성
                 // principal : id, credentials : 비밀번호 : 의미없지않나..왜쓰는거지
-//                UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken("runner", null);
+//                UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken("runner", null, null);
                 // 얘가 핵심 : 얘가 없으면 인증이 되지 않는다.
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("runner", null));
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(decodedJWT.getIssuer(), null, null));
             } catch (Exception e) {
                 System.out.println("에러 발생! : "+e);
             }
