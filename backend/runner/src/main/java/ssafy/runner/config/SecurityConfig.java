@@ -27,8 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil)) // 필터 추가
             .authorizeRequests()
-            .antMatchers("/api/test").permitAll() // jwt 미검사 패턴
-            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
+            .antMatchers("/api/test/login").permitAll() // jwt 미검사 패턴
+            .antMatchers("/api/test/innerpage").authenticated();
+//            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
     }
 
 }
