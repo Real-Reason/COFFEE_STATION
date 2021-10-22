@@ -28,6 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil)) // 필터 추가
             .authorizeRequests()
             .antMatchers("/api/test").permitAll() // jwt 미검사 패턴
+            // Swagger 허용 설정
+            .mvcMatchers("/v2/**",
+                    "/configuration/**",
+                    "/swagger*/**",
+                    "/webjars/**",
+                    "/swagger-resources/**").permitAll()
             .anyRequest().authenticated(); // 그 외 경로는 인증 필요
     }
 
