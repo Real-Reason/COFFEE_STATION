@@ -3,11 +3,8 @@ package ssafy.runner.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.dto.PartnerDto;
-import ssafy.runner.repository.PartnerRepository;
-
-import javax.servlet.http.Part;
-import java.util.Properties;
+import ssafy.runner.domain.dto.PartnerDto;
+import ssafy.runner.domain.repository.PartnerRepository;
 
 @Service
 public class PartnerService {

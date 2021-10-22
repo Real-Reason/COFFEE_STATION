@@ -3,7 +3,7 @@ package ssafy.runner.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssafy.runner.dto.PartnerDto;
+import ssafy.runner.domain.dto.PartnerDto;
 
 import javax.persistence.*;
 
