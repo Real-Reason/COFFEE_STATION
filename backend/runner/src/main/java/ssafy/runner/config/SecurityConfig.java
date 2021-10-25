@@ -19,8 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-            httpBasic().disable() //httpBasic은 security 기본 인증 화면을 보여주는것 -> 끈다
+        http.headers().frameOptions().sameOrigin() // h2-console 열어주기 위한 것 -> 문제 생기면 sameOrigin을 disable로 변경
+            .and()
+            .httpBasic().disable() //httpBasic은 security 기본 인증 화면을 보여주는것 -> 끈다
             .csrf().disable() // csrf 토큰
             .cors().disable() // cors 정책
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // rest이므로 세션 무상태 설정
@@ -29,13 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             // Swagger 허용 설정
             .mvcMatchers("/v2/**",
-                    "/configuration/**",
-                    "/swagger*/**",
-                    "/webjars/**",
-                    "/swagger-resources/**").permitAll()
+                "/configuration/**",
+                "/swagger*/**",
+                "/webjars/**",
+                "/swagger-resources/**").permitAll()
+            .mvcMatchers("/v2/**",
+                "/h2-console/**").permitAll()
             .antMatchers("/api/test/login").permitAll() // jwt 미검사 패턴
             .antMatchers("/api/test/innerpage").authenticated();
 //            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
     }
-
 }
