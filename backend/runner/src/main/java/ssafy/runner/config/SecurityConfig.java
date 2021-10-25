@@ -7,15 +7,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import ssafy.runner.util.JwtAuthenticationFilter;
-import ssafy.runner.util.JwtUtil;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ssafy.runner.util.JwtTokenFilter;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final JwtUtil jwtUtil;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -26,7 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().disable() // cors 정책
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // rest이므로 세션 무상태 설정
             .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil)) // 필터 추가
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class) // 필터 추가
+//            .addFilter(new JwtTokenFilter(authenticationManager(), jwtUtil))  // 필터 추가
             .authorizeRequests()
             // Swagger 허용 설정
             .mvcMatchers("/v2/**",

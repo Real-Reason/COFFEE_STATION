@@ -25,8 +25,9 @@ public class TestController {
     @GetMapping("/login")
     @ApiOperation(value = "테스트")
     public String login() {
-        String token = jwtUtil.createToken("JYK");
-        return token;
+//        String token = jwtUtil.createToken("JYK");
+//        return token;
+        return "token";
     }
     @GetMapping("/innerpage")
     @ApiOperation(value = "테스트")

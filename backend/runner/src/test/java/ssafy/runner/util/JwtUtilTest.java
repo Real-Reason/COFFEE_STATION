@@ -1,0 +1,71 @@
+package ssafy.runner.util;
+
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.entity.Customer;
+import ssafy.runner.domain.entity.Partner;
+import ssafy.runner.domain.enums.UserType;
+import ssafy.runner.service.CustomerTokenService;
+import ssafy.runner.service.PartnerTokenService;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+@SpringBootTest
+@Transactional
+@Rollback(value = false)
+class JwtUtilTest {
+
+    @Autowired
+    public JwtUtil jwtUtil;
+
+    @Autowired
+    public CustomerTokenService customerTokenService;
+
+    @Autowired
+    public PartnerTokenService partnerTokenService;
+
+
+    @Test
+    void createCustomerTokenTest() {
+        Customer customer = customerTokenService.join("wns312@naver.com", "password");
+        String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.CUSTOMER);
+        DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
+
+        Map<String, Claim> claims = decodedJWT.getClaims();
+        for (String s : claims.keySet()) {
+            System.out.println(s+" : "+claims.get(s));
+        }
+//        System.out.println(decodedJWT.getIssuer());
+//        System.out.println(decodedJWT.getSubject());
+//        System.out.println(decodedJWT.getAudience());
+//        System.out.println(decodedJWT.getSignature());
+//        System.out.println(decodedJWT.getExpiresAt());
+//        System.out.println(decodedJWT.getAlgorithm());
+    }
+
+    @Test
+    void createPartnerTokenTest() {
+        Partner partner = partnerTokenService.join("wns312@naver.com", "password");
+        String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.PARTNER);
+        DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
+
+        Map<String, Claim> claims = decodedJWT.getClaims();
+        for (String s : claims.keySet()) {
+            System.out.println(s+" : "+claims.get(s));
+        }
+//        System.out.println(decodedJWT.getIssuer());
+//        System.out.println(decodedJWT.getSubject());
+//        System.out.println(decodedJWT.getAudience());
+//        System.out.println(decodedJWT.getSignature());
+//        System.out.println(decodedJWT.getExpiresAt());
+//        System.out.println(decodedJWT.getAlgorithm());
+    }
+}
