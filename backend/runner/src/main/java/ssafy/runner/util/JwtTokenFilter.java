@@ -1,6 +1,7 @@
 package ssafy.runner.util;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import lombok.RequiredArgsConstructor;
@@ -32,19 +33,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         // 헤더 중 Authorization 시작하는 키가 없거나, Bearer 시작하는 값이 아니라면
         if (token != null && token.startsWith("Bearer ")) {
             try {
-                log.warn("JwtAuthenticationFilter try 실행");
                 DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
-                log.warn("Decode 종료");
-                // 스켈레톤 코드는 토큰 생성 시에 Subject를 넣어주었었음. 이를 토대로 DB 조회
-
-                log.warn(decodedJWT.getIssuer()); // Issuer
-                log.warn(decodedJWT.getSubject()); // Subject
-                // DB 검색도 다 마치고, 유저가 있다고 가정하자
-                // 정상 유저인 경우, UsernamePasswordAuthenticationToken 생성
+                String owner = decodedJWT.getClaim("owner").asString();
+                String role = decodedJWT.getClaim("role").asString();
                 // principal : id, credentials : 비밀번호 : 의미없지않나..왜쓰는거지
-//                UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken("runner", null, null);
-                // 얘가 핵심 : 얘가 없으면 인증이 되지 않는다.
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(decodedJWT.getIssuer(), null, null));
+                // 아래가 핵심 : 없으면 인증이 되지 않는다.
+                // owner와 role을 어떤식으로 컨트롤러에 넘겨줄지 고민이 필요함
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(owner+ " & " + role, null, null);
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             } catch (Exception e) {
                 System.out.println("에러 발생! : "+e);
             }
