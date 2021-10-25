@@ -18,5 +18,5 @@ public class Extra {
     private Menu menu;
 
     private String name;
-    private Integer price;
+    private int price;
 }
