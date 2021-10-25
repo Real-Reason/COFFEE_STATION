@@ -22,7 +22,6 @@ public class Menu {
     private Category category;
 
     private String img_url;
-    private Long price;
+    private int price;
     private Boolean is_signature;
-
 }
