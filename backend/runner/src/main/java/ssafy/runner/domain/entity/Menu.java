@@ -1,11 +1,16 @@
 package ssafy.runner.domain.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Menu {
 
     @Id
@@ -14,14 +19,16 @@ public class Menu {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    private String img_url;
+    private String imgUrl; // 디폴트 이미지 넣어주는걸로 변경하기
     private int price;
-    private Boolean is_signature;
+
+    @Column(name = "is_signature")
+    private Boolean isSignature = false;
 }

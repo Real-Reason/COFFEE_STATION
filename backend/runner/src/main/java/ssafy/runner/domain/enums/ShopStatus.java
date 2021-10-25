@@ -1,4 +1,4 @@
-package ssafy.runner.domain.entity;
+package ssafy.runner.domain.enums;
 
 public enum ShopStatus {
     READY, OPEN, CLOSE

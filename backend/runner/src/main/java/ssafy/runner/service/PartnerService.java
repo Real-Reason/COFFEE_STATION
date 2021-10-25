@@ -18,12 +18,11 @@ public class PartnerService {
     @Transactional
     public Object join(PartnerDto params) {
         Partner partner = partnerRepository.save(Partner.builder()
-                .id(params.getId())
-                .email(params.getEmail())
-                .password(params.getPassword())
-                .build());
+            .email(params.getEmail())
+            .password(params.getPassword())
+            .build());
 
-        return partner.entityToDto();
+        return PartnerDto.entityToDto(partner);
     }
 
 

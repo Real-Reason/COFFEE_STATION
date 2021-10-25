@@ -1,18 +1,17 @@
 package ssafy.runner.domain.entity;
 
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
+import ssafy.runner.domain.enums.OrderStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Orders {
@@ -44,7 +43,7 @@ public class Orders {
     @NotBlank
     private int totalPrice;
 
-    @Length(max = 30)
+    @Size(max = 30)
     private String request;
 
     @Builder

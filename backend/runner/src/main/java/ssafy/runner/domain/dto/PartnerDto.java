@@ -3,6 +3,7 @@ package ssafy.runner.domain.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssafy.runner.domain.entity.Partner;
 
 @Getter
 @NoArgsConstructor
@@ -26,5 +27,9 @@ public class PartnerDto {
                 ", email" + email +
                 ", password" + password +
                 "}";
+    }
+
+    public static PartnerDto entityToDto(Partner partner){
+        return new PartnerDto(partner.getId(), partner.getEmail(), partner.getPassword());
     }
 }
