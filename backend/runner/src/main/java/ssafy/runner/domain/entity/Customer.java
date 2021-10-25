@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -21,22 +22,22 @@ public class Customer {
     private Long id;
 
     @NotBlank
-    @Length(min = 2, max = 10)
+    @Size(min = 2, max = 10)
     private String username;
 
     @Email
     @NotBlank
     private String email;
 
-    @Length(min = 8, max = 20)
+    @Size(min = 8, max = 20)
     private String password;
 
-    @Length(min = 2, max = 10)
+    @Size(min = 2, max = 10)
     private String nickname;
     private String snsType;
 
     @NotBlank
-    private String accessToken;
+    private String accessToken; // sns 엑세스 토큰
 
     @Builder
     public Customer(String username, String email, String accessToken) {

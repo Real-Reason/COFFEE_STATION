@@ -17,7 +17,6 @@ public class ShopImage {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    private String img_url;
-    private Integer index;
-
+    private String imgUrl;
+    private int index;
 }
