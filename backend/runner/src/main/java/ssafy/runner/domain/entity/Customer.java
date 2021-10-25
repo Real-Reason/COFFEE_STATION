@@ -36,8 +36,14 @@ public class Customer {
     private String nickname;
     private String snsType;
 
-    @NotBlank
     private String accessToken; // sns 엑세스 토큰
+
+    public Customer(String username, String email, String password, String nickname) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
 
     @Builder
     public Customer(String username, String email, String accessToken) {

@@ -3,11 +3,14 @@ package ssafy.runner.util;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,15 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
+@Component
+@RequiredArgsConstructor
+public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private JwtUtil jwtUtil;
-
-    //아직 user 서비스를 인자로 받아오지 않음 실행 확인만 한다.
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        super(authenticationManager);
-        this.jwtUtil = jwtUtil;
-    }
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -50,6 +49,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                 System.out.println("에러 발생! : "+e);
             }
         }
-        chain.doFilter(request, response); // 모든 과정이 끝났으므로 필터체인을 실행? 이따 다시보기
+        chain.doFilter(request, response); // 모든 과정이 끝났으므로 다음 필터 체인 호출
     }
 }

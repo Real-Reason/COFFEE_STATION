@@ -24,9 +24,14 @@ public class Partner {
     @Size(min = 8, max = 50)
     private String password;
 
+    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
+    private Shop shop;
+
     @Builder
     public Partner(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
+
 }
