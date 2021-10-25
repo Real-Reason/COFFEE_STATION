@@ -4,8 +4,6 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.dto.PartnerResponseDto;
-import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.repository.PartnerRepository;
 
