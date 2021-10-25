@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ssafy.runner.domain.entity.Partner;
@@ -30,16 +31,16 @@ import java.util.Map;
 @Slf4j
 @Getter
 @Component
-@RequiredArgsConstructor
 public class JwtUtil {
+
+    @Value("${jwt.secret}")
+    private String SECRET; // final을 달면 에러가 발생한다. 유의할 것
 
     private final PartnerTokenService partnerTokenService;
     private final CustomerTokenService customerTokenService;
 
-    @Value("${jwt.secret}")
-    private String SECRET; // final을 달면 에러가 발생한다. 유의할 것
-    private Long expirationTime = 60*60*1000L; // 1시간
-    //    private Long expirationTime = 1000L; // 1초
+    private final Long expirationTime = 60*60*1000L; // 1시간
+    //    private final Long expirationTime = 1000L; // 1초
     private final String TOKEN_PREFIX = "Bearer ";
     private final String HEADER_STRING = "Authorization";
     private final String ISSUER = "Runner";
@@ -47,6 +48,11 @@ public class JwtUtil {
     private final String REFRESH_TOKEN = "RefreshToken";
     private final String AUDIENCE = "CoffeeStation";
 
+    @Autowired
+    public JwtUtil(PartnerTokenService partnerTokenService, CustomerTokenService customerTokenService) {
+        this.partnerTokenService = partnerTokenService;
+        this.customerTokenService = customerTokenService;
+    }
 
     // 토큰 생성 : 고정 만료시간 지정된 토큰
     // 로그인 시 생성해 줄 것이기 때문에, 또는 만료시 재발급 해줄 것이기 때문에
@@ -59,7 +65,7 @@ public class JwtUtil {
         return createToken(email, password, userType, this.expirationTime);
     }
 
-    // 토큰 생성 : 지정 expires가 지정
+    // 토큰 생성 : 지정 expires
     public String createToken(String email, String password, UserType userType, Long expires) {
         boolean result = userType.equals(UserType.PARTNER)
             ? partnerTokenService.findPartnerExist(email, password)
@@ -77,7 +83,7 @@ public class JwtUtil {
             .withIssuer(ISSUER) // 발급자 (필수)
             .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
             .withAudience(AUDIENCE) // 대상서비스 (필수)
-            .withExpiresAt(this.createTokenExpiration(expires)) // 만료시간 (필수)
+            .withExpiresAt(createTokenExpiration(expires)) // 만료시간 (필수)
             .withPayload(payloadClaims)
             .sign(Algorithm.HMAC512(SECRET.getBytes()));
 //            .withNotBefore() // 지정 시간 이후 유효 (선택)
@@ -92,10 +98,11 @@ public class JwtUtil {
 
     // 토큰 검증 : 재사용 가능한 verifier 객체가 리턴된다.
     public JWTVerifier getVerifier() {
-        log.warn(SECRET);
         return JWT
             .require(Algorithm.HMAC512(SECRET.getBytes()))
-            .withIssuer(ISSUER)
+            .withIssuer(ISSUER) // 발급자 (필수)
+            .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
+            .withAudience(AUDIENCE) // 대상서비스 (필수)
             .build();
     }
 
@@ -103,7 +110,9 @@ public class JwtUtil {
     public DecodedJWT verifyToken(String token) {
         JWTVerifier verifier = JWT
             .require(Algorithm.HMAC512(SECRET.getBytes()))
-            .withIssuer(ISSUER)
+            .withIssuer(ISSUER) // 발급자 (필수)
+            .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
+            .withAudience(AUDIENCE) // 대상서비스 (필수)
             .build();
         try {
             return verifier.verify(token.replace(TOKEN_PREFIX, ""));
