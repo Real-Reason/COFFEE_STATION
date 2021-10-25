@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,14 +34,14 @@ public class OrderMenu {
     @JoinColumn(name="menu_id", nullable = false)
     private Menu menu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="extra_id")
-    private Extra extra;
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="menu_size_id", nullable = false)
     private MenuSize menuSize;
+
+    @OneToMany(mappedBy = "orderMenu", cascade = CascadeType.ALL)
+    private List<OrderMenuExtra> orderMenuExtras = new ArrayList<>();
+
 
     @ColumnDefault("1")
     @Positive
@@ -48,21 +50,12 @@ public class OrderMenu {
     @PositiveOrZero
     private int price;
 
+    @Builder
     public OrderMenu(Orders order, Menu menu, MenuSize menuSize, int quantity) {
         this.order = order;
         this.menu = menu;
         this.menuSize = menuSize;
         this.quantity = quantity;
-        this.price = quantity * (menu.getPrice() + menuSize.getPrice() + extra.getPrice());
-    }
-
-    @Builder
-    public OrderMenu(Orders order, Menu menu, Extra extra, MenuSize menuSize, int quantity) {
-        this.order = order;
-        this.menu = menu;
-        this.extra = extra;
-        this.menuSize = menuSize;
-        this.quantity = quantity;
-        this.price = quantity * (menu.getPrice() + menuSize.getPrice() + extra.getPrice());
+        this.price = quantity;
     }
 }
