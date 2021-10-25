@@ -27,20 +27,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil)) // 필터 추가
             .authorizeRequests()
-<<<<<<< HEAD
-            .antMatchers("/api/test").permitAll() // jwt 미검사 패턴
             // Swagger 허용 설정
             .mvcMatchers("/v2/**",
                     "/configuration/**",
                     "/swagger*/**",
                     "/webjars/**",
                     "/swagger-resources/**").permitAll()
-            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
-=======
             .antMatchers("/api/test/login").permitAll() // jwt 미검사 패턴
             .antMatchers("/api/test/innerpage").authenticated();
 //            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
->>>>>>> 182e15de5c88ddcba05847f0aea258d3fbad956b
     }
 
 }

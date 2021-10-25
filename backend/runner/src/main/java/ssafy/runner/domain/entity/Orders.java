@@ -21,13 +21,13 @@ public class Orders {
     @Column(name="customer_id")
     private Long id;
 
-    @NotBlank
-    @OneToOne(mappedBy = "shop")
-    private Shop shop;
+//    @NotBlank
+//    @OneToOne(mappedBy = "shop")
+//    private Shop shop;
 
-    @NotBlank
-    @OneToOne(mappedBy = "customer")
-    private Customer customer;
+//    @NotBlank
+//    @OneToOne(mappedBy = "customer")
+//    private Customer customer;
 
     @NotBlank
     @CreatedDate
