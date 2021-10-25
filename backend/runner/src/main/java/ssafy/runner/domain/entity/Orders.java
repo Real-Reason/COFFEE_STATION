@@ -1,10 +1,10 @@
 package ssafy.runner.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,37 +12,48 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="customer_id")
+    @Column(name="order_id")
     private Long id;
 
     @NotBlank
-    @OneToOne(mappedBy = "shop")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="shop_id", nullable = false)
     private Shop shop;
 
     @NotBlank
-    @OneToOne(mappedBy = "customer")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
 
     @NotBlank
     @CreatedDate
     private LocalDateTime date;
 
-    // 미완성enum으로할거임
+    // DB에 Enum 상수값을 그대로 저장하기 위한 어노테이션
+    @Enumerated(EnumType.STRING)
     @NotBlank
-    private String status;
+    private OrderStatus status;
 
     @NotBlank
     private int totalPrice;
 
-    @NotBlank
+    @Length(max = 30)
     private String request;
 
-    // 빌드생성자 필요
+    @Builder
+    public Orders(Shop shop, Customer customer, int totalPrice) {
+        Assert.hasText(String.valueOf(totalPrice),"총 금액을 입력해주세요");
 
+        this.shop = shop;
+        this.customer = customer;
+        this.status = OrderStatus.PAID;
+        this.totalPrice = totalPrice;
+    }
 }

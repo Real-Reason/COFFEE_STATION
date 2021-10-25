@@ -1,6 +1,8 @@
 package ssafy.runner.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -19,12 +21,17 @@ public class Customer {
     private Long id;
 
     @NotBlank
+    @Length(min = 2, max = 10)
     private String username;
 
     @Email
     @NotBlank
     private String email;
+
+    @Length(min = 8, max = 20)
     private String password;
+
+    @Length(min = 2, max = 10)
     private String nickname;
     private String snsType;
 
