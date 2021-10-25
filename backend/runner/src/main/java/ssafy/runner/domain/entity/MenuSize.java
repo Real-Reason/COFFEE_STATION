@@ -21,6 +21,5 @@ public class MenuSize {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    private Integer price;
-
+    private int price;
 }

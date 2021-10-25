@@ -45,8 +45,8 @@ public class OrderMenu {
     private int price;
 
     @Builder
-    public OrderMenu(int quantity, int price) {
-        this.quantity = quantity;
-        this.price = price;
+    public OrderMenu(Menu menu) {
+        this.quantity = 1;
+        this.price = menu.getPrice();
     }
 }
