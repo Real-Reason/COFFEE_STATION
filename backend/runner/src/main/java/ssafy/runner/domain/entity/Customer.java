@@ -35,7 +35,7 @@ public class Customer {
     @Size(min = 2, max = 10)
     private String nickname;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SnsType snsType; // LOCAL 또는 GOOGLE로 Enum
 
     @Nullable
