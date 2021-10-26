@@ -1,7 +1,6 @@
 package ssafy.runner.domain.entity;
 
 import lombok.*;
-import ssafy.runner.domain.dto.PartnerDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

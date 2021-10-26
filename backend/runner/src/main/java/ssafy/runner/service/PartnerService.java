@@ -3,9 +3,8 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.entity.OrderMenu;
+import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
 import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.domain.dto.PartnerDto;
 import ssafy.runner.domain.repository.PartnerRepository;
 
 @Service
@@ -16,10 +15,12 @@ public class PartnerService {
     private final PartnerRepository partnerRepository;
 
     @Transactional
-    public Object join(PartnerDto params) {
-        Partner partner = partnerRepository.save(new Partner(params.getEmail(), params.getPassword()));
-        return PartnerDto.entityToDto(partner);
+    public PartnerJoinResponseDto join(String email, String password) {
+        Partner partner = partnerRepository.save(new Partner(email, password));
+        return PartnerJoinResponseDto.of(partner);
     }
 
-
+    public boolean findPartnerExist(String email, String password) {
+        return partnerRepository.existsByEmailAndPassword(email, password);
+    }
 }

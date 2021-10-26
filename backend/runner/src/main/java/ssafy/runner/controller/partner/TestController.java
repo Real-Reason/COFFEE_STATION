@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.enums.UserType;
-import ssafy.runner.service.PartnerTokenService;
+import ssafy.runner.service.PartnerService;
 import ssafy.runner.util.JwtUtil;
 
 @RestController
@@ -20,7 +20,7 @@ import ssafy.runner.util.JwtUtil;
 public class TestController {
 
     private final JwtUtil jwtUtil;
-    private final PartnerTokenService partnerTokenService;
+    private final PartnerService partnerService;
 
     @GetMapping("")
     @ApiOperation(value = "테스트")
@@ -31,7 +31,7 @@ public class TestController {
     @GetMapping("/login")
     @ApiOperation(value = "테스트")
     public String login() {
-        partnerTokenService.join("wns312@naver.com", "password");
+        partnerService.join("wns312@naver.com", "password");
         String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.PARTNER);
         return token;
     }

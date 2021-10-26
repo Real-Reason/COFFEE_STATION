@@ -1,25 +1,42 @@
 package ssafy.runner.controller.partner;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ssafy.runner.domain.dto.PartnerDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import ssafy.runner.domain.dto.partner.PartnerJoinRequestDto;
+import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
+import ssafy.runner.domain.dto.partner.PartnerLoginRequestDto;
+import ssafy.runner.domain.dto.partner.PartnerLoginResponseDto;
+import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.PartnerService;
+import ssafy.runner.util.JwtUtil;
 
 @RestController
-@RequestMapping("/partner")
+@RequiredArgsConstructor
+@RequestMapping("/api/partner")
 public class PartnerController {
 
     private final PartnerService partnerService;
+    private final JwtUtil jwtUtil;
 
-    public PartnerController(PartnerService partnerService) {
-        this.partnerService = partnerService;
+
+    @PostMapping("/join")
+    public PartnerJoinResponseDto join(@RequestBody PartnerJoinRequestDto requestDto) {
+        if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) throw new RuntimeException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        return partnerService.join(requestDto.getEmail(), requestDto.getPassword());
     }
 
-    // 테스트용 partner DB 입력
-    @PostMapping("/join")
-    public Object join(@RequestBody PartnerDto params) {
-        return partnerService.join(params);
+    @PostMapping("/login")
+    public PartnerLoginResponseDto login(@RequestBody PartnerLoginRequestDto requestDto) {
+        String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.PARTNER);
+        return new PartnerLoginResponseDto(token);
+    }
+
+    // token 접근 테스트 용도
+    @GetMapping("/innerpage")
+    public String login(Authentication authentication) {
+        String principal = (String) authentication.getPrincipal();
+        System.out.println(principal);
+        return "success";
     }
 }
