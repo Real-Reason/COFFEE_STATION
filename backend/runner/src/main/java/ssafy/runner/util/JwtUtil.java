@@ -16,7 +16,6 @@ import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
 import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
-import ssafy.runner.service.PartnerTokenService;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET; // final을 달면 에러가 발생한다. 유의할 것
 
-    private final PartnerTokenService partnerTokenService;
+    private final PartnerService partnerService;
     private final CustomerTokenService customerTokenService;
 
     private final Long expirationTime = 60 * 60 * 1000L; // 1시간
@@ -48,8 +47,8 @@ public class JwtUtil {
     private final String AUDIENCE = "CoffeeStation";
 
     @Autowired
-    public JwtUtil(PartnerTokenService partnerTokenService, CustomerTokenService customerTokenService) {
-        this.partnerTokenService = partnerTokenService;
+    public JwtUtil(PartnerService partnerService, CustomerTokenService customerTokenService) {
+        this.partnerService = partnerService;
         this.customerTokenService = customerTokenService;
     }
 
@@ -66,7 +65,7 @@ public class JwtUtil {
 
     // 토큰 생성 : 지정 expires
     public String createToken(String email, String password, UserType userType, Long expires) {
-        boolean result = userType.equals(UserType.PARTNER) ? partnerTokenService.findPartnerExist(email, password)
+        boolean result = userType.equals(UserType.PARTNER) ? partnerService.findPartnerExist(email, password)
                 : customerTokenService.findCustomerExist(email, password);
 
         if (!result)

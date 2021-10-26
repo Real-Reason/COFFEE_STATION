@@ -9,10 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.Customer;
-import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerTokenService;
-import ssafy.runner.service.PartnerTokenService;
+import ssafy.runner.service.PartnerService;
 
 import java.util.Map;
 
@@ -31,7 +30,7 @@ class JwtUtilTest {
     public CustomerTokenService customerTokenService;
 
     @Autowired
-    public PartnerTokenService partnerTokenService;
+    public PartnerService partnerService;
 
 
     @Test
@@ -54,7 +53,7 @@ class JwtUtilTest {
 
     @Test
     void createPartnerTokenTest() {
-        Partner partner = partnerTokenService.join("wns312@naver.com", "password");
+        partnerService.join("wns312@naver.com", "password");
         String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.PARTNER);
         DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
 
@@ -66,7 +65,7 @@ class JwtUtilTest {
 
     @Test
     void partnerTokenExpiratonTest() throws InterruptedException {
-        Partner partner = partnerTokenService.join("wns312@naver.com", "password");
+        partnerService.join("wns312@naver.com", "password");
         String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.PARTNER, 1000L);
         Thread.sleep(2000L);
         assertThrows(TokenExpiredException.class, ()->jwtUtil.verifyToken(token), "토큰이 만료되어야 하지만, 만료되지 않았습니다");

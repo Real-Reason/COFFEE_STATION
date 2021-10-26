@@ -1,4 +1,4 @@
-package ssafy.runner.domain.dto;
+package ssafy.runner.domain.dto.partner;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class PartnerDto {
 
     @Builder
     public PartnerDto(Long id, String email, String password) {
-       this.id = id;
+        this.id = id;
         this.email = email;
         this.password = password;
     }
