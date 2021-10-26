@@ -39,10 +39,9 @@ public class JwtUtil {
     private final PartnerTokenService partnerTokenService;
     private final CustomerTokenService customerTokenService;
 
-    private final Long expirationTime = 60*60*1000L; // 1시간
-    //    private final Long expirationTime = 1000L; // 1초
+    private final Long expirationTime = 60 * 60 * 1000L; // 1시간
+    // private final Long expirationTime = 1000L; // 1초
     private final String TOKEN_PREFIX = "Bearer ";
-    private final String HEADER_STRING = "Authorization";
     private final String ISSUER = "Runner";
     private final String ACCESS_TOKEN = "AccessToken";
     private final String REFRESH_TOKEN = "RefreshToken";
@@ -67,11 +66,11 @@ public class JwtUtil {
 
     // 토큰 생성 : 지정 expires
     public String createToken(String email, String password, UserType userType, Long expires) {
-        boolean result = userType.equals(UserType.PARTNER)
-            ? partnerTokenService.findPartnerExist(email, password)
-            : customerTokenService.findCustomerExist(email, password);
+        boolean result = userType.equals(UserType.PARTNER) ? partnerTokenService.findPartnerExist(email, password)
+                : customerTokenService.findCustomerExist(email, password);
 
-        if (!result) throw new RuntimeException("유저가 없습니다"); // 추후 커스텀 예외로 변경하기
+        if (!result)
+            throw new RuntimeException("유저가 없습니다"); // 추후 커스텀 예외로 변경하기
 
         // 토큰 커스텀 클레임으로 role(유저 종류), owner(email) 넣기
         Map<String, Object> payloadClaims = new HashMap();
@@ -79,16 +78,15 @@ public class JwtUtil {
         payloadClaims.put("owner", email);
 
         // 토큰 생성 및 리턴
-        return JWT.create()
-            .withIssuer(ISSUER) // 발급자 (필수)
-            .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
-            .withAudience(AUDIENCE) // 대상서비스 (필수)
-            .withExpiresAt(createTokenExpiration(expires)) // 만료시간 (필수)
-            .withPayload(payloadClaims)
-            .sign(Algorithm.HMAC512(SECRET.getBytes()));
-//            .withNotBefore() // 지정 시간 이후 유효 (선택)
-//            .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())) // 토큰 발행 시간(선택)
-//            .withJWTId() // 토큰 고유 id로 중복 토큰 발근 제한 (선택)
+        return JWT.create().withIssuer(ISSUER) // 발급자 (필수)
+                .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
+                .withAudience(AUDIENCE) // 대상서비스 (필수)
+                .withExpiresAt(createTokenExpiration(expires)) // 만료시간 (필수)
+                .withPayload(payloadClaims).sign(Algorithm.HMAC512(SECRET.getBytes()));
+        // .withNotBefore() // 지정 시간 이후 유효 (선택)
+        // .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+        // // 토큰 발행 시간(선택)
+        // .withJWTId() // 토큰 고유 id로 중복 토큰 발근 제한 (선택)
     }
 
     // 토큰 만료시간 생성 (현재시간 + 만료시간)
@@ -98,22 +96,18 @@ public class JwtUtil {
 
     // 토큰 검증 : 재사용 가능한 verifier 객체가 리턴된다.
     public JWTVerifier getVerifier() {
-        return JWT
-            .require(Algorithm.HMAC512(SECRET.getBytes()))
-            .withIssuer(ISSUER) // 발급자 (필수)
-            .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
-            .withAudience(AUDIENCE) // 대상서비스 (필수)
-            .build();
+        return JWT.require(Algorithm.HMAC512(SECRET.getBytes())).withIssuer(ISSUER) // 발급자 (필수)
+                .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
+                .withAudience(AUDIENCE) // 대상서비스 (필수)
+                .build();
     }
 
     // 토큰 검증 : 복호화된 데이터를 리턴한다
     public DecodedJWT verifyToken(String token) {
-        JWTVerifier verifier = JWT
-            .require(Algorithm.HMAC512(SECRET.getBytes()))
-            .withIssuer(ISSUER) // 발급자 (필수)
-            .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
-            .withAudience(AUDIENCE) // 대상서비스 (필수)
-            .build();
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).withIssuer(ISSUER) // 발급자 (필수)
+                .withSubject(ACCESS_TOKEN) // 토큰 제목 (필수)
+                .withAudience(AUDIENCE) // 대상서비스 (필수)
+                .build();
         try {
             return verifier.verify(token.replace(TOKEN_PREFIX, ""));
         } catch (AlgorithmMismatchException ex) {

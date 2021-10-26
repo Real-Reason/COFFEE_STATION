@@ -14,7 +14,7 @@ public class CustomerTokenService {
     private final CustomerRepository customerRepository;
 
     public Customer join(String email, String password) {
-        Customer customer = new Customer("준영", email, password, "닉네임");
+        Customer customer = new Customer(email, password, "닉네임");
         return customerRepository.save(customer);
     }
 
