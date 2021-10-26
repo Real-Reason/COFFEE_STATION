@@ -3,6 +3,7 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.entity.OrderMenu;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.dto.PartnerDto;
@@ -20,6 +21,4 @@ public class PartnerService {
         Partner partner = partnerRepository.save(new Partner(params.getEmail(), params.getPassword()));
         return PartnerDto.entityToDto(partner);
     }
-
-
 }
