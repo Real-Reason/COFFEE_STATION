@@ -10,7 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor @AllArgsConstructor
 public class MenuCreateRequestDto {
     private Long categoryId;
+    private String name;
     private String imgUrl;
     private int price;
-    private boolean isSignature;
+    private boolean signature;
 }

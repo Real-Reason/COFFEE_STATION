@@ -11,6 +11,7 @@ import ssafy.runner.domain.dto.partner.PartnerLoginRequestDto;
 import ssafy.runner.domain.dto.partner.PartnerLoginResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.PartnerService;
+import ssafy.runner.util.CustomPrincipal;
 import ssafy.runner.util.JwtUtil;
 
 @RestController
@@ -40,8 +41,9 @@ public class PartnerController {
     @GetMapping("/innerpage")
     @ApiOperation(value = "파트너 내부페이지 토큰 테스트")
     public String login(Authentication authentication) {
-        String principal = (String) authentication.getPrincipal();
-        System.out.println(principal);
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        System.out.println(principal.getEmail());
+        System.out.println(principal.getRole());
         return "success";
     }
 
