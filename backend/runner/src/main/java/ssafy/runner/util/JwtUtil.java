@@ -33,7 +33,7 @@ public class JwtUtil {
     private final PartnerService partnerService;
     private final CustomerService customerService;
 
-    private final Long expirationTime = 60 * 60 * 1000L; // 1시간
+    private final Long expirationTime = 1000 * 60 * 60 * 24 * 30L; // 30일
     // private final Long expirationTime = 1000L; // 1초
     private final String TOKEN_PREFIX = "Bearer ";
     private final String ISSUER = "Runner";
