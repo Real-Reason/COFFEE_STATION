@@ -1,9 +1,6 @@
 package ssafy.runner.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -31,4 +28,13 @@ public class Menu {
 
     @Column(name = "is_signature")
     private Boolean isSignature = false;
+
+    @Builder
+    public Menu(Shop shop, Category category, String imgUrl, int price, Boolean isSignature) {
+        this.shop = shop;
+        this.category = category;
+        this.imgUrl = imgUrl;
+        this.price = price;
+        this.isSignature = isSignature;
+    }
 }
