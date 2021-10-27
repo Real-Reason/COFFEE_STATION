@@ -3,10 +3,14 @@ package ssafy.runner.controller.partner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.ShopResDto;
 import ssafy.runner.service.ShopService;
+
+import java.util.HashMap;
 
 @RestController
 @Api(tags = {"Shop관련 API"})
@@ -38,8 +42,10 @@ public class ShopController {
     // 영업 상태 변경
     @PatchMapping("/shop/status")
     @ApiOperation(value = "영업 상태변경")
-    public void changeShopStatus() {
+    public ResponseEntity changeShopStatus(@RequestBody HashMap<String, String> status) {
+        Long shopId = 1L; // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
+        shopService.changeShopStatus(status.get("status").toString(), shopId);
 
+        return new ResponseEntity<>("영업상태 변경 성공", HttpStatus.OK);
     }
-
 }
