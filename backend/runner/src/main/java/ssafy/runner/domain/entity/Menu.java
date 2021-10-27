@@ -1,14 +1,10 @@
 package ssafy.runner.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
+@Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Menu {
@@ -26,9 +22,28 @@ public class Menu {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    private String name;
     private String imgUrl; // 디폴트 이미지 넣어주는걸로 변경하기
     private int price;
 
+
     @Column(name = "is_signature")
-    private Boolean isSignature = false;
+    private boolean isSignature;
+
+    @Builder
+    public Menu(Shop shop, Category category, String name, String imgUrl, int price, boolean isSignature) {
+        this.shop = shop;
+        this.category = category;
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.price = price;
+        this.isSignature = isSignature;
+    }
+
+    public void updateMenu(Category category, String name, String imgUrl, int price, boolean isSignature) {
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.price = price;
+        this.isSignature = isSignature;
+    }
 }

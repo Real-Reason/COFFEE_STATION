@@ -3,6 +3,7 @@ package ssafy.runner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.entity.Category;
 import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
@@ -23,6 +24,7 @@ public class InitDB {
         for (int i = 0; i < 10; i++) {
             initService.initPartnerAndShop(i);
             initService.initCustomer(i);
+            initService.initCategory(i);
         }
     }
 
@@ -53,6 +55,9 @@ public class InitDB {
         }
 
 
-
+        public void initCategory(int i) {
+            Category category = new Category("카테고리" + i);
+            em.persist(category);
+        }
     }
 }
