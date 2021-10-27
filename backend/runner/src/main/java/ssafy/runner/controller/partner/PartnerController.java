@@ -1,11 +1,9 @@
 package ssafy.runner.controller.partner;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.PartnerDto;
 import ssafy.runner.domain.dto.ShopReqDto;
+import ssafy.runner.domain.dto.ShopResDto;
 import ssafy.runner.service.PartnerService;
 import ssafy.runner.service.ShopService;
 
@@ -30,9 +28,22 @@ public class PartnerController {
     // 가게 생성
     @PostMapping("/store")
     public Long createStore(@RequestBody ShopReqDto params) {
-        Long partnerId = null;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
+        Long partnerId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
 
         Long shopId = shopService.save(params, partnerId);
         return shopId;
     }
+
+    // 가게 상세 조회
+    @GetMapping("/store")
+    public ShopResDto getShopDetail() {
+        Long shopId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
+        ShopResDto shopDetail = shopService.getShopDetail(shopId);
+
+        return shopDetail;
+    }
+
+
+
+
 }
