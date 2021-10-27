@@ -9,6 +9,7 @@ import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.partner.MenuCreateRequestDto;
 import ssafy.runner.domain.dto.partner.MenuCreateResponseDto;
 import ssafy.runner.domain.dto.partner.MenuListResponseDto;
+import ssafy.runner.domain.dto.partner.MenuResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.util.CustomPrincipal;
@@ -37,11 +38,14 @@ public class MenuController {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
 
-        return menuService.findShopMenus(principal.getEmail());
+        return menuService.findShopMenuList(principal.getEmail());
     }
 
-    @PostMapping("/{menuId}")
+    @GetMapping("/{menuId}")
     @ApiOperation(value = "메뉴 단일 조회")
-    public void findOneMenu(Authentication authentication, @PathVariable("menuId") Long menuId) {
+    public MenuResponseDto findOneMenu(Authentication authentication, @PathVariable("menuId") Long menuId) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
+        return menuService.findShopMenu(principal.getEmail(), menuId);
     }
 }

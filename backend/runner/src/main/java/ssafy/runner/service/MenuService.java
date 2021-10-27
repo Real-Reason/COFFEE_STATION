@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.partner.MenuCreateResponseDto;
 import ssafy.runner.domain.dto.partner.MenuListResponseDto;
+import ssafy.runner.domain.dto.partner.MenuResponseDto;
 import ssafy.runner.domain.entity.Category;
 import ssafy.runner.domain.entity.Menu;
 import ssafy.runner.domain.entity.Partner;
@@ -50,12 +51,22 @@ public class MenuService {
         return new MenuCreateResponseDto(shop.getId(), category.getId(), savedMenu.getId(), menu.getName(), menu.getImgUrl(), menu.getPrice(), menu.isSignature());
     }
 
-    public MenuListResponseDto findShopMenus(String email) {
+    public MenuListResponseDto findShopMenuList(String email) {
         Optional<Partner> optionalPartner = partnerRepository.findByEmailWithShop(email);
         if (optionalPartner.isEmpty()) throw new RuntimeException("파트너가 없습니다.");
         Partner partner = optionalPartner.get();
         Shop shop = partner.getShop();
         List<Menu> menuList = menuRepository.findAllByShopWithCategory(shop.getId());
         return MenuListResponseDto.of(menuList);
+    }
+
+    public MenuResponseDto findShopMenu(String email, Long menuId) {
+        Optional<Partner> optionalPartner = partnerRepository.findByEmailWithShop(email);
+        if (optionalPartner.isEmpty()) throw new RuntimeException("파트너가 없습니다.");
+        Partner partner = optionalPartner.get();
+        Shop shop = partner.getShop();
+        Optional<Menu> optionalMenu = menuRepository.findByShopAndId(shop, menuId);
+        if (optionalMenu.isEmpty()) throw new RuntimeException("가게에 해당 메뉴가 없습니다.");
+        return MenuResponseDto.of(optionalMenu.get());
     }
 }
