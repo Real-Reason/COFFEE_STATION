@@ -34,4 +34,12 @@ public class ShopController {
         ShopResDto shopDetail = shopService.getShopDetail(shopId);
         return shopDetail;
     }
+
+    // 영업 상태 변경
+    @PatchMapping("/shop/status")
+    @ApiOperation(value = "영업 상태변경")
+    public void changeShopStatus() {
+
+    }
+
 }
