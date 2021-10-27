@@ -51,7 +51,6 @@ public class PartnerController {
     @PostMapping("/store")
     public Long createStore(@RequestBody ShopReqDto params) {
         Long partnerId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
-
         Long shopId = shopService.save(params, partnerId);
         return shopId;
     }
