@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.ShopResDto;
+import ssafy.runner.domain.dto.partner.CategoryResponseDto;
+import ssafy.runner.domain.entity.Category;
+import ssafy.runner.service.CategoryService;
 import ssafy.runner.service.ShopService;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @Api(tags = {"Shop관련 API"})
@@ -19,6 +23,7 @@ import java.util.HashMap;
 public class ShopController {
 
     private final ShopService shopService;
+    private final CategoryService categoryService;
 
 
     // 가게 생성
@@ -47,5 +52,12 @@ public class ShopController {
         shopService.changeShopStatus(status.get("status").toString(), shopId);
 
         return new ResponseEntity<>("영업상태 변경 성공", HttpStatus.OK);
+    }
+
+    // 카테고리 리스트 조회
+    @GetMapping("/shop/categories")
+    public List<CategoryResponseDto> getCategoryList() {
+        List<CategoryResponseDto> categoryList = categoryService.getCategoryList();
+        return categoryList;
     }
 }
