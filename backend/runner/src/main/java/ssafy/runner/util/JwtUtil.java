@@ -6,20 +6,14 @@ import com.auth0.jwt.exceptions.*;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.enums.UserType;
-import ssafy.runner.service.CustomerService;
 import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +27,7 @@ import java.util.Map;
 public class JwtUtil {
 
     @Value("${jwt.secret}")
-    private String SECRET; // final을 달면 에러가 발생한다. 유의할 것
+    private String SECRET; // final 을 달면 에러가 발생한다. 유의할 것
 
     private final PartnerService partnerService;
     private final CustomerTokenService customerTokenService;
@@ -56,8 +50,8 @@ public class JwtUtil {
     // 로그인 시 생성해 줄 것이기 때문에, 또는 만료시 재발급 해줄 것이기 때문에
     // 무슨 조건으로 검색할지와 무슨 항목을 토큰에 넣어줄지 모두 지정해야 함
     // 파트너와 손님이 공통으로 들어가는 항목이면 좋을 것 : email, id
-    // 실제로 createToken은 객체 조회 후 호출될 것이므로?? 맞나?
-    // 1. 여기서 객체 찾기와 토큰 생성 둘 다 처리함 v ->username과 password를 받아야 함
+    // 실제로 createToken 은 객체 조회 후 호출될 것이므로?? 맞나?
+    // 1. 여기서 객체 찾기와 토큰 생성 둘 다 처리함 v -> username 과 password 를 받아야 함
 
     public String createToken(String email, String password, UserType userType) {
         return createToken(email, password, userType, this.expirationTime);
@@ -72,7 +66,7 @@ public class JwtUtil {
             throw new RuntimeException("유저가 없습니다"); // 추후 커스텀 예외로 변경하기
 
         // 토큰 커스텀 클레임으로 role(유저 종류), owner(email) 넣기
-        Map<String, Object> payloadClaims = new HashMap();
+        Map<String, Object> payloadClaims = new HashMap<>();
         payloadClaims.put("role", userType.toString());
         payloadClaims.put("owner", email);
 

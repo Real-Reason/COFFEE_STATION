@@ -10,5 +10,4 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     Optional<Partner> findByEmailAndPassword(String email, String password);
 
     boolean existsByEmailAndPassword(String email, String password);
-    Partner getById(Long id);
 }
