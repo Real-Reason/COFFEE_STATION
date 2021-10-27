@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ssafy.runner.domain.enums.UserType;
+import ssafy.runner.service.CustomerService;
 import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
 
@@ -30,7 +31,7 @@ public class JwtUtil {
     private String SECRET; // final 을 달면 에러가 발생한다. 유의할 것
 
     private final PartnerService partnerService;
-    private final CustomerTokenService customerTokenService;
+    private final CustomerService customerService;
 
     private final Long expirationTime = 60 * 60 * 1000L; // 1시간
     // private final Long expirationTime = 1000L; // 1초
@@ -41,9 +42,9 @@ public class JwtUtil {
     private final String AUDIENCE = "CoffeeStation";
 
     @Autowired
-    public JwtUtil(PartnerService partnerService, CustomerTokenService customerTokenService) {
+    public JwtUtil(PartnerService partnerService, CustomerService customerService) {
         this.partnerService = partnerService;
-        this.customerTokenService = customerTokenService;
+        this.customerService = customerService;
     }
 
     // 토큰 생성 : 고정 만료시간 지정된 토큰
@@ -59,11 +60,10 @@ public class JwtUtil {
 
     // 토큰 생성 : 지정 expires
     public String createToken(String email, String password, UserType userType, Long expires) {
-        boolean result = userType.equals(UserType.PARTNER) ? partnerService.findPartnerExist(email, password)
-                : customerTokenService.findCustomerExist(email, password);
+        boolean result = (userType == UserType.PARTNER) ? partnerService.findPartnerExist(email, password)
+                : customerService.findCustomerExist(email, password);
 
-        if (!result)
-            throw new RuntimeException("유저가 없습니다"); // 추후 커스텀 예외로 변경하기
+        if (!result) throw new RuntimeException("유저가 없습니다"); // 추후 커스텀 예외로 변경하기
 
         // 토큰 커스텀 클레임으로 role(유저 종류), owner(email) 넣기
         Map<String, Object> payloadClaims = new HashMap<>();

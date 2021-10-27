@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.partner.PartnerJoinRequestDto;
 import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
-import ssafy.runner.domain.dto.partner.PartnerLoginRequestDto;
-import ssafy.runner.domain.dto.partner.PartnerLoginResponseDto;
+import ssafy.runner.domain.dto.LoginRequestDto;
+import ssafy.runner.domain.dto.LoginResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.PartnerService;
 import ssafy.runner.util.CustomPrincipal;
@@ -20,8 +20,8 @@ import ssafy.runner.util.JwtUtil;
 @RequestMapping("/api/partner")
 public class PartnerController {
 
-    private final PartnerService partnerService;
     private final JwtUtil jwtUtil;
+    private final PartnerService partnerService;
 
     @PostMapping("/join")
     @ApiOperation(value = "파트너 회원가입")
@@ -32,9 +32,9 @@ public class PartnerController {
 
     @PostMapping("/login")
     @ApiOperation(value = "파트너 로그인")
-    public PartnerLoginResponseDto login(@RequestBody PartnerLoginRequestDto requestDto) {
+    public LoginResponseDto login(@RequestBody LoginRequestDto requestDto) {
         String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.PARTNER);
-        return new PartnerLoginResponseDto(token);
+        return new LoginResponseDto(token);
     }
 
     // token 접근 테스트 용도

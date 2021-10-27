@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
 import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.enums.UserType;
+import ssafy.runner.service.CustomerService;
 import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
 
@@ -27,7 +29,7 @@ class JwtUtilTest {
     public JwtUtil jwtUtil;
 
     @Autowired
-    public CustomerTokenService customerTokenService;
+    public CustomerService customerService;
 
     @Autowired
     public PartnerService partnerService;
@@ -35,7 +37,7 @@ class JwtUtilTest {
 
     @Test
     void createCustomerTokenTest() {
-        Customer customer = customerTokenService.join("wns312@naver.com", "password");
+        customerService.join("wns312@naver.com", "password", "nickname");
         String token = jwtUtil.createToken("wns312@naver.com", "password", UserType.CUSTOMER);
         DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
 

@@ -37,12 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources/**").permitAll()
             .mvcMatchers("/v2/**",
                 "/h2-console/**").permitAll()
-            .antMatchers("/api/partner/login").permitAll() // jwt 미검사 패턴
-            .antMatchers("/api/partner/join").permitAll() // jwt 미검사 패턴
-            .antMatchers("/api/customer/login").permitAll() // jwt 미검사 패턴
-            .antMatchers("/api/customer/join").permitAll() // jwt 미검사 패턴
-            .antMatchers("/api/partner/innerpage").authenticated() // jwt 테스트용
-            .antMatchers("/api/customer/innerpage").authenticated(); // jwt 테스트용
+            .antMatchers("/api/**/login").permitAll() // jwt 미검사 패턴
+            .antMatchers("/api/**/join").permitAll() // jwt 미검사 패턴
+            .antMatchers("/api/**/login").permitAll() // jwt 미검사 패턴
+            .antMatchers("/api/**/join").permitAll() // jwt 미검사 패턴
+            .antMatchers("/api/**/innerpage").authenticated(); // jwt 테스트용
 //            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
     }
 }
