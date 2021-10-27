@@ -38,6 +38,12 @@ public class Menu {
         this.imgUrl = imgUrl;
         this.price = price;
         this.isSignature = isSignature;
+    }
 
+    public void updateMenu(Category category, String name, String imgUrl, int price, boolean isSignature) {
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.price = price;
+        this.isSignature = isSignature;
     }
 }

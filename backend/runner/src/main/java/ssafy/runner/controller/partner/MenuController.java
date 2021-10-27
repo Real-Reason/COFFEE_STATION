@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.ShopReqDto;
-import ssafy.runner.domain.dto.partner.MenuCreateRequestDto;
-import ssafy.runner.domain.dto.partner.MenuCreateResponseDto;
-import ssafy.runner.domain.dto.partner.MenuListResponseDto;
-import ssafy.runner.domain.dto.partner.MenuResponseDto;
+import ssafy.runner.domain.dto.partner.*;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.util.CustomPrincipal;
@@ -47,5 +44,33 @@ public class MenuController {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
         return menuService.findShopMenu(principal.getEmail(), menuId);
+    }
+
+    @PutMapping("/{menuId}")
+    @ApiOperation(value = "메뉴 수정")
+    public MenuResponseDto updateMenu(Authentication authentication,
+                           @PathVariable("menuId") Long menuId,
+                           @RequestBody MenuUpdateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 수정할 수 없습니다.");
+
+        return menuService.updateMenu(
+            principal.getEmail(),
+            menuId,
+            requestDto.getCategoryId(),
+            requestDto.getName(),
+            requestDto.getImgUrl(),
+            requestDto.getPrice(),
+            requestDto.isSignature());
+    }
+
+    @DeleteMapping ("/{menuId}")
+    @ApiOperation(value = "메뉴 삭제")
+    public ResultResponseDto updateMenu(Authentication authentication,
+                                      @PathVariable("menuId") Long menuId) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
+
+        return menuService.deleteMenu(principal.getEmail(), menuId);
     }
 }
