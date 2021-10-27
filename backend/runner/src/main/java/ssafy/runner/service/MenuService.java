@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.partner.MenuCreateResponseDto;
 import ssafy.runner.domain.dto.partner.MenuListResponseDto;
 import ssafy.runner.domain.dto.partner.MenuResponseDto;
+import ssafy.runner.domain.dto.partner.ResultResponseDto;
 import ssafy.runner.domain.entity.Category;
 import ssafy.runner.domain.entity.Menu;
 import ssafy.runner.domain.entity.Partner;
@@ -68,5 +69,36 @@ public class MenuService {
         Optional<Menu> optionalMenu = menuRepository.findByShopAndId(shop, menuId);
         if (optionalMenu.isEmpty()) throw new RuntimeException("가게에 해당 메뉴가 없습니다.");
         return MenuResponseDto.of(optionalMenu.get());
+    }
+
+    @Transactional
+    public MenuResponseDto updateMenu(String email, Long menuId, Long categoryId, String name, String imgUrl, int price, boolean signature) {
+        Optional<Partner> optionalPartner = partnerRepository.findByEmailWithShop(email);
+        if (optionalPartner.isEmpty()) throw new RuntimeException("파트너가 없습니다.");
+        Partner partner = optionalPartner.get();
+        Shop shop = partner.getShop();
+        Optional<Menu> optionalMenu = menuRepository.findByShopAndId(shop, menuId);
+        if (optionalMenu.isEmpty()) throw new RuntimeException("가게에 해당 메뉴가 없습니다.");
+
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+        if (optionalCategory.isEmpty()) throw new RuntimeException("바꾸려는 카테고리가 존재하지 않습니다");
+
+        Menu menu = optionalMenu.get();
+        menu.updateMenu(optionalCategory.get(), name, imgUrl, price, signature);
+
+        return MenuResponseDto.of(menu);
+    }
+
+    @Transactional
+    public ResultResponseDto deleteMenu(String email, Long menuId) {
+        Optional<Partner> optionalPartner = partnerRepository.findByEmailWithShop(email);
+        if (optionalPartner.isEmpty()) throw new RuntimeException("파트너가 없습니다.");
+        Partner partner = optionalPartner.get();
+        Shop shop = partner.getShop();
+        Optional<Menu> optionalMenu = menuRepository.findByShopAndId(shop, menuId);
+        if (optionalMenu.isEmpty()) throw new RuntimeException("가게에 해당 메뉴가 없습니다.");
+
+        menuRepository.delete(optionalMenu.get());
+        return new ResultResponseDto(true);
     }
 }
