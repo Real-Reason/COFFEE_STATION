@@ -23,15 +23,12 @@ public class PartnerController {
     private final PartnerService partnerService;
     private final JwtUtil jwtUtil;
 
-
-
     @PostMapping("/join")
     @ApiOperation(value = "파트너 회원가입")
     public PartnerJoinResponseDto join(@RequestBody PartnerJoinRequestDto requestDto) {
         if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) throw new RuntimeException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         return partnerService.join(requestDto.getEmail(), requestDto.getPassword());
     }
-
 
     @PostMapping("/login")
     @ApiOperation(value = "파트너 로그인")
@@ -49,4 +46,5 @@ public class PartnerController {
         System.out.println(principal.getRole());
         return "success";
     }
+
 }
