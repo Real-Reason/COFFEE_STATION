@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.ShopStatus;
+import ssafy.runner.domain.enums.SizeType;
 import ssafy.runner.domain.enums.SnsType;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +25,7 @@ public class InitDB {
             Category category = initService.initCategory(i);
             initService.initMenu(i, shop, category);
         }
+        initService.initSize();
     }
 
 
@@ -70,6 +72,19 @@ public class InitDB {
                 .price((i+1)*1000)
                 .build();
             em.persist(menu);
+        }
+
+        public void initSize() {
+            em.persist(new Size(SizeType.S));
+            em.persist(new Size(SizeType.M));
+            em.persist(new Size(SizeType.L));
+            em.persist(new Size(SizeType.Tall));
+            em.persist(new Size(SizeType.Grande));
+            em.persist(new Size(SizeType.Venti));
+            em.persist(new Size(SizeType.Regular));
+            em.persist(new Size(SizeType.Large));
+            em.persist(new Size(SizeType.OneLiter));
+            em.persist(new Size(SizeType.OneSize));
         }
     }
 }

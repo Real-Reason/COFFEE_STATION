@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.partner.*;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
+import ssafy.runner.service.MenuSizeService;
 import ssafy.runner.util.CustomPrincipal;
 
 @RestController
@@ -18,6 +18,7 @@ import ssafy.runner.util.CustomPrincipal;
 public class MenuController {
 
     private final MenuService menuService;
+    private final MenuSizeService menuSizeService;
 
     @PostMapping("")
     @ApiOperation(value = "메뉴 생성")
@@ -70,13 +71,24 @@ public class MenuController {
             requestDto.isSignature());
     }
 
-    @DeleteMapping ("/{menuId}")
+    @DeleteMapping("/{menuId}")
     @ApiOperation(value = "메뉴 삭제")
-    public ResultResponseDto updateMenu(Authentication authentication,
+    public ResultResponseDto deleteMenu(Authentication authentication,
                                       @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
 
         return menuService.deleteMenu(principal.getEmail(), menuId);
+    }
+
+    @PostMapping("/{menuId}/size")
+    @ApiOperation(value = "메뉴 사이즈 리스트 생성")
+    public MenuSizeListCreateResponseDto createMenuSizeList(Authentication authentication,
+                                        @PathVariable("menuId") Long menuId,
+                                        @RequestBody MenuSizeListCreateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
+
+        return menuSizeService.createMenuSizeList(principal.getEmail(), menuId, requestDto.getMenuSizeList());
     }
 }
