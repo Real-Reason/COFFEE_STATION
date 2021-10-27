@@ -3,10 +3,7 @@ package ssafy.runner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.entity.Category;
-import ssafy.runner.domain.entity.Customer;
-import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.domain.entity.Shop;
+import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.enums.SnsType;
 
@@ -22,9 +19,10 @@ public class InitDB {
     @PostConstruct
     public void init() {
         for (int i = 0; i < 10; i++) {
-            initService.initPartnerAndShop(i);
+            Shop shop = initService.initPartnerAndShop(i);
             initService.initCustomer(i);
-            initService.initCategory(i);
+            Category category = initService.initCategory(i);
+            initService.initMenu(i, shop, category);
         }
     }
 
@@ -35,7 +33,7 @@ public class InitDB {
     static class InitService {
         private final EntityManager em;
 
-        public void initPartnerAndShop(int i) {
+        public Shop initPartnerAndShop(int i) {
             Partner partner = new Partner("wns312"+i+"@naver.com", "password"+i);
             em.persist(partner);
             Shop shop = Shop.builder()
@@ -47,6 +45,7 @@ public class InitDB {
                 .intro("소개글"+i).instagram("인스타주소"+i)
                 .build();
             em.persist(shop);
+            return shop;
         }
 
         public void initCustomer(int i) {
@@ -55,9 +54,22 @@ public class InitDB {
         }
 
 
-        public void initCategory(int i) {
+        public Category initCategory(int i) {
             Category category = new Category("카테고리" + i);
             em.persist(category);
+            return category;
+        }
+
+        public void initMenu(int i, Shop shop, Category category) {
+            Menu menu = Menu.builder()
+                .shop(shop)
+                .category(category)
+                .name("아메리카노"+i)
+                .imgUrl("메뉴이미지"+i)
+                .isSignature(i%2 == 1 ? true : false)
+                .price((i+1)*1000)
+                .build();
+            em.persist(menu);
         }
     }
 }
