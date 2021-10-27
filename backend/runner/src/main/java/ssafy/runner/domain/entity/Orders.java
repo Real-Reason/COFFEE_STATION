@@ -1,6 +1,7 @@
 package ssafy.runner.domain.entity;
 
 import lombok.*;
+import org.hibernate.criterion.Order;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
 import ssafy.runner.domain.enums.OrderStatus;
@@ -47,12 +48,16 @@ public class Orders {
     private String request;
 
     @Builder
-    public Orders(Shop shop, Customer customer, int totalPrice) {
+    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice) {
         Assert.hasText(String.valueOf(totalPrice),"총 금액을 입력해주세요");
 
         this.shop = shop;
         this.customer = customer;
-        this.status = OrderStatus.PAID;
+        this.status = status;
         this.totalPrice = totalPrice;
+    }
+
+    public void modifyOrderStatus(String status) {
+        this.status = OrderStatus.valueOf(status);
     }
 }
