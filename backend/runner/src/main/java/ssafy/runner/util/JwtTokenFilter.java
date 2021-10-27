@@ -39,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 // principal : id, credentials : 비밀번호 : 의미없지않나..왜쓰는거지
                 // 아래가 핵심 : 없으면 인증이 되지 않는다.
                 // owner와 role을 어떤식으로 컨트롤러에 넘겨줄지 고민이 필요함
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(owner+ " & " + role, null, null);
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(new CustomPrincipal(owner, role), null, null);
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } catch (Exception e) {
                 System.out.println("에러 발생! : "+e);
