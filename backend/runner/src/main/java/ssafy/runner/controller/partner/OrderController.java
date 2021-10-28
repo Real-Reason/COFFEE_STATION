@@ -84,7 +84,7 @@ public class OrderController {
         return new ResponseEntity<>(revenue, HttpStatus.OK);
     }
 
-    @GetMapping("/shop/orders/revenue/week")
+    @GetMapping("/shop/orders/revenue/period")
     @ApiOperation(value = "기간별 매출 조회")
     public ResponseEntity<Integer> weekRevenue(Authentication authentication,
                                                @RequestParam("from") String from,
