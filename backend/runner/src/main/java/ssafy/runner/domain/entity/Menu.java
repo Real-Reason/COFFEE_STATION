@@ -1,6 +1,7 @@
 package ssafy.runner.domain.entity;
 
 import lombok.*;
+import ssafy.runner.domain.enums.MenuStatus;
 
 import javax.persistence.*;
 
@@ -30,9 +31,21 @@ public class Menu {
     @Column(name = "is_signature")
     private boolean isSignature;
 
+    @Enumerated(EnumType.STRING)
+    private MenuStatus menuStatus;
+
     @Builder
-    public Menu(Shop shop, Category category, String name, String imgUrl, int price, boolean isSignature) {
+    public Menu(Shop shop, Category category, String name, String imgUrl, int price, boolean isSignature, MenuStatus menuStatus) {
         this.shop = shop;
+        this.category = category;
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.price = price;
+        this.isSignature = isSignature;
+        this.menuStatus = menuStatus;
+    }
+
+    public void updateMenu(Category category, String name, String imgUrl, int price, boolean isSignature) {
         this.category = category;
         this.name = name;
         this.imgUrl = imgUrl;
@@ -40,10 +53,7 @@ public class Menu {
         this.isSignature = isSignature;
     }
 
-    public void updateMenu(Category category, String name, String imgUrl, int price, boolean isSignature) {
-        this.name = name;
-        this.imgUrl = imgUrl;
-        this.price = price;
-        this.isSignature = isSignature;
+    public void updateMenuStatus(MenuStatus menuStatus) {
+        this.menuStatus = menuStatus;
     }
 }

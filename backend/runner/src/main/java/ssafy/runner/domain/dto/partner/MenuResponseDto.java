@@ -14,10 +14,11 @@ public class MenuResponseDto {
     private String name;
     private String imgUrl;
     private int price;
-    private boolean isSignature;
+    private boolean signature;
+    private String menuStatus;
 
     public static MenuResponseDto of(Menu menu) {
-        return new MenuResponseDto(menu.getId(), menu.getCategory().getId(), menu.getName(), menu.getImgUrl(), menu.getPrice(), menu.isSignature());
+        return new MenuResponseDto(menu.getId(), menu.getCategory().getId(), menu.getName(), menu.getImgUrl(), menu.getPrice(), menu.isSignature(), menu.getMenuStatus().toString());
     }
 
 }
