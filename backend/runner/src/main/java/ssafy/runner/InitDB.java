@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.enums.ShopStatus;
+import ssafy.runner.domain.enums.SizeType;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ public class InitDB {
             initService.initMenu(i, shop, category);
             initService.initOrder(shop, initService.initCustomer(i), OrderStatus.PAID, 30000);
         }
+        initService.initSize();
     }
 
 
@@ -86,5 +88,17 @@ public class InitDB {
             em.persist(order);
         }
 
+        public void initSize() {
+            em.persist(new Size(SizeType.S));
+            em.persist(new Size(SizeType.M));
+            em.persist(new Size(SizeType.L));
+            em.persist(new Size(SizeType.Tall));
+            em.persist(new Size(SizeType.Grande));
+            em.persist(new Size(SizeType.Venti));
+            em.persist(new Size(SizeType.Regular));
+            em.persist(new Size(SizeType.Large));
+            em.persist(new Size(SizeType.OneLiter));
+            em.persist(new Size(SizeType.OneSize));
+        }
     }
 }

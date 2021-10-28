@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.partner.*;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
+import ssafy.runner.service.MenuSizeService;
 import ssafy.runner.util.CustomPrincipal;
 
 @RestController
@@ -18,12 +18,14 @@ import ssafy.runner.util.CustomPrincipal;
 public class MenuController {
 
     private final MenuService menuService;
+    private final MenuSizeService menuSizeService;
 
     @PostMapping("")
     @ApiOperation(value = "메뉴 생성")
     public MenuCreateResponseDto createMenu(Authentication authentication, @RequestBody MenuCreateRequestDto requestDto) {
         System.out.println(requestDto);
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+
         if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
         return menuService.createMenu(
             principal.getEmail(),
@@ -32,6 +34,11 @@ public class MenuController {
             requestDto.getName(),
             requestDto.getImgUrl(),
             requestDto.isSignature());
+
+//        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+//            throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+//        return menuService.createMenu(principal.getEmail(), requestDto.getCategoryId(), requestDto.getPrice(), requestDto.getName(), requestDto.getImgUrl(), requestDto.isSignature());
+
     }
 
     @GetMapping("")
@@ -39,7 +46,8 @@ public class MenuController {
     public MenuListResponseDto findMenuList(Authentication authentication) {
         // 가게용 조회이므로
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+            throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
 
         return menuService.findShopMenuList(principal.getEmail());
     }
@@ -48,35 +56,60 @@ public class MenuController {
     @ApiOperation(value = "메뉴 단일 조회")
     public MenuResponseDto findOneMenu(Authentication authentication, @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+            throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
         return menuService.findShopMenu(principal.getEmail(), menuId);
     }
 
     @PutMapping("/{menuId}")
     @ApiOperation(value = "메뉴 수정")
     public MenuResponseDto updateMenu(Authentication authentication,
-                           @PathVariable("menuId") Long menuId,
-                           @RequestBody MenuUpdateRequestDto requestDto) {
+                                      @PathVariable("menuId") Long menuId,
+                                      @RequestBody MenuUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 수정할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+            throw new RuntimeException("점주가 아니면 메뉴를 수정할 수 없습니다.");
 
         return menuService.updateMenu(
-            principal.getEmail(),
-            menuId,
-            requestDto.getCategoryId(),
-            requestDto.getName(),
-            requestDto.getImgUrl(),
-            requestDto.getPrice(),
-            requestDto.isSignature());
+                principal.getEmail(),
+                menuId,
+                requestDto.getCategoryId(),
+                requestDto.getName(),
+                requestDto.getImgUrl(),
+                requestDto.getPrice(),
+                requestDto.isSignature());
     }
 
-    @DeleteMapping ("/{menuId}")
+    @DeleteMapping("/{menuId}")
     @ApiOperation(value = "메뉴 삭제")
-    public ResultResponseDto updateMenu(Authentication authentication,
+    public ResultResponseDto deleteMenu(Authentication authentication,
                                       @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+            throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
 
         return menuService.deleteMenu(principal.getEmail(), menuId);
+    }
+
+    @PostMapping("/{menuId}/size")
+    @ApiOperation(value = "메뉴 사이즈 생성")
+    public MenuSizeResponseDto createMenuSizeList(Authentication authentication,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @RequestBody MenuSizeCreateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+
+        return menuSizeService.createMenuSize(principal.getEmail(), menuId, requestDto.getSizeId(), requestDto.getPrice());
+    }
+
+    @PutMapping("/{menuId}/size")
+    @ApiOperation(value = "메뉴 사이즈 수정")
+    public MenuSizeResponseDto updateMenuSizeList(Authentication authentication,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @RequestBody MenuSizeUpdateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+
+        return menuSizeService.updateMenuSize(principal.getEmail(), requestDto.getMenuSizeId(), menuId, requestDto.getSizeId(), requestDto.getPrice());
     }
 }
