@@ -75,13 +75,23 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @GetMapping("/shop/orders/revenue/day")
-    @ApiOperation(value = "일별 매출 조회")
-    public ResponseEntity<Integer> dayRevenue(Authentication authentication,
-                                              @RequestParam("date") String date) {
+    @GetMapping("/shop/orders/revenue/today")
+    @ApiOperation(value = "오늘 매출 조회")
+    public ResponseEntity<Integer> dayRevenue(Authentication authentication) {
 
         String email = checkPrincipalReturnEmail(authentication);
-        Integer revenue = orderService.calDayRevenue(email, LocalDateTime.parse(date));
+        Integer revenue = orderService.calPeriodRevenue(email, LocalDateTime.now(), LocalDateTime.now());
+        return new ResponseEntity<>(revenue, HttpStatus.OK);
+    }
+
+    @GetMapping("/shop/orders/revenue/week")
+    @ApiOperation(value = "기간별 매출 조회")
+    public ResponseEntity<Integer> weekRevenue(Authentication authentication,
+                                               @RequestParam("from") String from,
+                                               @RequestParam("to") String to) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        Integer revenue = orderService.calPeriodRevenue(email, LocalDateTime.parse(from), LocalDateTime.parse(to));
         return new ResponseEntity<>(revenue, HttpStatus.OK);
     }
 
