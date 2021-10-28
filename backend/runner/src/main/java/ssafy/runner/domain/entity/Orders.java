@@ -8,6 +8,7 @@ import ssafy.runner.domain.enums.OrderStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -22,42 +23,45 @@ public class Orders {
     @Column(name="order_id")
     private Long id;
 
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="shop_id", nullable = false)
     private Shop shop;
 
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
 
-    @NotBlank
+    @NotNull
     @CreatedDate
     private LocalDateTime date;
 
     // DB에 Enum 상수값을 그대로 저장하기 위한 어노테이션
     @Enumerated(EnumType.STRING)
-    @NotBlank
+    @NotNull
     private OrderStatus status;
 
-    @NotBlank
+    @NotNull
     private int totalPrice;
 
     @Size(max = 30)
     private String request;
 
     @Builder
-    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice) {
-        Assert.hasText(String.valueOf(totalPrice),"총 금액을 입력해주세요");
+    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice, LocalDateTime date) {
 
+        Assert.notNull(shop, "샵 정보는 필수 입니다.");
+        Assert.notNull(customer, "고객 정보는 필수입니다.");
+        Assert.notNull(status, "상태 정보는 필수 입니다.");
+        this.date = date;
         this.shop = shop;
         this.customer = customer;
         this.status = status;
         this.totalPrice = totalPrice;
     }
 
-    public void modifyOrderStatus(String status) {
-        this.status = OrderStatus.valueOf(status);
+    public void modifyOrderStatus(OrderStatus status) {
+        this.status = status;
     }
 }

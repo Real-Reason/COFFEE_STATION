@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderResponseDto {
 
+    private Long id;
     private CustomerNicknameDto customer;
     private LocalDateTime date;
     private OrderStatus status;
@@ -21,6 +22,8 @@ public class OrderResponseDto {
     private String request;
 
     public OrderResponseDto(Orders order) {
+
+        this.id = order.getId();
         this.customer = new CustomerNicknameDto(order.getCustomer());
         this.date = order.getDate();
         this.status = order.getStatus();

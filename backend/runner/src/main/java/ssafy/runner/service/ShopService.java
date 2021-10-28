@@ -23,6 +23,7 @@ public class ShopService {
 
     @Transactional
     public Long save(ShopReqDto params, Long partnerId) {
+
         Optional<Partner> optional = partnerRepository.findById(partnerId);
         if (optional.isEmpty()) throw new RuntimeException("회원이 없습니다");
         Partner partner = optional.get();
@@ -32,6 +33,7 @@ public class ShopService {
     }
 
     public ShopResDto getShopDetail(Long shopId) {
+
         Optional<Shop> optional = shopRepository.findById(shopId);
         if (optional.isEmpty()) throw new RuntimeException("가게가 없습니다.");
         Shop shop = optional.get();
@@ -42,6 +44,7 @@ public class ShopService {
 
     @Transactional
     public void changeShopStatus(String status, Long shopId) {
+
         Shop shop = shopRepository.getById(shopId);
         ShopStatus enumStatus = ShopStatus.valueOf(status);
         Shop newShop = new Shop(shop.getId(), shop.getPartner(), shop.getName(), shop.getBusiness_no(), shop.getPhone_number(), shop.getAddress(), shop.getDetail_address(), shop.getZip_code(), shop.getX(), shop.getY(), enumStatus, shop.getOpen_at(), shop.getClose_at(), shop.getIntro(), shop.getInstagram());
