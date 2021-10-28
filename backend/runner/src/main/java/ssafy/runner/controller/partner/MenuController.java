@@ -22,7 +22,7 @@ public class MenuController {
 
     @PostMapping("")
     @ApiOperation(value = "메뉴 생성")
-    public MenuCreateResponseDto createMenu(Authentication authentication, @RequestBody MenuCreateRequestDto requestDto) {
+    public MenuResponseDto createMenu(Authentication authentication, @RequestBody MenuCreateRequestDto requestDto) {
         System.out.println(requestDto);
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
 
@@ -93,7 +93,7 @@ public class MenuController {
 
     @PostMapping("/{menuId}/size")
     @ApiOperation(value = "메뉴 사이즈 생성")
-    public MenuSizeResponseDto createMenuSizeList(Authentication authentication,
+    public MenuSizeResponseDto createMenuSize(Authentication authentication,
                                                   @PathVariable("menuId") Long menuId,
                                                   @RequestBody MenuSizeCreateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
@@ -104,12 +104,22 @@ public class MenuController {
 
     @PutMapping("/{menuId}/size")
     @ApiOperation(value = "메뉴 사이즈 수정")
-    public MenuSizeResponseDto updateMenuSizeList(Authentication authentication,
+    public MenuSizeResponseDto updateMenuSize(Authentication authentication,
                                                   @PathVariable("menuId") Long menuId,
                                                   @RequestBody MenuSizeUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
         return menuSizeService.updateMenuSize(principal.getEmail(), requestDto.getMenuSizeId(), menuId, requestDto.getSizeId(), requestDto.getPrice());
+    }
+
+    @PutMapping("/{menuId}/status")
+    @ApiOperation(value = "메뉴 상태 수정")
+    public MenuResponseDto updateMenuStatus(Authentication authentication,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @RequestBody MenuStatusUpdateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴상태를 변경할 수 없습니다.");
+        return menuService.updateMenuStatus(principal.getEmail(), menuId, requestDto.getStatus());
     }
 }
