@@ -36,4 +36,10 @@ public class Extra {
         this.name = name;
         this.price = price;
     }
+
+    public void updateExtra(Menu menu, String name, int price) {
+        this.menu = menu;
+        this.name = name;
+        this.price = price;
+    }
 }
