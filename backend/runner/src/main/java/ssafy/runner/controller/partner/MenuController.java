@@ -83,12 +83,12 @@ public class MenuController {
 
     @PostMapping("/{menuId}/size")
     @ApiOperation(value = "메뉴 사이즈 리스트 생성")
-    public MenuSizeListCreateResponseDto createMenuSizeList(Authentication authentication,
+    public MenuSizeCreateResponseDto createMenuSizeList(Authentication authentication,
                                         @PathVariable("menuId") Long menuId,
-                                        @RequestBody MenuSizeListCreateRequestDto requestDto) {
+                                        @RequestBody MenuSizeCreateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
 
-        return menuSizeService.createMenuSizeList(principal.getEmail(), menuId, requestDto.getMenuSizeList());
+        return menuSizeService.createMenuSizeList(principal.getEmail(), menuId, requestDto.getSizeId(), requestDto.getPrice());
     }
 }
