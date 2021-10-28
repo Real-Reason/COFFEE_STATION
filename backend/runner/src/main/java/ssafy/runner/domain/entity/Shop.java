@@ -4,6 +4,8 @@ import lombok.*;
 import ssafy.runner.domain.enums.ShopStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +21,9 @@ public class Shop {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // mappedBy가 아님, 영속화를 partner와 맞춰준다
     @JoinColumn(name = "partner_id") // partner의 어떤 필드와 연결시켜줄지 이름을 지정한다
     private Partner partner;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Menu> menuList = new ArrayList<>();
 
     private String name;
     private String business_no;
@@ -53,5 +58,9 @@ public class Shop {
         this.close_at = close_at;
         this.intro = intro;
         this.instagram = instagram;
+    }
+
+    public void changeShopStatus(ShopStatus status) {
+        this.status = status;
     }
 }

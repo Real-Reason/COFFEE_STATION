@@ -5,13 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.ShopReqDto;
 import ssafy.runner.domain.dto.ShopResDto;
+import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
+import ssafy.runner.domain.dto.partner.MenuListResponseDto;
+import ssafy.runner.domain.entity.Menu;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopRepository;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,15 +26,18 @@ public class ShopService {
 
     @Transactional
     public Long save(ShopReqDto params, Long partnerId) {
+
         Optional<Partner> optional = partnerRepository.findById(partnerId);
         if (optional.isEmpty()) throw new RuntimeException("회원이 없습니다");
         Partner partner = optional.get();
         Shop shop = new Shop(partner, params.getName(), params.getBusiness_no(), params.getPhone_number(), params.getAddress(), params.getDetail_address(), params.getZip_code(), params.getX(), params.getY(), params.getStatus(), params.getOpen_at(), params.getClose_at(), params.getIntro(), params.getInstagram());
         shopRepository.save(shop);
+
         return shop.getId();
     }
 
     public ShopResDto getShopDetail(Long shopId) {
+
         Optional<Shop> optional = shopRepository.findById(shopId);
         if (optional.isEmpty()) throw new RuntimeException("가게가 없습니다.");
         Shop shop = optional.get();
@@ -42,11 +48,26 @@ public class ShopService {
 
     @Transactional
     public void changeShopStatus(String status, Long shopId) {
+
         Shop shop = shopRepository.getById(shopId);
         ShopStatus enumStatus = ShopStatus.valueOf(status);
-        Shop newShop = new Shop(shop.getId(), shop.getPartner(), shop.getName(), shop.getBusiness_no(), shop.getPhone_number(), shop.getAddress(), shop.getDetail_address(), shop.getZip_code(), shop.getX(), shop.getY(), enumStatus, shop.getOpen_at(), shop.getClose_at(), shop.getIntro(), shop.getInstagram());
+        shop.changeShopStatus(enumStatus);
+    }
 
-        shopRepository.save(newShop);
-        return;
+    @Transactional
+    public ShopAndMenuResponseDto getShopAndMenu(Long shopId) {
+
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(NoSuchElementException::new);
+
+        ShopAndMenuResponseDto result = ShopAndMenuResponseDto.entityToDto(shop);
+
+//        List<Menu> menuList = shop.getMenuList();
+//        ShopResDto shopResDto = ShopResDto.entityToDto(shop);
+//        MenuListResponseDto menuListDto = MenuListResponseDto.of(menuList);
+//        result.put("Shop", shopResDto);
+//        result.put("menu", menuListDto);
+
+        return result;
     }
 }
