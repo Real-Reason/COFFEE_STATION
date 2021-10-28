@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.partner.ExtraCreateRequestDto;
+import ssafy.runner.domain.dto.partner.ExtraResponseDto;
+import ssafy.runner.domain.dto.partner.ExtraUpdateRequestDto;
 import ssafy.runner.domain.entity.Extra;
 import ssafy.runner.domain.entity.Menu;
 import ssafy.runner.domain.repository.ExtraRepository;
@@ -24,5 +26,14 @@ public class ExtraService {
         extraRepository.save(extra);
 
         return extra.getId();
+    }
+
+    @Transactional
+    public ExtraResponseDto updateExtra(Long menuId, ExtraUpdateRequestDto params) {
+        Menu menu = menuRepository.getById(menuId);
+        Extra extra = extraRepository.getById(params.getId());
+        extra.updateExtra(menu, params.getName(), params.getPrice());
+
+        return ExtraResponseDto.entityToDto(extra);
     }
 }

@@ -90,4 +90,12 @@ public class MenuController {
 
         return new ResponseEntity("Extra 생성 성공", HttpStatus.OK);
     }
+
+    @PatchMapping("/{menuId}/extra")
+    @ApiOperation(value = "메뉴 extra 수정")  // extra 생성 DTO와 동일해서 재사용함
+    public ResponseEntity updateExtra(@PathVariable("menuId") Long menuId, @RequestBody ExtraUpdateRequestDto params) {
+        ExtraResponseDto extraResponseDto = extraService.updateExtra(menuId, params);
+
+        return new ResponseEntity(extraResponseDto, HttpStatus.OK);
+    }
 }
