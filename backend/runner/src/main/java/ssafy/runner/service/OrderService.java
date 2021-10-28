@@ -95,6 +95,22 @@ public class OrderService {
         return new OrderResponseDto(order);
     }
 
+    // 하루
+    public Integer calDayRevenue(String email, LocalDateTime dateTime) {
+        Partner partner = partnerRepository.findByEmailWithShop(email)
+                .orElseThrow(NoSuchElementException::new);
+        Shop shop = partner.getShop();
+        LocalDateTime start = startDateTime(dateTime);
+        LocalDateTime end = endDateTime(dateTime);
+        List<Integer> prices = orderRepository.findRevenueListByDays(shop, start, end, OrderStatus.COMPLETED);
+        int dayTotalRevenue = 0;
+        for (int price: prices) {
+            dayTotalRevenue = dayTotalRevenue + price;
+        }
+        return dayTotalRevenue;
+    }
+
+
     public LocalDateTime startDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(0,0,0));
     }
@@ -102,6 +118,4 @@ public class OrderService {
     public LocalDateTime endDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(23,59,59));
     }
-
-
 }
