@@ -1,5 +1,6 @@
 package ssafy.runner.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 @Getter
@@ -18,6 +19,11 @@ public enum OrderStatus {
 
     private final int statusCode;
     private final String statusType;
+
+    @JsonCreator
+    public static OrderStatus from(String status) {
+        return OrderStatus.valueOf(status.toUpperCase());
+    }
 
     OrderStatus(int statusCode, String statusType) {
         this.statusCode = statusCode;
