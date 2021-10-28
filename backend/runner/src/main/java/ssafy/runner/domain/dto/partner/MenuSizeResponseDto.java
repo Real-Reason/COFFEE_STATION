@@ -8,13 +8,13 @@ import ssafy.runner.domain.entity.MenuSize;
 
 @Getter @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class MenuSizeCreateResponseDto {
+public class MenuSizeResponseDto {
     private Long menuSizeId;
     private Long menuId;
     private Long sizeId;
     private int price;
 
-    public static MenuSizeCreateResponseDto of(MenuSize menuSize){
-        return new MenuSizeCreateResponseDto(menuSize.getId(), menuSize.getMenu().getId(), menuSize.getSize().getId(), menuSize.getPrice());
+    public static MenuSizeResponseDto of(MenuSize menuSize){
+        return new MenuSizeResponseDto(menuSize.getId(), menuSize.getMenu().getId(), menuSize.getSize().getId(), menuSize.getPrice());
     }
 }

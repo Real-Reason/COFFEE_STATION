@@ -3,16 +3,13 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.dto.partner.MenuSizeCreateRequestDto;
-import ssafy.runner.domain.dto.partner.MenuSizeListCreateResponseDto;
+import ssafy.runner.domain.dto.partner.MenuSizeResponseDto;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.repository.MenuRepository;
 import ssafy.runner.domain.repository.MenuSizeRepository;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.SizeRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,23 +23,29 @@ public class MenuSizeService {
     private final MenuSizeRepository menuSizeRepository;
 
     @Transactional
-    public MenuSizeListCreateResponseDto createMenuSizeList(String email, Long menuId, List<MenuSizeCreateRequestDto> menuSizeCreateRequestDtoList) {
-        Optional<Partner> optionalPartner = partnerRepository.findByEmailWithShop(email);
-        if (optionalPartner.isEmpty()) throw new RuntimeException("파트너가 없습니다.");
-        Partner partner = optionalPartner.get();
-        Shop shop = partner.getShop();
+    public MenuSizeResponseDto createMenuSize(String email, Long menuId, Long sizeId, int price) {
+        if (!partnerRepository.existsByEmail(email)) throw new RuntimeException("파트너가 없습니다.");
 
         Optional<Menu> optionalMenu = menuRepository.findById(menuId);
+        Optional<Size> optionalSize = sizeRepository.findById(sizeId);
         if (optionalMenu.isEmpty()) throw new RuntimeException("메뉴가 없습니다.");
-        Menu menu = optionalMenu.get();
-        List<MenuSize> menuSizeList = new ArrayList<>();
-        // 전체를 객체로 만들어주어야 한다
-        menuSizeCreateRequestDtoList.forEach(ms->{
-            Optional<Size> optionalSize = sizeRepository.findById(ms.getSizeId());
-            if (optionalSize.isEmpty()) throw new RuntimeException(""+ms.getSizeId()+" 사이즈가 없습니다");
-            menuSizeList.add(new MenuSize(menu,optionalSize.get(), ms.getPrice()));
-        });
-        List<MenuSize> savedMenuSizeList = menuSizeRepository.saveAll(menuSizeList);
-        return MenuSizeListCreateResponseDto.of(savedMenuSizeList);
+        if (optionalSize.isEmpty()) throw new RuntimeException("해당사이즈가 없습니다.");
+        MenuSize menuSize = menuSizeRepository.save(new MenuSize(optionalMenu.get(), optionalSize.get(), price));
+        return MenuSizeResponseDto.of(menuSize);
+    }
+
+    @Transactional
+    public MenuSizeResponseDto updateMenuSize(String email, Long menuSizeId, Long menuId, Long sizeId, int price) {
+        if (!partnerRepository.existsByEmail(email)) throw new RuntimeException("파트너가 없습니다.");
+
+        Optional<Menu> optionalMenu = menuRepository.findById(menuId);
+        Optional<Size> optionalSize = sizeRepository.findById(sizeId);
+        Optional<MenuSize> optionalMenuSize = menuSizeRepository.findById(menuSizeId);
+        if (optionalMenu.isEmpty()) throw new RuntimeException("메뉴가 없습니다.");
+        if (optionalSize.isEmpty()) throw new RuntimeException("해당사이즈가 없습니다.");
+        if (optionalMenuSize.isEmpty()) throw new RuntimeException("해당 메뉴사이즈가 없습니다.");
+        MenuSize menuSize = optionalMenuSize.get();
+        menuSize.changeMenuSize(optionalMenu.get(), optionalSize.get(), price);
+        return MenuSizeResponseDto.of(menuSize);
     }
 }

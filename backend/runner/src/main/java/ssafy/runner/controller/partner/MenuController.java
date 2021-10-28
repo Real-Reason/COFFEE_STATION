@@ -3,13 +3,10 @@ package ssafy.runner.controller.partner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.partner.*;
 import ssafy.runner.domain.enums.UserType;
-import ssafy.runner.service.ExtraService;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.service.MenuSizeService;
 import ssafy.runner.util.CustomPrincipal;
@@ -95,14 +92,24 @@ public class MenuController {
     }
 
     @PostMapping("/{menuId}/size")
-    @ApiOperation(value = "메뉴 사이즈 리스트 생성")
-    public MenuSizeListCreateResponseDto createMenuSizeList(Authentication authentication,
-                                        @PathVariable("menuId") Long menuId,
-                                        @RequestBody MenuSizeListCreateRequestDto requestDto) {
+    @ApiOperation(value = "메뉴 사이즈 생성")
+    public MenuSizeResponseDto createMenuSizeList(Authentication authentication,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @RequestBody MenuSizeCreateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
-            throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
-        return menuSizeService.createMenuSizeList(principal.getEmail(), menuId, requestDto.getMenuSizeList());
+        return menuSizeService.createMenuSize(principal.getEmail(), menuId, requestDto.getSizeId(), requestDto.getPrice());
+    }
+
+    @PutMapping("/{menuId}/size")
+    @ApiOperation(value = "메뉴 사이즈 수정")
+    public MenuSizeResponseDto updateMenuSizeList(Authentication authentication,
+                                                  @PathVariable("menuId") Long menuId,
+                                                  @RequestBody MenuSizeUpdateRequestDto requestDto) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+
+        return menuSizeService.updateMenuSize(principal.getEmail(), requestDto.getMenuSizeId(), menuId, requestDto.getSizeId(), requestDto.getPrice());
     }
 }
