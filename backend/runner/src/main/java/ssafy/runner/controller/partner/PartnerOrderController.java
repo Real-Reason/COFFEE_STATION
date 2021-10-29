@@ -95,6 +95,15 @@ public class PartnerOrderController {
         return new ResponseEntity<>(revenue, HttpStatus.OK);
     }
 
+    @GetMapping("/shop/orders/revenue/totla")
+    @ApiOperation(value = "기간별 매출 조회")
+    public ResponseEntity<Integer> weekRevenue(Authentication authentication) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        Integer revenue = orderService.calTotalRevenue(email, LocalDateTime.now());
+        return new ResponseEntity<>(revenue, HttpStatus.OK);
+    }
+
     // 점주 계정인지 확인 한후, 점주가 맞으면 email 리턴
     private String checkPrincipalReturnEmail(Authentication authentication) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();

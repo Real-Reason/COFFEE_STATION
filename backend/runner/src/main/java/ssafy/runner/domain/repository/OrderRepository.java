@@ -23,5 +23,6 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
                                         @Param("startDateTime") LocalDateTime startDateTime,
                                         @Param("endDateTime") LocalDateTime endDateTime,
                                         @Param("status") OrderStatus status);
-
+    @Query("select sum(o.totalPrice) from Orders o where o.shop = :shop and o.status = :status")
+    Integer findTotalRevenue(@Param("shop") Shop shop, @Param("status") OrderStatus status);
 }
