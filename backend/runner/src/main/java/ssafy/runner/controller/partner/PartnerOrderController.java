@@ -22,7 +22,7 @@ import java.util.List;
 @Api(tags = "Partner주문관리 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/partner")
-public class OrderController {
+public class PartnerOrderController {
 
     private final OrderService orderService;
 
@@ -97,7 +97,6 @@ public class OrderController {
 
     // 점주 계정인지 확인 한후, 점주가 맞으면 email 리턴
     private String checkPrincipalReturnEmail(Authentication authentication) {
-
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
             throw new IllegalStateException("점주만 조회가능합니다.");
