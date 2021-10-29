@@ -61,13 +61,13 @@ public class ShopService {
                 .orElseThrow(NoSuchElementException::new);
 
         ShopAndMenuResponseDto result = ShopAndMenuResponseDto.entityToDto(shop);
-
-//        List<Menu> menuList = shop.getMenuList();
-//        ShopResDto shopResDto = ShopResDto.entityToDto(shop);
-//        MenuListResponseDto menuListDto = MenuListResponseDto.of(menuList);
-//        result.put("Shop", shopResDto);
-//        result.put("menu", menuListDto);
-
         return result;
+    }
+
+    public void getMenuDetail(Long shopId, Long menuId) {
+
+        // Size, Extra 모두 조회해야 됨
+        
+
     }
 }
