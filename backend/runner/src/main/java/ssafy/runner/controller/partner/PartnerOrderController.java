@@ -22,7 +22,7 @@ import java.util.List;
 @Api(tags = "Partner주문관리 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/partner")
-public class OrderController {
+public class PartnerOrderController {
 
     private final OrderService orderService;
 
@@ -92,6 +92,15 @@ public class OrderController {
 
         String email = checkPrincipalReturnEmail(authentication);
         Integer revenue = orderService.calPeriodRevenue(email, LocalDateTime.parse(from), LocalDateTime.parse(to));
+        return new ResponseEntity<>(revenue, HttpStatus.OK);
+    }
+
+    @GetMapping("/shop/orders/revenue/totla")
+    @ApiOperation(value = "기간별 매출 조회")
+    public ResponseEntity<Integer> weekRevenue(Authentication authentication) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        Integer revenue = orderService.calTotalRevenue(email, LocalDateTime.now());
         return new ResponseEntity<>(revenue, HttpStatus.OK);
     }
 

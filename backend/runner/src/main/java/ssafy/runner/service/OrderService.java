@@ -110,6 +110,13 @@ public class OrderService {
         return dayTotalRevenue;
     }
 
+    public Integer calTotalRevenue(String email, LocalDateTime now) {
+        Partner partner = partnerRepository.findByEmailWithShop(email)
+                .orElseThrow(NoSuchElementException::new);
+        Shop shop = partner.getShop();
+        return orderRepository.findTotalRevenue(shop, OrderStatus.COMPLETED);
+    }
+
     public LocalDateTime startDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(0,0,0));
     }
