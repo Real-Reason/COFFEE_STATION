@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
-import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
 
 import java.util.Date;
