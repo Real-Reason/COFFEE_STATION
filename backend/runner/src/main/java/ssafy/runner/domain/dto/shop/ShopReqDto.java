@@ -1,4 +1,4 @@
-package ssafy.runner.domain.dto;
+package ssafy.runner.domain.dto.shop;
 
 import lombok.*;
 import ssafy.runner.domain.entity.Shop;

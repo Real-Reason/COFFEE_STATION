@@ -1,4 +1,4 @@
-package ssafy.runner.domain.dto.partner;
+package ssafy.runner.domain.dto.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

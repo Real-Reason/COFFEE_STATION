@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ssafy.runner.domain.dto.partner.*;
+import ssafy.runner.domain.dto.ResultResponseDto;
+import ssafy.runner.domain.dto.menu.*;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.service.MenuSizeService;
@@ -83,7 +84,7 @@ public class MenuController {
     @DeleteMapping("/{menuId}")
     @ApiOperation(value = "메뉴 삭제")
     public ResultResponseDto deleteMenu(Authentication authentication,
-                                      @PathVariable("menuId") Long menuId) {
+                                        @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
             throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
@@ -94,8 +95,8 @@ public class MenuController {
     @PostMapping("/{menuId}/size")
     @ApiOperation(value = "메뉴 사이즈 생성")
     public MenuSizeResponseDto createMenuSize(Authentication authentication,
-                                                  @PathVariable("menuId") Long menuId,
-                                                  @RequestBody MenuSizeCreateRequestDto requestDto) {
+                                              @PathVariable("menuId") Long menuId,
+                                              @RequestBody MenuSizeCreateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
@@ -119,7 +120,7 @@ public class MenuController {
                                                   @PathVariable("menuId") Long menuId,
                                                   @RequestBody MenuStatusUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴상태를 변경할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴상태를 변경할 수 없습니다.");
         return menuService.updateMenuStatus(principal.getEmail(), menuId, requestDto.getStatus());
     }
 }

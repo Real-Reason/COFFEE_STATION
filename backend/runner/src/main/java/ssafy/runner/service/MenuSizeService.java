@@ -3,7 +3,7 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.dto.partner.MenuSizeResponseDto;
+import ssafy.runner.domain.dto.menu.MenuSizeResponseDto;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.repository.MenuRepository;
 import ssafy.runner.domain.repository.MenuSizeRepository;

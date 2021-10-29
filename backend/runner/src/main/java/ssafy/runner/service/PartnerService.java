@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
-import ssafy.runner.domain.dto.ShopReqDto;
-import ssafy.runner.domain.entity.OrderMenu;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.repository.PartnerRepository;
 
