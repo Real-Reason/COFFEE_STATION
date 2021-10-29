@@ -4,6 +4,8 @@ import lombok.*;
 import ssafy.runner.domain.enums.MenuStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +24,12 @@ public class Menu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @OneToMany(mappedBy = "menu")
+    private List<Extra> extraList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "menu")
+    private List<MenuSize> sizeList = new ArrayList<>();
 
     private String name;
     private String imgUrl; // 디폴트 이미지 넣어주는걸로 변경하기

@@ -3,6 +3,7 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.entity.Partner;
@@ -11,7 +12,7 @@ import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopRepository;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +30,7 @@ public class ShopService {
         Partner partner = optional.get();
         Shop shop = new Shop(partner, params.getName(), params.getBusiness_no(), params.getPhone_number(), params.getAddress(), params.getDetail_address(), params.getZip_code(), params.getX(), params.getY(), params.getStatus(), params.getOpen_at(), params.getClose_at(), params.getIntro(), params.getInstagram());
         shopRepository.save(shop);
+
         return shop.getId();
     }
 
@@ -47,9 +49,23 @@ public class ShopService {
 
         Shop shop = shopRepository.getById(shopId);
         ShopStatus enumStatus = ShopStatus.valueOf(status);
-        Shop newShop = new Shop(shop.getId(), shop.getPartner(), shop.getName(), shop.getBusiness_no(), shop.getPhone_number(), shop.getAddress(), shop.getDetail_address(), shop.getZip_code(), shop.getX(), shop.getY(), enumStatus, shop.getOpen_at(), shop.getClose_at(), shop.getIntro(), shop.getInstagram());
+        shop.changeShopStatus(enumStatus);
+    }
 
-        shopRepository.save(newShop);
-        return;
+    @Transactional
+    public ShopAndMenuResponseDto getShopAndMenu(Long shopId) {
+
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(NoSuchElementException::new);
+
+        ShopAndMenuResponseDto result = ShopAndMenuResponseDto.entityToDto(shop);
+        return result;
+    }
+
+    public void getMenuDetail(Long shopId, Long menuId) {
+
+        // Size, Extra 모두 조회해야 됨
+        
+
     }
 }
