@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
-import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
-import ssafy.runner.service.CustomerTokenService;
 import ssafy.runner.service.PartnerService;
 
 import java.util.Map;
