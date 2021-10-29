@@ -1,15 +1,13 @@
 package ssafy.runner.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MenuSize {
 
     @Id
@@ -28,13 +26,13 @@ public class MenuSize {
     private int price;
 
 
-    public MenuSize(Menu menu, Size size) {
+    public MenuSize(Menu menu, Size size, int price) {
         this.menu = menu;
         this.size = size;
-        this.price = 0;
+        this.price = price;
     }
 
-    public MenuSize(Menu menu, Size size, int price) {
+    public void changeMenuSize(Menu menu, Size size, int price) {
         this.menu = menu;
         this.size = size;
         this.price = price;

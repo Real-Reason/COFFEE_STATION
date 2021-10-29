@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
+import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.enums.SizeType;
-import ssafy.runner.domain.enums.SnsType;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -21,9 +22,10 @@ public class InitDB {
     public void init() {
         for (int i = 0; i < 10; i++) {
             Shop shop = initService.initPartnerAndShop(i);
-            initService.initCustomer(i);
+            Customer customer = initService.initCustomer(i);
             Category category = initService.initCategory(i);
             initService.initMenu(i, shop, category);
+            initService.initOrder(shop, initService.initCustomer(i), OrderStatus.PAID, 30000);
         }
         initService.initSize();
     }
@@ -50,9 +52,10 @@ public class InitDB {
             return shop;
         }
 
-        public void initCustomer(int i) {
+        public Customer initCustomer(int i) {
             Customer customer = new Customer("wns312"+i+"@naver.com", "password"+i, "닉네임"+i);
             em.persist(customer);
+            return customer;
         }
 
 
@@ -72,6 +75,17 @@ public class InitDB {
                 .price((i+1)*1000)
                 .build();
             em.persist(menu);
+        }
+
+        public void initOrder(Shop shop, Customer customer, OrderStatus status, int totalPrice) {
+            Orders order = Orders.builder()
+                    .date(LocalDateTime.now())
+                    .shop(shop)
+                    .customer(customer)
+                    .status(status)
+                    .totalPrice(totalPrice)
+                    .build();
+            em.persist(order);
         }
 
         public void initSize() {
