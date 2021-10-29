@@ -1,6 +1,7 @@
-package ssafy.runner.domain.dto.partner;
+package ssafy.runner.domain.dto.extra;
 
 import lombok.*;
+import ssafy.runner.domain.dto.menu.MenuResponseDto;
 import ssafy.runner.domain.entity.Extra;
 
 @Getter @ToString

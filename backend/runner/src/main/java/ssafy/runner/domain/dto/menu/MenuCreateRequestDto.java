@@ -1,4 +1,5 @@
-package ssafy.runner.domain.dto.partner;
+package ssafy.runner.domain.dto.menu;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +8,10 @@ import lombok.ToString;
 
 @Getter @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class MenuSizeUpdateRequestDto {
-    private Long menuSizeId;
-    private Long sizeId;
+public class MenuCreateRequestDto {
+    private Long categoryId;
+    private String name;
+    private String imgUrl;
     private int price;
+    private boolean signature;
 }

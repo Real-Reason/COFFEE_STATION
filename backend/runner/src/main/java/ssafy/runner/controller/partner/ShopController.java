@@ -6,10 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssafy.runner.domain.dto.ShopReqDto;
-import ssafy.runner.domain.dto.ShopResDto;
-import ssafy.runner.domain.dto.partner.CategoryResponseDto;
-import ssafy.runner.domain.entity.Category;
+import ssafy.runner.domain.dto.shop.ShopReqDto;
+import ssafy.runner.domain.dto.shop.ShopResDto;
+import ssafy.runner.domain.dto.shop.CategoryResponseDto;
 import ssafy.runner.service.CategoryService;
 import ssafy.runner.service.ShopService;
 

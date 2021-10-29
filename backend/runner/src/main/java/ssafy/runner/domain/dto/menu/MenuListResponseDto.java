@@ -1,4 +1,4 @@
-package ssafy.runner.domain.dto.partner;
+package ssafy.runner.domain.dto.menu;
 
 
 import lombok.AllArgsConstructor;

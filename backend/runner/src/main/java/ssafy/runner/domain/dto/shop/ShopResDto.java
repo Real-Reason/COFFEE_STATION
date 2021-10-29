@@ -1,8 +1,7 @@
-package ssafy.runner.domain.dto;
+package ssafy.runner.domain.dto.shop;
 
 import lombok.*;
 import ssafy.runner.domain.dto.partner.PartnerDto;
-import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 

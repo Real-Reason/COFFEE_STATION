@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssafy.runner.domain.dto.partner.ExtraCreateRequestDto;
-import ssafy.runner.domain.dto.partner.ExtraResponseDto;
-import ssafy.runner.domain.dto.partner.ExtraUpdateRequestDto;
+import ssafy.runner.domain.dto.extra.ExtraCreateRequestDto;
+import ssafy.runner.domain.dto.extra.ExtraResponseDto;
+import ssafy.runner.domain.dto.extra.ExtraUpdateRequestDto;
 import ssafy.runner.service.ExtraService;
 
 @RestController
