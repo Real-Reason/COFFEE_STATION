@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class OrderService {
+public class PartnerOrderService {
 
     private final OrderRepository orderRepository;
     private final PartnerRepository partnerRepository;
@@ -114,11 +114,15 @@ public class OrderService {
         return totalPrices == null ? 0 : totalPrices;
     }
 
-    public LocalDateTime startDateTime(LocalDateTime dateTime) {
+
+
+
+
+    private LocalDateTime startDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(0,0,0));
     }
 
-    public LocalDateTime endDateTime(LocalDateTime dateTime) {
+    private LocalDateTime endDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(23,59,59));
     }
 }
