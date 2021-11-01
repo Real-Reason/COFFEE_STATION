@@ -32,7 +32,7 @@ public class CustomerShopController {
 
     @GetMapping("/{shopId}/menu/{menuId}")
     @ApiOperation(value = "단일 메뉴 상세 조회")   // @PathVariable을 사용하려고 했으나 @Param을 사용하라는 오류 발생
-    public MenuNSizeNExtraResponseDto getMenuDetail(@Param("shopId") Long shopId, @Param("menuId") Long menuId) {
+    public MenuNSizeNExtraResponseDto getMenuDetail(@PathVariable("shopId") Long shopId, @PathVariable("menuId") Long menuId) {
 
         MenuNSizeNExtraResponseDto menuDetail = menuService.getMenuDetail(shopId, menuId);
         return menuDetail;

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
+import ssafy.runner.domain.enums.MenuStatus;
 import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.enums.SizeType;
@@ -73,6 +74,7 @@ public class InitDB {
                 .imgUrl("메뉴이미지"+i)
                 .isSignature(i%2 == 1 ? true : false)
                 .price((i+1)*1000)
+                .menuStatus(MenuStatus.NOT_SALE)
                 .build();
             em.persist(menu);
         }

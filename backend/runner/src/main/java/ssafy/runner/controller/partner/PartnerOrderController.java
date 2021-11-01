@@ -95,8 +95,8 @@ public class PartnerOrderController {
         return new ResponseEntity<>(revenue, HttpStatus.OK);
     }
 
-    @GetMapping("/shop/orders/revenue/totla")
-    @ApiOperation(value = "기간별 매출 조회")
+    @GetMapping("/shop/orders/revenue/total")
+    @ApiOperation(value = "전체 매출 조회")
     public ResponseEntity<Integer> weekRevenue(Authentication authentication) {
 
         String email = checkPrincipalReturnEmail(authentication);

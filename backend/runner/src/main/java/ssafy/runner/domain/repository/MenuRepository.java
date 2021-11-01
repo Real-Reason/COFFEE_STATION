@@ -19,5 +19,5 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     // 특정 샵의 특정 메뉴 들고오기
     @Query("select m from Menu m where m.shop.id = :shopId and m.id = :menuId")
-    Menu findByShopIdAndMenuId(Long shopId, Long menuId);
+    Menu findByShopIdAndMenuId(@Param("shopId") Long shopId, @Param("menuId") Long menuId);
 }
