@@ -22,12 +22,13 @@ public class CustomerShopService {
     private final ShopRepository shopRepository;
     private final CustomerRepository customerRepository;
 
+    @Transactional
     public void likeShop(Long shopId, String email) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(NoSuchElementException::new);
-        Customer customer = customerRepository.findByEmailEquals(email).orElseThrow(NoSuchElementException::new);
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        CustomerShop customerShop = new CustomerShop(shop, customer);
 
-        customerShopRepository.save(new CustomerShop(shop, customer));
-
+        customerShopRepository.save(customerShop);
     }
 }
