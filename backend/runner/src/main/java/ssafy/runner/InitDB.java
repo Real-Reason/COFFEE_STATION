@@ -21,12 +21,13 @@ public class InitDB {
     // 패키지 로딩 시점에 자동실행 (스프링 빈 등록될 때 자동 실행?)
     @PostConstruct
     public void init() {
-        for (int i = 0; i < 10; i++) {
+        Customer customerZero = initService.initCustomer(0);
+        for (int i = 1; i <= 10; i++) {
             Shop shop = initService.initPartnerAndShop(i);
             Customer customer = initService.initCustomer(i);
             Category category = initService.initCategory(i);
             initService.initMenu(i, shop, category);
-            initService.initOrder(shop, initService.initCustomer(i), OrderStatus.PAID, 30000);
+            initService.initOrder(shop, customerZero, OrderStatus.PAID, 30000);
         }
         initService.initSize();
     }
