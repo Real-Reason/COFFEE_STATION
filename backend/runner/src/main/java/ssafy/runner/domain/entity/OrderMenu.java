@@ -42,7 +42,6 @@ public class OrderMenu {
     @OneToMany(mappedBy = "orderMenu", cascade = CascadeType.ALL)
     private List<OrderMenuExtra> orderMenuExtras = new ArrayList<>();
 
-
     @ColumnDefault("1")
     @Positive
     private int quantity;

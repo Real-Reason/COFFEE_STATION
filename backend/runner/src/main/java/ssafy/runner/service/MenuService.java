@@ -94,8 +94,7 @@ public class MenuService {
     @Transactional
     public MenuNSizeNExtraResponseDto getMenuDetail(Long shopId, Long menuId) {
 
-        Menu menu = menuRepository.findByShopIdAndMenuId(shopId, menuId);
-        MenuNSizeNExtraResponseDto menuNSizeNExtraResponseDto = MenuNSizeNExtraResponseDto.entityToDto(menu);
-        return menuNSizeNExtraResponseDto;
+        Menu menu = menuRepository.findByShopIdAndMenuId(shopId, menuId).orElseThrow(NoSuchElementException::new);
+        return MenuNSizeNExtraResponseDto.entityToDto(menu);
     }
 }

@@ -95,26 +95,23 @@ public class PartnerOrderService {
         return new OrderResponseDto(order);
     }
 
-    public Integer calPeriodRevenue(String email, LocalDateTime from, LocalDateTime to) {
+    public int calPeriodRevenue(String email, LocalDateTime from, LocalDateTime to) {
 
         Partner partner = partnerRepository.findByEmailWithShop(email)
                 .orElseThrow(NoSuchElementException::new);
         Shop shop = partner.getShop();
         LocalDateTime start = startDateTime(from);
         LocalDateTime end = endDateTime(to);
-        List<Integer> prices = orderRepository.findRevenueListByDays(shop, start, end, OrderStatus.COMPLETED);
-        int dayTotalRevenue = 0;
-        for (int price: prices) {
-            dayTotalRevenue = dayTotalRevenue + price;
-        }
-        return dayTotalRevenue;
+        Integer totalPrices = orderRepository.findRevenueListByDays(shop, start, end, OrderStatus.COMPLETED);
+        return totalPrices == null ? 0 : totalPrices;
     }
 
-    public Integer calTotalRevenue(String email, LocalDateTime now) {
+    public int calTotalRevenue(String email, LocalDateTime now) {
         Partner partner = partnerRepository.findByEmailWithShop(email)
                 .orElseThrow(NoSuchElementException::new);
         Shop shop = partner.getShop();
-        return orderRepository.findTotalRevenue(shop, OrderStatus.COMPLETED);
+        Integer totalPrices =  orderRepository.findTotalRevenue(shop, OrderStatus.COMPLETED);
+        return totalPrices == null ? 0 : totalPrices;
     }
 
 
@@ -128,5 +125,4 @@ public class PartnerOrderService {
     private LocalDateTime endDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(23,59,59));
     }
-
 }
