@@ -26,18 +26,6 @@ public class PartnerOrderService {
     private final OrderRepository orderRepository;
     private final PartnerRepository partnerRepository;
 
-    public List<OrderResponseDto> findAll(String email) {
-
-        Partner partner = partnerRepository.findByEmailWithShop(email)
-            .orElseThrow(NoSuchElementException::new);
-        List<Orders> orderList = orderRepository.findAll();
-        List<OrderResponseDto> orderDtoList = new ArrayList<>();
-        for (Orders order : orderList) {
-            orderDtoList.add(new OrderResponseDto(order));
-        }
-        return orderDtoList;
-    }
-
     // 해당 샵의 전체 주문 내역 조회
     public List<OrderResponseDto> findByShop(String email) {
 
