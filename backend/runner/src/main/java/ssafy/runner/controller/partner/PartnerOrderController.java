@@ -26,15 +26,6 @@ public class PartnerOrderController {
 
     private final PartnerOrderService partnerOrderService;
 
-    @GetMapping("/orders")
-    @ApiOperation(value = "Test용 주문내역 전체조회")
-    public ResponseEntity<List<OrderResponseDto>> orderList(Authentication authentication) {
-
-        String email = checkPrincipalReturnEmail(authentication);
-        List<OrderResponseDto> orderList = partnerOrderService.findAll(email);
-        return new ResponseEntity<>(orderList, HttpStatus.OK);
-    }
-
     @GetMapping("/shop/orders")
     @ApiOperation(value = "전체 주문내역 조회")
     public ResponseEntity<List<OrderResponseDto>> all(Authentication authentication) {
