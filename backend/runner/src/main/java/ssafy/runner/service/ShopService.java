@@ -62,10 +62,4 @@ public class ShopService {
         return result;
     }
 
-    public void getMenuDetail(Long shopId, Long menuId) {
-
-        // Size, Extra 모두 조회해야 됨
-        
-
-    }
 }

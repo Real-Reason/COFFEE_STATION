@@ -29,7 +29,7 @@ public class Menu {
     private List<Extra> extraList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu")
-    private List<MenuSize> sizeList = new ArrayList<>();
+    private List<MenuSize> menuSizeList = new ArrayList<>();
 
     private String name;
     private String imgUrl; // 디폴트 이미지 넣어주는걸로 변경하기
