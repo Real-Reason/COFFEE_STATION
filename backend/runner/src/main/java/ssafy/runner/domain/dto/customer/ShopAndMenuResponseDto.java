@@ -2,7 +2,6 @@ package ssafy.runner.domain.dto.customer;
 
 import lombok.*;
 import ssafy.runner.domain.dto.menu.MenuListResponseDto;
-import ssafy.runner.domain.dto.partner.PartnerDto;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 
