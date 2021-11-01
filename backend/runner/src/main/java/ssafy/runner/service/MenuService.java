@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.menu.MenuListResponseDto;
+import ssafy.runner.domain.dto.menu.MenuNSizeNExtraResponseDto;
 import ssafy.runner.domain.dto.menu.MenuResponseDto;
 import ssafy.runner.domain.dto.ResultResponseDto;
 import ssafy.runner.domain.entity.Category;
@@ -90,6 +91,11 @@ public class MenuService {
         return MenuResponseDto.of(menu);
     }
 
+    @Transactional
+    public MenuNSizeNExtraResponseDto getMenuDetail(Long shopId, Long menuId) {
 
-
+        Menu menu = menuRepository.findByShopIdAndMenuId(shopId, menuId);
+        MenuNSizeNExtraResponseDto menuNSizeNExtraResponseDto = MenuNSizeNExtraResponseDto.entityToDto(menu);
+        return menuNSizeNExtraResponseDto;
+    }
 }
