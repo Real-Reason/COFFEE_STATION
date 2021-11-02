@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"orderMenu", "extra"})
 public class OrderMenuExtra {
 
     @Id
