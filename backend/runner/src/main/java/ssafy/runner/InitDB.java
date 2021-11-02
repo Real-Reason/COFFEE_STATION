@@ -93,6 +93,7 @@ public class InitDB {
                     .getResultList();
                 System.out.println(orderMenuList.size());
                 for (int j = 0; j < 10; j++) {
+                    if (j % 2 == 1) continue;
                     OrderMenuExtra orderMenuExtra = new OrderMenuExtra(orderMenuList.get(j), extraList.get(j));
                     em.persist(orderMenuExtra);
                 }
