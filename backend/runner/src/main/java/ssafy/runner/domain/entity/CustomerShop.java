@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -16,13 +17,18 @@ public class CustomerShop {
     @Column(name="customer_shop_id")
     private Long id;
 
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="shop_id", nullable = false)
     private Shop shop;
 
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
+
+    public CustomerShop(Shop shop, Customer customer) {
+        this.shop = shop;
+        this.customer = customer;
+    }
 }
