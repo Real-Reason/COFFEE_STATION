@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### firebase key
-firebase-notification-key.json
+!**/firebase-notification-key.json
