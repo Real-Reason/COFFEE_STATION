@@ -1,9 +1,6 @@
 package ssafy.runner.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"customer", "menu"})
 public class CustomerMenu {
 
     @Id

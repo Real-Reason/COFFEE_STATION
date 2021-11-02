@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
@@ -35,5 +36,13 @@ public class CustomerOrderController {
     public List<CustomerOrderResponseDto> findOrders(Authentication authentication) {
         String email = checkPrincipalReturnEmail(authentication);
         return customerOrderService.findCustomerOrders(email);
+    }
+
+    @GetMapping("/orders/{orderId}")
+    @ApiOperation(value = "주문 상세 내역 조회")
+    public String findOneOrder(Authentication authentication, @PathVariable("orderId") Long orderId) {
+        String email = checkPrincipalReturnEmail(authentication);
+        customerOrderService.findOneOrder(email, orderId);
+        return "wow";
     }
 }

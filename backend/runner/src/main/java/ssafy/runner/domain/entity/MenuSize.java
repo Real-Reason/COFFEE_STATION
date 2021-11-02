@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"menu", "size"})
 public class MenuSize {
 
     @Id

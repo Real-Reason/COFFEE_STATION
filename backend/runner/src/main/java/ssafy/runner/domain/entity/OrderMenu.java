@@ -17,6 +17,7 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"order", "menu", "menuSize", "orderMenuExtras"})
 public class OrderMenu {
 
     @Id

@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"partner", "menuList"})
 public class Shop {
 
     @Id

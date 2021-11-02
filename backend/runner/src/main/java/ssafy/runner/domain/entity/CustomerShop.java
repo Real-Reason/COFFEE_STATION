@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"shop", "customer"})
 public class CustomerShop {
 
     @Id

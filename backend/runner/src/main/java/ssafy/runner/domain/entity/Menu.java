@@ -10,6 +10,7 @@ import java.util.List;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"shop", "category", "extraList", "menuSizeList"})
 public class Menu {
 
     @Id

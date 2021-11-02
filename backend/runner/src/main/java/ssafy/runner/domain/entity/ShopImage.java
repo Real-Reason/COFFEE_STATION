@@ -1,11 +1,13 @@
 package ssafy.runner.domain.entity;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@ToString(exclude = {"shop"})
 public class ShopImage {
 
     @Id
