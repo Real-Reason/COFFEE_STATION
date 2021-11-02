@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"shop", "customer"})
 public class Orders {
 
     @Id
@@ -49,7 +50,7 @@ public class Orders {
     private String request;
 
     @Builder
-    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice, LocalDateTime date) {
+    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice, LocalDateTime date, String request) {
 
         Assert.notNull(shop, "샵 정보는 필수 입니다.");
         Assert.notNull(customer, "고객 정보는 필수입니다.");
@@ -59,6 +60,7 @@ public class Orders {
         this.customer = customer;
         this.status = status;
         this.totalPrice = totalPrice;
+        this.request = request;
     }
 
     public void modifyOrderStatus(OrderStatus status) {
