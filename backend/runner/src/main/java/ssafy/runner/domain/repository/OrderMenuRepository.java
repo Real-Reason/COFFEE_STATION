@@ -10,7 +10,7 @@ import ssafy.runner.domain.enums.OrderStatus;
 
 public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
 
-    @Query("select sum(om.order.totalPrice) from OrderMenu om " +
+    @Query("select sum(om.price * om.quantity) from OrderMenu om " +
             "where om.menu = :menu and om.order.status = :status")
     Integer findRevenueByMenu(@Param("menu") Menu menu, @Param("status") OrderStatus status);
 }
