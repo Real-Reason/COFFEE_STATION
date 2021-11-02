@@ -38,3 +38,6 @@ out/
 
 ### firebase key
 **/firebase-notification-key.json
+
+### API-KEY
+**/resources/application-API-KEY.properties
