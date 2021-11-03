@@ -37,3 +37,13 @@ decorator:
 
 jwt:
   secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+  # Security OAuth
+security:
+  oauth2.client:
+    registration:
+      google:
+        clientId: '{구글 client-id}'
+        clientSecret: '{구글 client-secret}'
+        scope:
+          - email
+          - profile

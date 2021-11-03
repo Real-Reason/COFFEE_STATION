@@ -27,7 +27,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws IOException, ServletException {
         log.warn("필터 실행");
         String token = request.getHeader("Authorization"); // 요청의 헤더에 토큰이 들어있다.
         // 헤더 중 Authorization 시작하는 키가 없거나, Bearer 시작하는 값이 아니라면
@@ -39,7 +41,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 // principal : id, credentials : 비밀번호 : 의미없지않나..왜쓰는거지
                 // 아래가 핵심 : 없으면 인증이 되지 않는다.
                 // owner와 role을 어떤식으로 컨트롤러에 넘겨줄지 고민이 필요함
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(new CustomPrincipal(owner, role), null, null);
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        new CustomPrincipal(owner, role), null, null);
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } catch (Exception e) {
                 System.out.println("에러 발생! : "+e);
