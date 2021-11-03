@@ -80,15 +80,22 @@ public class TestController {
         System.out.println("response = " + response);
     }
 
+
+    @GetMapping("/kakaoPay")
+    public String kakaoPayGet() {
+        return "kakaoPaySuccess";
+    }
+
     @PostMapping("/kakaopay")
     @ApiOperation(value = "카카오페이 테스트")
     public String kakaoPay(@RequestBody KakaoPayRequestDto params) throws Exception {
 
-        return kakaoPayService.pay(params);
+        return "redirect:" + kakaoPayService.pay(params);
     }
 
     @GetMapping("/kakaoPaySuccess")
     public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
         System.out.println("pg_token = " + pg_token);
+        kakaoPayService.kakaoPayInfo(pg_token);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ssafy.runner.domain.dto.customer.KakaoPayApprovalDto;
 import ssafy.runner.domain.dto.customer.KakaoPayReadyDto;
 import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
 
@@ -24,6 +25,7 @@ public class KakaoPayService {
 
     private static final String host = "https://kapi.kakao.com";
     private KakaoPayReadyDto kakaoPayReadyDto;
+    private KakaoPayApprovalDto kakaoPayApprovalDto;
 
     public String pay(KakaoPayRequestDto params) throws Exception{
 
@@ -62,4 +64,38 @@ public class KakaoPayService {
         return "/pay";
 
     }
+
+//    KakaoPayApprovalDto
+    public KakaoPayApprovalDto kakaoPayInfo(String pg_token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 서버로 요청할 header
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "KakaoAK " + "3e407999a747d65a110a774338c57677");  // key 숨기기
+        headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+
+        // 서버로 요청할 body
+        MultiValueMap<String, String> kakaoParams = new LinkedMultiValueMap<>();
+        kakaoParams.add("cid", "TC0ONETIME");
+        kakaoParams.add("tid", kakaoPayReadyDto.getTid());
+        kakaoParams.add("partner_order_id", "1001");
+        kakaoParams.add("partner_user_id", "gorany");
+        kakaoParams.add("pg_token", pg_token);
+        kakaoParams.add("total_amount", "2100");
+
+        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(kakaoParams, headers);
+
+        try {
+            kakaoPayApprovalDto = restTemplate.postForObject(new URI(host + "/v1/payment/approve"), body, KakaoPayApprovalDto.class);
+
+            System.out.println("kakaoPayApprovalDto = " + kakaoPayApprovalDto);
+            return kakaoPayApprovalDto;
+        } catch (RestClientException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
