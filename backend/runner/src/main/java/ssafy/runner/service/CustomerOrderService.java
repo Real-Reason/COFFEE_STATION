@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
+import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.repository.CustomerRepository;
 import ssafy.runner.domain.repository.OrderMenuRepository;
@@ -33,7 +34,7 @@ public class CustomerOrderService {
     }
 
     // 주문 상세 내역 조회하기
-    public void findOneOrder(String email, Long orderId) {
+    public OrderDetailResDto findOneOrder(String email, Long orderId) {
         // orderId로 오더메뉴 페치해서 가져오기
         List<OrderMenu> orderMenuList = orderMenuRepository.findOneFetched(orderId);
 
@@ -66,5 +67,6 @@ public class CustomerOrderService {
         });
         System.out.println("===============조회종료====================");
         // 분해조립해서 알맞은 dto로 만들어주어야 함
+        return OrderDetailResDto.of(orderMenuList);
     }
 }
