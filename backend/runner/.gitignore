@@ -38,3 +38,6 @@ out/
 
 ### firebase key
 **/firebase-notification-key.json
+
+# Oauth properties
+**/application-oauth.yml
