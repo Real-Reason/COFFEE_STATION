@@ -9,6 +9,8 @@ import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.repository.CustomerRepository;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -19,6 +21,10 @@ public class CustomerService {
 
     @Transactional
     public CustomerJoinResponseDto join(String email, String password, String nickname) {
+        customerRepository.findByEmail(email)
+                .ifPresent(c -> {
+                    throw new IllegalStateException("이미 가입된 회원 입니다.");
+                });
         Customer customer = customerRepository.save(new Customer(email, password, nickname));
         return CustomerJoinResponseDto.of(customer);
     }

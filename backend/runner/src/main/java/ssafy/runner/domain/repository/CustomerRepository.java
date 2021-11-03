@@ -10,10 +10,5 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     boolean existsByEmailAndPassword(String email, String password);
-
     Optional<Customer> findByEmail(String email);
-
-//    @Query("select c from Customer c" +
-//            " where c.email = :email")
-//    Optional<Customer> findByEmail(@Param("email") String email);
 }

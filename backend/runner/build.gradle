@@ -24,7 +24,6 @@ dependencies {
 	// WebFlux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-
 	// H2 Database
 	runtimeOnly 'com.h2database:h2'
 	// MySQL Database
@@ -47,7 +46,7 @@ dependencies {
 	// java-jwt : https://github.com/auth0/java-jwt
 	implementation 'com.auth0:java-jwt:3.18.2'
 	// OAuth
-//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	// Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -62,11 +61,13 @@ dependencies {
 
 	// Dev Tools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// log
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	// p6spy : https://github.com/gavlyukovskiy/spring-boot-data-source-decorator
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// JsonObject 사용
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
