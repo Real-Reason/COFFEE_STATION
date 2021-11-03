@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
+import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerOrderService;
 import ssafy.runner.util.CustomPrincipal;
@@ -40,9 +41,8 @@ public class CustomerOrderController {
 
     @GetMapping("/orders/{orderId}")
     @ApiOperation(value = "주문 상세 내역 조회")
-    public String findOneOrder(Authentication authentication, @PathVariable("orderId") Long orderId) {
+    public OrderDetailResDto findOneOrder(Authentication authentication, @PathVariable("orderId") Long orderId) {
         String email = checkPrincipalReturnEmail(authentication);
-        customerOrderService.findOneOrder(email, orderId);
-        return "wow";
+        return customerOrderService.findOneOrder(email, orderId);
     }
 }
