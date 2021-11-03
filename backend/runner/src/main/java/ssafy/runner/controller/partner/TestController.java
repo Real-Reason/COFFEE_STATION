@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.TestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
@@ -80,9 +81,14 @@ public class TestController {
     }
 
     @PostMapping("/kakaopay")
-    @ApiOperation(value = "카카오페이 테스으")
-    public void kakaoPay(@RequestBody KakaoPayRequestDto params) throws Exception {
+    @ApiOperation(value = "카카오페이 테스트")
+    public String kakaoPay(@RequestBody KakaoPayRequestDto params) throws Exception {
 
-        kakaoPayService.pay(params);
+        return kakaoPayService.pay(params);
+    }
+
+    @GetMapping("/kakaoPaySuccess")
+    public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
+        System.out.println("pg_token = " + pg_token);
     }
 }
