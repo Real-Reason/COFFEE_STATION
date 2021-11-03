@@ -41,3 +41,6 @@ out/
 
 # Oauth properties
 **/application-oauth.yml
+
+### API-KEY
+**/resources/application-API-KEY.properties
