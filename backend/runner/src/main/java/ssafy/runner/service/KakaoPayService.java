@@ -11,9 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ssafy.runner.domain.dto.customer.KakaoPayApprovalDto;
-import ssafy.runner.domain.dto.customer.KakaoPayReadyDto;
-import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
+import ssafy.runner.domain.dto.customer.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +25,7 @@ public class KakaoPayService {
     private KakaoPayReadyDto kakaoPayReadyDto;
     private KakaoPayApprovalDto kakaoPayApprovalDto;
 
-    public String pay(KakaoPayRequestDto params) throws Exception{
+    public KakaoPayReadyResponseDto pay(KakaoPayRequestDto params) throws Exception{
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -55,18 +53,18 @@ public class KakaoPayService {
             kakaoPayReadyDto = restTemplate.postForObject(new URI(host + "/v1/payment/ready"), body, KakaoPayReadyDto.class);
 
             System.out.println(kakaoPayReadyDto.getNext_redirect_pc_url());
-            return kakaoPayReadyDto.getNext_redirect_pc_url();
+            return KakaoPayReadyResponseDto.entityToDto(kakaoPayReadyDto.getTid(), kakaoPayReadyDto.getNext_redirect_pc_url());
 
         } catch (RestClientException | URISyntaxException e) {
             e.printStackTrace();
         }
 
-        return "/pay";
+        return null;
 
     }
 
 //    KakaoPayApprovalDto
-    public KakaoPayApprovalDto kakaoPayInfo(String pg_token) {
+    public KakaoPayApprovalDto kakaoPayInfo(String pg_token, KakaoPayApprovalRequestDto params) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -77,12 +75,11 @@ public class KakaoPayService {
 
         // 서버로 요청할 body
         MultiValueMap<String, String> kakaoParams = new LinkedMultiValueMap<>();
-        kakaoParams.add("cid", "TC0ONETIME");
-        kakaoParams.add("tid", kakaoPayReadyDto.getTid());
-        kakaoParams.add("partner_order_id", "1001");
-        kakaoParams.add("partner_user_id", "gorany");
+        kakaoParams.add("cid", params.getCid());
+        kakaoParams.add("tid", params.getTid());
+        kakaoParams.add("partner_order_id", params.getPartner_order_id());
+        kakaoParams.add("partner_user_id", params.getPartner_user_id());
         kakaoParams.add("pg_token", pg_token);
-        kakaoParams.add("total_amount", "2100");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(kakaoParams, headers);
 

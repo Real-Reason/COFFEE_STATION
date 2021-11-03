@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.TestDto;
+import ssafy.runner.domain.dto.customer.KakaoPayApprovalRequestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.KakaoPayService;
@@ -94,8 +95,8 @@ public class TestController {
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
+    public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, @RequestBody KakaoPayApprovalRequestDto params) {
         System.out.println("pg_token = " + pg_token);
-        kakaoPayService.kakaoPayInfo(pg_token);
+        kakaoPayService.kakaoPayInfo(pg_token, params);
     }
 }
