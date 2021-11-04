@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ssafy.runner.OAuth.CustomOAuth2UserService;
 import ssafy.runner.util.JwtTokenFilter;
 
 @Slf4j
@@ -16,6 +17,7 @@ import ssafy.runner.util.JwtTokenFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenFilter jwtTokenFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,7 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/**/join").permitAll() // jwt 미검사 패턴
             .antMatchers("/api/**/login").permitAll() // jwt 미검사 패턴
             .antMatchers("/api/**/join").permitAll() // jwt 미검사 패턴
-            .antMatchers("/api/**/innerpage").authenticated(); // jwt 테스트용
+            .antMatchers("/api/**/innerpage").authenticated()
 //            .anyRequest().authenticated(); // 그 외 경로는 인증 필요
+            .and()
+                .oauth2Login()
+                    .userInfoEndpoint()
+                        .userService(customOAuth2UserService); // jwt 테스트용
     }
 }

@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
-import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
 import ssafy.runner.domain.entity.Customer;
-import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.repository.CustomerRepository;
 
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

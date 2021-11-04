@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
-import ssafy.runner.domain.enums.MenuStatus;
-import ssafy.runner.domain.enums.OrderStatus;
-import ssafy.runner.domain.enums.ShopStatus;
-import ssafy.runner.domain.enums.SizeType;
+import ssafy.runner.domain.enums.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -125,7 +122,7 @@ public class InitDB {
         public List<Customer> initCustomer() {
             List<Customer> customerList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
-                Customer customer = new Customer("wns312"+i+"@naver.com", "password"+i, "닉네임"+i);
+                Customer customer = new Customer("wns312"+i+"@naver.com", "password"+i,  Role.USER);
                 em.persist(customer);
                 customerList.add(customer);
             }
