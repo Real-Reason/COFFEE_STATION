@@ -17,7 +17,6 @@ spring:
         default_batch_fetch_size: 500
     open-in-view: false
 
-
 #cloud:
 #  aws:
 #    credentials:

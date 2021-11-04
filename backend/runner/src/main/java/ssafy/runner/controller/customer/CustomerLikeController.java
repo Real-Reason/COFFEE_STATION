@@ -5,15 +5,16 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ssafy.runner.domain.dto.customer.Like.LikeMenuListResponseDto;
+import ssafy.runner.domain.dto.customer.Like.LikeShopListResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerMenuService;
 import ssafy.runner.service.CustomerShopService;
 import org.springframework.security.core.Authentication;
 import ssafy.runner.util.CustomPrincipal;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,7 +47,25 @@ public class CustomerLikeController {
         return new ResponseEntity<>("메뉴 좋아요 등록 성공", HttpStatus.CREATED);
     }
 
+    @GetMapping("/shop")
+    @ApiOperation(value = "좋아요한 가게 목록 조회")
+    public LikeShopListResponseDto getLikeShopList(Authentication authentication) {
 
+        String email = checkPrincipalReturnEmail(authentication);
+        LikeShopListResponseDto likeShopList = customerShopService.getLikeShopList(email);
+
+        return likeShopList;
+    }
+
+    @GetMapping("/menu")
+    @ApiOperation(value = "좋아요한 메뉴 목록 조회")
+    public LikeMenuListResponseDto getLikeMenuList(Authentication authentication) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        LikeMenuListResponseDto likeMenuList = customerMenuService.getLikeMenuList(email);
+
+        return likeMenuList;
+    }
 
 
     // 점주 계정인지 확인 한후, 점주가 맞으면 email 리턴
