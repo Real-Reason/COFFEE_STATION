@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: oauth
+    include: oauth, API-KEY
   #  redis:
 #    host: localhost
 #    port: 6379
@@ -16,9 +16,6 @@ spring:
         format_sql: true
         default_batch_fetch_size: 500
     open-in-view: false
-
-  profiles:
-    include: API-KEY
 
 #cloud:
 #  aws:
