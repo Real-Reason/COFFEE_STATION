@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssafy.runner.domain.dto.customer.Like.LikeMenuListResponseDto;
 import ssafy.runner.domain.dto.customer.Like.LikeShopListResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerMenuService;
@@ -54,6 +55,16 @@ public class CustomerLikeController {
         LikeShopListResponseDto likeShopList = customerShopService.getLikeShopList(email);
 
         return likeShopList;
+    }
+
+    @GetMapping("/menu")
+    @ApiOperation(value = "좋아요한 메뉴 목록 조회")
+    public LikeMenuListResponseDto getLikeMenuList(Authentication authentication) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        LikeMenuListResponseDto likeMenuList = customerMenuService.getLikeMenuList(email);
+
+        return likeMenuList;
     }
 
 
