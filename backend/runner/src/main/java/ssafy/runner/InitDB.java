@@ -122,7 +122,7 @@ public class InitDB {
         public List<Customer> initCustomer() {
             List<Customer> customerList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
-                Customer customer = new Customer("wns312"+i+"@naver.com", "password"+i,  Role.USER);
+                Customer customer = new Customer("wns312"+i+"@naver.com", "password"+i, "nickname"+i);
                 em.persist(customer);
                 customerList.add(customer);
             }
