@@ -1,6 +1,7 @@
 package ssafy.runner.domain.dto.shop;
 
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 import ssafy.runner.domain.dto.partner.PartnerDto;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
@@ -17,8 +18,9 @@ public class ShopResDto {
     private String address;
     private String detail_address;
     private String zip_code;
-    private String x;
-    private String y;
+//    private double x;
+//    private double y;
+    private Point location;
     private ShopStatus status;
     private String open_at;
     private String close_at;
@@ -26,7 +28,7 @@ public class ShopResDto {
     private String instagram;
 
     @Builder
-    public ShopResDto(Long id, PartnerDto partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, String x, String y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public ShopResDto(Long id, PartnerDto partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
         this.id = id;
         this.partner = partner;
         this.name = name;
@@ -35,8 +37,9 @@ public class ShopResDto {
         this.address = address;
         this.detail_address = detail_address;
         this.zip_code = zip_code;
-        this.x = x;
-        this.y = y;
+//        this.x = x;
+//        this.y = y;
+        this.location = location;
         this.status = status;
         this.open_at = open_at;
         this.close_at = close_at;
@@ -54,8 +57,7 @@ public class ShopResDto {
                 .address(shop.getAddress())
                 .detail_address(shop.getDetail_address())
                 .zip_code(shop.getZip_code())
-                .x(shop.getX())
-                .y(shop.getY())
+                .location(shop.getLocation())
                 .status(shop.getStatus())
                 .open_at(shop.getOpen_at())
                 .close_at(shop.getClose_at())

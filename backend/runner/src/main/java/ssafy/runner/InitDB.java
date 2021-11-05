@@ -1,6 +1,7 @@
 package ssafy.runner;
 
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.entity.*;
@@ -18,7 +19,7 @@ public class InitDB {
     private final InitService initService;
 
     // 패키지 로딩 시점에 자동실행 (스프링 빈 등록될 때 자동 실행?)
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         List<Size> sizeList = initService.initSize(); // 사이즈 다만듬
         List<Customer> customerList = initService.initCustomer(); // 손님 10개만듬
@@ -108,7 +109,7 @@ public class InitDB {
                     .partner(partner).name("가게"+i)
                     .business_no("000000000"+i).phone_number("010-1234-567"+i)
                     .address("서울 성동구 마장동").detail_address("1234번지 10"+i+"호")
-                    .zip_code("1234"+i).x("123.456"+i).y("321.456"+i)
+//                    .zip_code("1234"+i).location(new Point(123.456, 321.456))
                     .status(ShopStatus.READY).open_at("오전10시").close_at("오후10시")
                     .intro("소개글"+i).instagram("인스타주소"+i)
                     .build();
