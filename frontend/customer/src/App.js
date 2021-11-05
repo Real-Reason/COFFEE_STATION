@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Main from './views/Main'
 
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin'
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const AuthContext = createContext();
@@ -18,7 +20,7 @@ GoogleSignin.configure({
 })
 
 const SignInScreen = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { signIn } = useContext(AuthContext);
@@ -31,7 +33,7 @@ const SignInScreen = () => {
   
   // const URL = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&response_type=code&redirect_uri=http://localhost:8080/login/oauth2/code/google&client_id=167399706870-8vccbd4fpid07c3d7n0s8ai4rb34f7fe.apps.googleusercontent.com'
 
-  const siginin = async() => {
+  const googleSiginin = async() => {
     try {
       GoogleSignin.configure(
       {
@@ -69,8 +71,8 @@ const SignInScreen = () => {
     <View>
       <TextInput
         placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        value={email}
+        onChangeText={setEmail}
       />
       <TextInput
         placeholder="Password"
@@ -78,11 +80,11 @@ const SignInScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Sign in" onPress={() => signIn({ username, password })} />
+      <Button title="Sign in" onPress={() => signIn({ email, password })} />
       
       <Text>Login</Text>
       <GoogleSigninButton 
-        onPress={siginin}
+        onPress={googleSiginin}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         style={{width:100, height:100}}
@@ -133,14 +135,15 @@ const App = ({ navigation }) => {
   );
 
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
+    // Fetch the token from storage then navigate to our appropriate place 
+    // 마운트 하면서 토큰 있다면 가져오기
     const bootstrapAsync = async () => {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync('userToken');
+        userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
-        // Restoring token failed
+        console.log(e)
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -160,18 +163,24 @@ const App = ({ navigation }) => {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        // 여기서 axios로 api에 요청 보내서 토큰 가져오기
+        let userToken;
+        try {
+          console.log(data)
+          const response = await axios.post(
+            'http://10.0.2.2:8080/api/customer/login',
+            data
+          );
+          
+          console.log(response.data.token)
+          userToken = response.data.token
+          await AsyncStorage.setItem('userToken', userToken);
+          dispatch({ type: 'SIGN_IN', token: userToken });
+        } catch (e) {
+          console.log(e)
+        }
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
     }),
     []
   );
