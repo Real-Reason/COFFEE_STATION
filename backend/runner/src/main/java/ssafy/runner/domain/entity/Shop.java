@@ -2,13 +2,14 @@ package ssafy.runner.domain.entity;
 
 import lombok.*;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
 import ssafy.runner.domain.enums.ShopStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name="Shop")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -33,10 +34,7 @@ public class Shop {
     private String address;
     private String detail_address;
     private String zip_code;
-//    private double x;
-//    private double y;
     private Point location;
-
     @Enumerated(EnumType.STRING)
     private ShopStatus status;
 
@@ -46,7 +44,7 @@ public class Shop {
     private String instagram;
 
     @Builder
-    public Shop(Partner partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, org.locationtech.jts.geom.Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public Shop(Partner partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, org.locationtech.jts.geom.Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) throws ParseException {
         this.partner = partner;
         this.name = name;
         this.business_no = business_no;
@@ -54,8 +52,6 @@ public class Shop {
         this.address = address;
         this.detail_address = detail_address;
         this.zip_code = zip_code;
-//        this.x = x;
-//        this.y = y;
         this.location = location;
         this.status = status;
         this.open_at = open_at;
@@ -63,7 +59,6 @@ public class Shop {
         this.intro = intro;
         this.instagram = instagram;
     }
-
     public void changeShopStatus(ShopStatus status) {
         this.status = status;
     }

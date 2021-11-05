@@ -2,6 +2,7 @@ package ssafy.runner.domain.dto.shop;
 
 import lombok.*;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 
@@ -17,8 +18,8 @@ public class ShopReqDto {
     private String address;
     private String detail_address;
     private String zip_code;
-//    private double x;
-//    private double y;
+    private double x;
+    private double y;
     private Point location;
     private ShopStatus status;
     private String open_at;
@@ -35,8 +36,6 @@ public class ShopReqDto {
         this.address = address;
         this.detail_address = detail_address;
         this.zip_code = zip_code;
-//        this.x = x;
-//        this.y = y;
         this.location = location;
         this.status = status;
         this.open_at = open_at;
@@ -45,7 +44,7 @@ public class ShopReqDto {
         this.instagram = instagram;
     }
 
-    public Shop toEntity() {
+    public Shop toEntity() throws ParseException {
         return Shop.builder()
                 .name(this.name)
                 .business_no(this.business_no)
@@ -53,8 +52,6 @@ public class ShopReqDto {
                 .address(this.address)
                 .detail_address(this.detail_address)
                 .zip_code(this.zip_code)
-//                .x(this.x)
-//                .y(this.y)
                 .location(this.location)
                 .status(this.status)
                 .open_at(this.open_at)
