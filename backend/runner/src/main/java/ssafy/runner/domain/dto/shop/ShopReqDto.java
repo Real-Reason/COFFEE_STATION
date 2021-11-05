@@ -18,17 +18,15 @@ public class ShopReqDto {
     private String zip_code;
     private String x;
     private String y;
-
     private ShopStatus status;
-
     private String open_at;
     private String close_at;
     private String intro;
     private String instagram;
 
     @Builder
-    public ShopReqDto(Long id, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, String x, String y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
-        this.id = id;
+    public ShopReqDto(String name, String business_no, String phone_number, String address, String detail_address, String zip_code, String x, String y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+
         this.name = name;
         this.business_no = business_no;
         this.phone_number = phone_number;
@@ -44,22 +42,21 @@ public class ShopReqDto {
         this.instagram = instagram;
     }
 
-    public static ShopReqDto entityToDto(Shop shop) {
-        return ShopReqDto.builder()
-                .id(shop.getId())
-                .name(shop.getName())
-                .business_no(shop.getBusiness_no())
-                .phone_number(shop.getPhone_number())
-                .address(shop.getAddress())
-                .detail_address(shop.getDetail_address())
-                .zip_code(shop.getZip_code())
-                .x(shop.getX())
-                .y(shop.getY())
-                .status(shop.getStatus())
-                .open_at(shop.getOpen_at())
-                .close_at(shop.getClose_at())
-                .intro(shop.getIntro())
-                .instagram(shop.getInstagram())
+    public Shop toEntity() {
+        return Shop.builder()
+                .name(this.name)
+                .business_no(this.business_no)
+                .phone_number(this.phone_number)
+                .address(this.address)
+                .detail_address(this.detail_address)
+                .zip_code(this.zip_code)
+                .x(this.x)
+                .y(this.y)
+                .status(this.status)
+                .open_at(this.open_at)
+                .close_at(this.close_at)
+                .intro(this.intro)
+                .instagram(this.instagram)
                 .build();
     }
 }
