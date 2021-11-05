@@ -5,7 +5,7 @@ spring:
 #    host: localhost
 #    port: 6379
   datasource:
-    url: jdbc:mysql://3.38.99.110:3306/coffee_station
+    url: jdbc:mysql://3.38.99.110:3306/coffee_station?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
