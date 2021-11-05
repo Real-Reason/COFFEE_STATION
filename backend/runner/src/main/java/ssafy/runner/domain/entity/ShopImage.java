@@ -1,12 +1,14 @@
 package ssafy.runner.domain.entity;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @ToString(exclude = {"shop"})
 public class ShopImage {
 
@@ -16,9 +18,9 @@ public class ShopImage {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     private String imgUrl;
-    private int index;
+    private int idx;
 }

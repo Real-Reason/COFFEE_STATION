@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
+import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.entity.Partner;
@@ -22,13 +23,20 @@ public class ShopService {
     private final ShopRepository shopRepository;
     private final PartnerRepository partnerRepository;
 
+    // 근처 카페 리스트 가져오기
+    public List<ShopBriefResponseDto> findNearShopList(String x, String y) {
+        List<ShopBriefResponseDto> shopList = new ArrayList<>();
+//        List<Shop> sameSectionShopList = sho
+        return shopList;
+    }
+
     @Transactional
     public Long save(ShopReqDto params, Long partnerId) {
 
         Optional<Partner> optional = partnerRepository.findById(partnerId);
         if (optional.isEmpty()) throw new RuntimeException("회원이 없습니다");
         Partner partner = optional.get();
-        Shop shop = new Shop(partner, params.getName(), params.getBusiness_no(), params.getPhone_number(), params.getAddress(), params.getDetail_address(), params.getZip_code(), params.getX(), params.getY(), params.getStatus(), params.getOpen_at(), params.getClose_at(), params.getIntro(), params.getInstagram());
+        Shop shop = new Shop(partner, params.getName(), params.getBusiness_no(), params.getPhone_number(), params.getAddress(), params.getDetail_address(), params.getZip_code(), params.toEntity().getLocation(), params.getStatus(), params.getOpen_at(), params.getClose_at(), params.getIntro(), params.getInstagram());
         shopRepository.save(shop);
 
         return shop.getId();
@@ -39,9 +47,7 @@ public class ShopService {
         Optional<Shop> optional = shopRepository.findById(shopId);
         if (optional.isEmpty()) throw new RuntimeException("가게가 없습니다.");
         Shop shop = optional.get();
-        ShopResDto shopResDto = ShopResDto.entityToDto(shop);
-
-        return shopResDto;
+        return ShopResDto.entityToDto(shop);
     }
 
     @Transactional
@@ -57,9 +63,7 @@ public class ShopService {
 
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
-
-        ShopAndMenuResponseDto result = ShopAndMenuResponseDto.entityToDto(shop);
-        return result;
+        return ShopAndMenuResponseDto.entityToDto(shop);
     }
 
 }

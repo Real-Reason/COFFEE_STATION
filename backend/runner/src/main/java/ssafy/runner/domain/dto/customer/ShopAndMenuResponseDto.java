@@ -16,8 +16,8 @@ public class ShopAndMenuResponseDto {
     private String address;
     private String detail_address;
     private String zip_code;
-    private String x;
-    private String y;
+    private double x;
+    private double y;
     private ShopStatus status;
     private String open_at;
     private String close_at;
@@ -25,7 +25,7 @@ public class ShopAndMenuResponseDto {
     private String instagram;
 
     @Builder
-    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, String x, String y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, double x, double y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
         this.id = id;
         this.menuList = menuList;
         this.name = name;
@@ -53,8 +53,8 @@ public class ShopAndMenuResponseDto {
                 .address(shop.getAddress())
                 .detail_address(shop.getDetail_address())
                 .zip_code(shop.getZip_code())
-                .x(shop.getX())
-                .y(shop.getY())
+                .x(shop.getLocation().getX())
+                .y(shop.getLocation().getY())
                 .status(shop.getStatus())
                 .open_at(shop.getOpen_at())
                 .close_at(shop.getClose_at())
