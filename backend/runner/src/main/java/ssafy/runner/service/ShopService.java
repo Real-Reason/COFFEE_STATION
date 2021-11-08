@@ -3,16 +3,20 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
+import ssafy.runner.domain.entity.ShopImage;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.repository.PartnerRepository;
+import ssafy.runner.domain.repository.ShopImageRepository;
 import ssafy.runner.domain.repository.ShopRepository;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -31,7 +35,7 @@ public class ShopService {
     }
 
     @Transactional
-    public Long save(ShopReqDto params, Long partnerId) {
+    public Long save(ShopReqDto params, Long partnerId) throws IOException {
 
         Optional<Partner> optional = partnerRepository.findById(partnerId);
         if (optional.isEmpty()) throw new RuntimeException("회원이 없습니다");

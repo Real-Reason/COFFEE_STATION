@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 @ToString(exclude = {"shop"})
 public class ShopImage {
 
@@ -23,4 +22,11 @@ public class ShopImage {
 
     private String imgUrl;
     private int idx;
+
+    @Builder
+    public ShopImage(Shop shop, String imgUrl, int idx) {
+        this.shop = shop;
+        this.imgUrl = imgUrl;
+        this.idx = idx;
+    }
 }

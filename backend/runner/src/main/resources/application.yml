@@ -4,15 +4,26 @@ spring:
   #  redis:
 #    host: localhost
 #    port: 6379
+
+## MYSQL 일 경우에
   datasource:
     url: jdbc:mysql://3.38.99.110:3306/coffee_station
     username: root
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+### H2 서버일 경우
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/test
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    show-sql: true
+
   jpa:
     database: mysql
     database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
     hibernate:
+#      ddl-auto: none
       ddl-auto: update
     properties:
       hibernate:

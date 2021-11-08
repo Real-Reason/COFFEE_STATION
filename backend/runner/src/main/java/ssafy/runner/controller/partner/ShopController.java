@@ -6,13 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.dto.shop.CategoryResponseDto;
 import ssafy.runner.service.CategoryService;
+import ssafy.runner.service.S3Uploader;
 import ssafy.runner.service.ShopService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,7 @@ public class ShopController {
 
     private final ShopService shopService;
     private final CategoryService categoryService;
+    private final S3Uploader s3Uploader;
 
 //    @GetMapping("/shop")
 //    @ApiOperation(value = "근처 카페 조회")
@@ -37,8 +41,9 @@ public class ShopController {
     // 가게 생성
     @PostMapping("/shop")
     @ApiOperation(value = "샵 생성")
-    public Long createShop(@RequestBody ShopReqDto params) {
+    public Long createShop(@RequestBody ShopReqDto params) throws IOException {
         Long partnerId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
+
         return shopService.save(params, partnerId);
     }
 
