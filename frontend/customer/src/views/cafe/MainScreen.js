@@ -54,7 +54,7 @@ const MainCafeList = ({ navigation }) => {
           justifyContent: 'center'
         }}
       >
-        <Button title="Button" onPress={() => navigation.navigate('Maps')}></Button>
+        <Button title="maps" onPress={() => navigation.navigate('Maps')}></Button>
         <Text>MainScreen</Text>
         <Pressable onPress={() => geoLocation()}>
             <Text> Get GeoLocation </Text>
