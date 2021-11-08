@@ -43,7 +43,7 @@ out/
 **/application-oauth.yml
 
 ### API-KEY
-**/resources/application-API-KEY.properties
+**/application-API-KEY.properties
 
 ## AWS-KEY
 **/resources/aws.yml
