@@ -47,3 +47,6 @@ out/
 
 ## AWS-KEY
 **/resources/aws.yml
+
+## querydsl로 생성되는 파일
+generated

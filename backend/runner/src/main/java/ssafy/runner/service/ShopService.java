@@ -103,4 +103,9 @@ public class ShopService {
         shapeFactory.setSize(radius * 2);
         return shapeFactory.createCircle();
     }
+
+    @Transactional
+    public void searchShop(String searchWord) {
+        List<Shop> shops = shopRepository.searchShop(searchWord);
+    }
 }
