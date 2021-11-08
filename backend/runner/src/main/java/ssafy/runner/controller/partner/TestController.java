@@ -7,21 +7,21 @@ import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ssafy.runner.domain.dto.TestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayApprovalRequestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.KakaoPayService;
 import ssafy.runner.service.PartnerService;
+import ssafy.runner.service.S3Uploader;
 import ssafy.runner.util.JwtUtil;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Api(tags = {"테스트용 API"})
@@ -32,6 +32,7 @@ public class TestController {
     private final JwtUtil jwtUtil;
     private final PartnerService partnerService;
     private final KakaoPayService kakaoPayService;
+    private final S3Uploader s3Uploader;
 
     @GetMapping("")
     @ApiOperation(value = "테스트")
@@ -98,5 +99,12 @@ public class TestController {
     public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, @RequestBody KakaoPayApprovalRequestDto params) {
         System.out.println("pg_token = " + pg_token);
         kakaoPayService.kakaoPayInfo(pg_token, params);
+    }
+
+    @PostMapping("/images")
+    public String upload(@RequestParam("images") List<MultipartFile> multipartFile) throws IOException {
+        s3Uploader.upload(multipartFile, "static");
+
+        return "test";
     }
 }
