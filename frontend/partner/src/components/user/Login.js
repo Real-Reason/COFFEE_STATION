@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import styled from 'styled-components/native';
 
 const StyledInput = styled.TextInput`
-  border: 1px solids #111111;
+  border: 1px solid #111111;
   padding: 10px;
   margin: 10px 0;
   width: 200px;
@@ -15,30 +15,26 @@ const StyledButton = styled.Button`
   margin: 10px 0;
 `;
 
-
 const Login = () => {
   const refEmail = useRef(null);
   const refPassword = useRef(null);
 
-  const onSubmit = () => console.log('axios 요청 날려야 함')
+  const onSubmit = () => console.log('axios 요청 날려야 함');
   return (
-      <>
-        <StyledInput
-          placeholder="email"
-          ref={refEmail}
-          returnKeyType="next"
-          onSubmitEditing={() => refPassword.current.focus()}
-        >  
-        </StyledInput>
-        <StyledInput
-          placeholder="password"
-          ref={refPassword}
-          returnKeyType="done"
-          onSubmitEditing={onSubmit}
-        >  
-        </StyledInput>
-      </>
+    <>
+      <StyledInput
+        placeholder="email"
+        ref={refEmail}
+        returnKeyType="next"
+        onSubmitEditing={() => refPassword.current.focus()}></StyledInput>
+      <StyledInput
+        placeholder="password"
+        ref={refPassword}
+        returnKeyType="done"
+        onSubmitEditing={onSubmit}></StyledInput>
+      <StyledButton title="제출"></StyledButton>
+    </>
   );
-}
+};
 
 export default Login;
