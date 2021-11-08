@@ -46,7 +46,7 @@ public class CustomerShopController {
     }
 
     @GetMapping("/{shopId}/menu/{menuId}")
-    @ApiOperation(value = "단일 메뉴 상세 조회")   // @PathVariable을 사용하려고 했으나 @Param을 사용하라는 오류 발생
+    @ApiOperation(value = "단일 메뉴 상세 조회")
     public MenuNSizeNExtraResponseDto getMenuDetail(@PathVariable("shopId") Long shopId, @PathVariable("menuId") Long menuId) {
 
         return menuService.getMenuDetail(shopId, menuId);
@@ -56,6 +56,6 @@ public class CustomerShopController {
     @ApiOperation(value = "가게 검색")
     public void searchShop(@Param("q") String searchWord) {
 
-        return shopService.searchShop(searchWord);
+        shopService.searchShop(searchWord);
     }
 }

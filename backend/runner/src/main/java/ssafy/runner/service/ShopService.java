@@ -103,4 +103,12 @@ public class ShopService {
         shapeFactory.setSize(radius * 2);
         return shapeFactory.createCircle();
     }
+
+    @Transactional
+    public void searchShop(String searchWord) {
+        List<Shop> shops = shopRepository.searchShop(searchWord);
+
+        // 이제 원하는 Dto 로 변경하기
+
+    }
 }

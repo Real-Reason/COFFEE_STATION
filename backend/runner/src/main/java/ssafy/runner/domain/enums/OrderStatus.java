@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-
+    // 고객이 주문만 한 상태
+    ORDERED(000, "주문 완료"),
     // 고객이 결제완료한 상태
     PAID(001, "결제 완료"),
     // 매장에서 수락한 경우

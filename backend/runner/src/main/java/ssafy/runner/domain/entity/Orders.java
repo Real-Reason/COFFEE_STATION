@@ -36,6 +36,7 @@ public class Orders {
 
     @NotNull
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime date;
 
     // DB에 Enum 상수값을 그대로 저장하기 위한 어노테이션

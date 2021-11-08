@@ -23,7 +23,7 @@ public class CustomerOrderService {
     private final OrderMenuRepository orderMenuRepository;
     private final CustomerRepository customerRepository;
 
-    public List<CustomerOrderResponseDto> findCustomerOrders(String email) {
+    public List<CustomerOrderResponseDto> findOrdersByCustomer(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         List<Orders> orderList = orderRepository.findByCustomer(customer);
         List<CustomerOrderResponseDto> dtoList = new ArrayList<>();
