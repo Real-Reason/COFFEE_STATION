@@ -52,4 +52,10 @@ public class CustomerShopController {
         return menuService.getMenuDetail(shopId, menuId);
     }
 
+    @GetMapping("/search")
+    @ApiOperation(value = "가게 검색")
+    public void searchShop(@Param("q") String searchWord) {
+
+        return shopService.searchShop(searchWord);
+    }
 }
