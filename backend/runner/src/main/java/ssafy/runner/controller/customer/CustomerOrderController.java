@@ -36,7 +36,7 @@ public class CustomerOrderController {
     @ApiOperation(value = "주문 전체 내역 조회")
     public List<CustomerOrderResponseDto> findOrders(Authentication authentication) {
         String email = checkPrincipalReturnEmail(authentication);
-        return customerOrderService.findCustomerOrders(email);
+        return customerOrderService.findOrdersByCustomer(email);
     }
 
     @GetMapping("/orders/{orderId}")
