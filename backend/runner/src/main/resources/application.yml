@@ -13,7 +13,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -41,3 +41,12 @@ decorator:
       enable-logging: true
 jwt:
   secret: dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+
+cloud:
+  aws:
+    s3:
+      bucket: coffee-station
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

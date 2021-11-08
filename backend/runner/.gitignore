@@ -44,3 +44,6 @@ out/
 
 ### API-KEY
 **/resources/application-API-KEY.properties
+
+## AWS-KEY
+**/resources/aws.yml
