@@ -18,6 +18,7 @@ public class Size {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(unique = true)
     private SizeType type; // 사이즈 종류
 
     public Size(SizeType type) {
