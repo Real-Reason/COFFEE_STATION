@@ -15,4 +15,4 @@ RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
 FROM openjdk:11-jre-slim
 COPY --from=build /app/build/libs/runner-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar --spring.config.location=classpath:/production.yml app.jar
