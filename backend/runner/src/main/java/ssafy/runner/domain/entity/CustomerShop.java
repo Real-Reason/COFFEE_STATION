@@ -27,7 +27,7 @@ public class CustomerShop {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
-
+    
     public CustomerShop(Shop shop, Customer customer) {
         this.shop = shop;
         this.customer = customer;

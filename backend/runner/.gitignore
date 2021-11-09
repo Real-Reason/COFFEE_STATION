@@ -50,3 +50,6 @@ out/
 
 ## querydsl로 생성되는 파일
 generated
+
+## Application.yml
+**/application.yml

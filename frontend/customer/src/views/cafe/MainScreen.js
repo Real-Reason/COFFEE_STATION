@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, Button } from 'react-native';
-import axios from 'axios';
+// import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Maps from '../map/Maps';
