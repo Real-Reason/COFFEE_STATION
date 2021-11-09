@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public interface ShopRepository extends JpaRepository<Shop, Long>, ShopRepositoryCustom{
-    @Query(value = "select name, address, detail_address " +
+    @Query(value = "select * " +
             " from shop where ST_Within(location, :circle)", nativeQuery = true)
     List<Shop> findNears(@Param("circle") Geometry circle);
 }

@@ -9,6 +9,7 @@ COPY src src
 COPY src/main/resources/application.yml src/main/resources/application.yml
 
 RUN chmod +x gradlew
+RUN pwd
 RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
 
 FROM openjdk:11-jre-slim
