@@ -8,9 +8,8 @@ COPY settings.gradle .
 COPY src src
 COPY src/main/resources/production.yml src/main/resources/application.yml
 COPY src/main/resources/production-API-KEY.properties src/main/resources/application-API-KEY.properties
-RUN gradle cleanQuerydslSourcesDir
 RUN chmod +x gradlew
-RUN pwd
+RUN rm -rf src/main/generated
 RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
 
 FROM openjdk:11-jre-slim
