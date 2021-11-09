@@ -10,6 +10,7 @@ plugins {
 	id 'java'
 	// querydsl
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id "io.franzbecker.gradle-lombok" version "3.0.0"
 }
 
 group = 'ssafy'
@@ -94,7 +95,7 @@ dependencies {
 	// querydsl
 	implementation 'com.querydsl:querydsl-jpa'
 //	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
-//	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 //	testImplementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
 //	testAnnotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 

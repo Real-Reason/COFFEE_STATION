@@ -7,20 +7,19 @@ import ssafy.runner.domain.entity.Shop;
 
 import java.util.List;
 
-import static ssafy.runner.domain.entity.QShop.shop;
 
 @Repository
 @RequiredArgsConstructor
 public class ShopRepositoryImpl implements ShopRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
-
     @Override
     public List<Shop> searchShop(String searchWord) {
-        return jpaQueryFactory
-                .select(shop)
-                .from(shop)
-                .where(shop.name.contains(searchWord))
-                .fetch();
+        return null;
+//        return jpaQueryFactory
+//                .select(shop)
+//                .from(shop)
+//                .where(shop.name.contains(searchWord))
+//                .fetch();
     }
 }

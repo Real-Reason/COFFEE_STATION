@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class CustomerShopService {
 
@@ -25,7 +25,6 @@ public class CustomerShopService {
     private final ShopRepository shopRepository;
     private final CustomerRepository customerRepository;
 
-    @Transactional
     public void likeShop(Long shopId, String email) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(NoSuchElementException::new);
