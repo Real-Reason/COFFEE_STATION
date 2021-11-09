@@ -39,7 +39,7 @@ dependencies {
 	//spatial query
 	compileOnly 'org.hibernate:hibernate-spatial'
 //	compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.4.Final'
-//	implementation group: 'org.locationtech.jts.io', name: 'jts-io-common', version: '1.18.2'
+	implementation group: 'org.locationtech.jts.io', name: 'jts-io-common', version: '1.18.2'
 
 	// Redis
 //	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
