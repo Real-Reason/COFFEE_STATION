@@ -7,7 +7,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 COPY src/main/resources/application.yml src/main/resources/application.yml
-
+COPY /var/jenkins_home/application-API-KEY.properties src/main/resources/application-API-KEY.properties
 RUN chmod +x gradlew
 RUN pwd
 RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
