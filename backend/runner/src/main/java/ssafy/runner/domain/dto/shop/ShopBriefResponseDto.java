@@ -14,6 +14,8 @@ public class ShopBriefResponseDto {
     private String name;
     private String address;
     private String detail_address;
+    private double lat;
+    private double lng;
     private double distanceFrom;
 
     public ShopBriefResponseDto(Shop shop, double distance) {
@@ -21,6 +23,8 @@ public class ShopBriefResponseDto {
         this.name = shop.getName();
         this.address = shop.getAddress();
         this.detail_address = shop.getDetail_address();
+        this.lat = shop.getLocation().getY();
+        this.lng = shop.getLocation().getX();
         this.distanceFrom = distance;
     }
 
