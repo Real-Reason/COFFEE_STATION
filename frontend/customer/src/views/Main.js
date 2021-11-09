@@ -1,6 +1,6 @@
 import React from 'react';
 // import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+// import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainScreen from './cafe/MainScreen'
 import Favorite from './user/Favorite'
