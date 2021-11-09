@@ -8,14 +8,13 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.util.GeometricShapeFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
+import ssafy.runner.domain.dto.shop.SearchShopResponseDto;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
-import ssafy.runner.domain.entity.ShopImage;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopImageRepository;
@@ -30,6 +29,7 @@ import java.util.*;
 public class ShopService {
 
     private final ShopRepository shopRepository;
+    private final ShopImageRepository shopImageRepository;
     private final PartnerRepository partnerRepository;
 
     // 근처 카페 리스트 가져오기
@@ -105,10 +105,18 @@ public class ShopService {
     }
 
     @Transactional
-    public void searchShop(String searchWord) {
+    public List<SearchShopResponseDto> searchShop(String searchWord) {
+
+        List<SearchShopResponseDto> result = new ArrayList<>();
         List<Shop> shops = shopRepository.searchShop(searchWord);
 
-        // 이제 원하는 Dto 로 변경하기
+        for (Shop shop : shops) {
+            String imgUrl = shopImageRepository.findByIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
 
+            SearchShopResponseDto searchResponse = SearchShopResponseDto.entityToDto(shop, imgUrl.toString());
+            result.add(searchResponse);
+        }
+
+        return result;
     }
 }
