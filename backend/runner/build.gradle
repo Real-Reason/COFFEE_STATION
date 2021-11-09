@@ -39,6 +39,8 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	//spatial query
 	compileOnly 'org.hibernate:hibernate-spatial'
+	implementation group: 'org.locationtech.jts.io', name: 'jts-io-common', version: '1.18.2'
+
 	// Redis
 //	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// AWS  : https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
