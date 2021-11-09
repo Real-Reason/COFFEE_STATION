@@ -8,8 +8,7 @@ COPY settings.gradle .
 COPY src src
 COPY src/main/resources/production.yml src/main/resources/application.yml
 COPY src/main/resources/production-API-KEY.properties src/main/resources/application-API-KEY.properties
-RUN cat src/main/resources/application-API-KEY.properties
-RUN cat src/main/resources/application.yml
+RUN gradle cleanQuerydslSourcesDir
 RUN chmod +x gradlew
 RUN pwd
 RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
