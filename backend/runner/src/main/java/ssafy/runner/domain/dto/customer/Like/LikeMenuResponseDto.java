@@ -7,12 +7,16 @@ import ssafy.runner.domain.entity.CustomerMenu;
 @Getter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class LikeMenuResponseDto {
 
     private Long customerMenuId;
     private MenuResponseDto menu;
+
+    @Builder
+    public LikeMenuResponseDto(Long customerMenuId, MenuResponseDto menu) {
+        this.customerMenuId = customerMenuId;
+        this.menu = menu;
+    }
 
     public static LikeMenuResponseDto of(CustomerMenu customerMenu) {
         return LikeMenuResponseDto.builder()

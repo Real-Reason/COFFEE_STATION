@@ -28,9 +28,9 @@ public class CustomerShopController {
 
     @GetMapping("")
     @ApiOperation(value = "근처 카페 조회")
-    public ResponseEntity<List<ShopBriefResponseDto>> nearShopList(@Param("x") double x,
-                                                                   @Param("y") double y,
-                                                                   @Param("radius") double radius) throws ParseException {
+    public ResponseEntity<List<ShopBriefResponseDto>> nearShopList(@RequestParam("x") double x,
+                                                                   @RequestParam("y") double y,
+                                                                   @RequestParam("radius") double radius) throws ParseException {
         List<ShopBriefResponseDto> shopList = shopService.findNearShopList(x, y, radius);
         if (shopList.isEmpty()) throw new NullPointerException("근처에 카페 없어요");
         return new ResponseEntity<>(shopList, HttpStatus.OK);
