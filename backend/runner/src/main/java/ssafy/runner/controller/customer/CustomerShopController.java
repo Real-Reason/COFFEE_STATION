@@ -7,12 +7,10 @@ import org.locationtech.jts.io.ParseException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
 import ssafy.runner.domain.dto.menu.MenuNSizeNExtraResponseDto;
+import ssafy.runner.domain.dto.shop.SearchShopResponseDto;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.service.ShopService;
@@ -53,9 +51,10 @@ public class CustomerShopController {
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "Shop 검색 기능")
-    public void SearchShop(@Param("q") String searchWord) {
+    @ApiOperation(value = "가게 검색")
+    public List<SearchShopResponseDto> searchShop(@RequestParam("q") String searchWord) {
 
-        shopService.searchShop(searchWord);
+        List<SearchShopResponseDto> searchShopResponseDto = shopService.searchShop(searchWord);
+        return searchShopResponseDto;
     }
 }
