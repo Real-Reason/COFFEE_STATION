@@ -7,7 +7,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 COPY src/main/resources/production.yml src/main/resources/application.yml
-COPY src/main/resources/production-API-KEY.properties src/main/resources/production-API-KEY.properties
+COPY src/main/resources/production-API-KEY.properties src/main/resources/application-API-KEY.properties
 RUN chmod +x gradlew
 RUN pwd
 RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
