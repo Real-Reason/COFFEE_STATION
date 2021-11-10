@@ -17,7 +17,6 @@ public class Partner {
     @Column(name = "partner_id")
     private Long id;
 
-    @Email
     private String email;
 
     @Size(min = 8, max = 50)
