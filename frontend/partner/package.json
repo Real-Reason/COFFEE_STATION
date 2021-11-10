@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@actbase/react-daum-postcode": "^1.0.1",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-firebase/analytics": "^13.0.1",
     "@react-native-firebase/app": "^13.0.1",
@@ -20,6 +21,7 @@
     "react-native": "0.66.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
+    "react-native-webview": "^11.14.2",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
