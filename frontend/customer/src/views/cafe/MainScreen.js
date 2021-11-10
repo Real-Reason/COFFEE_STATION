@@ -82,8 +82,8 @@ const MainCafeList = ({ navigation }) => {
         <Text> latitude?: {latitude} </Text>
         <Text> longitude?: {longitude} </Text>
 
-        {cafeList.map(cafe => (
-          <Pressable onPress={() => goCafeDetail(cafe)}>
+        {cafeList.map((cafe, index) => (
+          <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
             <Text> cafe name : {cafe.name} </Text>
           </Pressable>
         ))}
