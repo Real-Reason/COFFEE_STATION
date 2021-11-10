@@ -23,4 +23,6 @@ public class PartnerService {
     public boolean findPartnerExist(String email, String password) {
         return partnerRepository.existsByEmailAndPassword(email, password);
     }
+
+
 }
