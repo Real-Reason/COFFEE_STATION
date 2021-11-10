@@ -1,44 +1,16 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useRef,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, {createContext, useContext, useEffect, useMemo} from 'react';
 import {View, Text, Button, TextInput} from 'react-native';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
-import Main from './Main';
 import axios from 'axios';
-
-// styled-components
-const StyledInput = styled.TextInput`
-  border: 1px solid #111111;
-  padding: 10px;
-  margin: 10px 0;
-  width: 200px;
-  font-size: 24px;
-`;
-
-const StyledButton = styled.Button`
-  font-size: 20px;
-  padding: 10px;
-  margin: 10px 0;
-`;
-// styled-components
+import Sign from './registration/sign/Sign';
+import SignInScreen from './registration/sign/components/SignInScreen';
+import Main from './registration/store/Main';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
-
-// SignInScreen에서 SignIn 버튼을 눌렀을 때 실행될 함수 정의
-const HandleSignIn = () => {
-  // const response = await axios.post(
-  //   'http://'
-  // )
-};
 
 const SplashScreen = () => {
   return (
@@ -56,43 +28,6 @@ const HomeScreen = () => {
       <Text>Signed in!</Text>
       <Button title="Sign out" onPress={signOut} />
     </View>
-  );
-};
-
-const SignInScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  // useContext를 사용해 AuthContext가 value로 가지고 있는 signIn
-  const {signIn} = useContext(AuthContext);
-
-  const refEmail = useRef(null);
-  const refPassword = useRef(null);
-
-  useEffect(() => {
-    console.log('=-=-=-=-=-=- SignInScreen Mount =-=-=-=-=-=-');
-    refEmail.current.focus();
-  }, []);
-
-  return (
-    <>
-      <StyledInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        ref={refEmail}
-        returnKeyType="next"
-        onSubmitEditing={() => refPassword.current.focus()}></StyledInput>
-      <StyledInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        ref={refPassword}
-        returnKeyType="done"
-        // onSubmitEditing={onSubmit}
-        secureTextEntry></StyledInput>
-      <StyledButton title="Sign in" onPress={() => signIn({email, password})} />
-    </>
   );
 };
 
@@ -127,7 +62,7 @@ export default function App({navigation}) {
     },
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
@@ -154,20 +89,7 @@ export default function App({navigation}) {
     () => ({
       signIn: async data => {
         let userToken;
-        // try {
-        //   console.log(data);
-        //   const response = await axios.post(
-        //     'http://localhost:8080/api/partner/login',
-        //     data,
-        //   );
 
-        //   console.log(response.data.token);
-        //   userToken = response.data.token;
-        //   await AsyncStorage.setItem('userToken', userToken);
-        //   dispatch({type: 'SIGN_IN', token: 'userToken'});
-        // } catch (error) {
-        //   console.log(error);
-        // }
         await axios
           .post('http://localhost:8080/api/partner/login', data)
           .then(function (response) {
@@ -193,27 +115,37 @@ export default function App({navigation}) {
     // 나머지 컴포넌트들이 Consumer 없이 authContext를 받아서 사용할 수 있게 된다.
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          // 해당 Stack.Navigator에 속하는 Header 모두 숨김
+          screenOptions={{
+            headerShown: false,
+          }}>
           {state.isLoading ? (
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
           ) : state.userToken == null ? (
             // No token found, user isn't signed in
             <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
+              name="Sign"
+              component={Sign}
               options={{
-                title: 'Sign in',
+                title: 'Sign',
                 // When logging out, a pop animation feels intuitive
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
               }}
             />
-          ) : (
-            // User is signed in
+          ) : state.storeToken == null ? (
+            // User is signed in && No storeToken
             <Stack.Screen name="Home" component={HomeScreen} />
+          ) : (
+            // storeToken 가지고 있는 상태
+            <Stack.Screen name="Main" component={Main} />
           )}
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
   );
 }
+
+// AuthContext를 다른곳에서 사용하기 위해
+export {AuthContext};
