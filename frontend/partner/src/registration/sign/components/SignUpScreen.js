@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components/native';
+import axios from 'axios';
 
 const StyledInput = styled.TextInput`
   border: 1px solid #111111;
@@ -17,6 +18,21 @@ const StyledImage = styled.Image`
   width: 50;
   height: 50;
 `;
+
+const SignUp = async data => {
+  console.log('찍히고 있는거냐고');
+  try {
+    const response = await axios.post(
+      'http://localhost:8080/api/partner/join',
+      data,
+    );
+    console.log(response.data);
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Join Failed');
+    }
+  }
+};
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -66,7 +82,7 @@ const SignUpScreen = () => {
       />
       <StyledButton
         title="Sign Up"
-        onPress={() => console.log('Sign Up Button pressed')}
+        onPress={() => SignUp({email, password, passwordConfirm})}
       />
     </>
   );
