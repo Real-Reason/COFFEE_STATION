@@ -136,7 +136,7 @@ export default function App({navigation}) {
             />
           ) : state.storeToken == null ? (
             // User is signed in && No storeToken
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={Main} />
           ) : (
             // storeToken 가지고 있는 상태
             <Stack.Screen name="Main" component={Main} />
