@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 
 
@@ -34,8 +34,10 @@ const Cafe = ({ route }) => {
         <Text>Cafe</Text>
         <Text>{ cafeDetail.address }</Text>
 
-        {cafeMenus.map(cafeMenu => (
-          <Text>{ cafeMenu.name }</Text>
+        {cafeMenus.map((cafeMenu, index) => (
+          <Pressable key={index} onPress={() => alert(cafeMenu.name)}>
+            <Text> cafe name : { cafeMenu.name } </Text>
+          </Pressable>
         ))}
 
       </View>
