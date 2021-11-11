@@ -8,6 +8,7 @@ import axios from 'axios';
 import Sign from './registration/sign/Sign';
 import SignInScreen from './registration/sign/components/SignInScreen';
 import Main from './registration/store/Main';
+import messaging from '@react-native-firebase/messaging';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,13 @@ export default function App({navigation}) {
   );
 
   useEffect(() => {
+  // Get the device token(firebase)
+      messaging()
+        .getToken()
+        .then(token => {
+          return saveTokenToDatabase(token);
+        });
+
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
