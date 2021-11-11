@@ -18,5 +18,9 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     boolean existsByEmail(String email);
     boolean existsByEmailAndPassword(String email, String password);
 
+//    @Query("select p.firebaseToken from Partner p" +
+//            " join fetch p.shop" +
+//            " where p.shop.id = :shopId")
+//    Optional<String> findFirebaseTokenById(@Param("shopId") Long shopId);
 
 }

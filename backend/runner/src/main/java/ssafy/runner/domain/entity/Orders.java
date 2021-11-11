@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +36,9 @@ public class Orders {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
+
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+    List<OrderMenu> orderMenuList = new ArrayList<>();
 
     @NotNull
     @CreatedDate

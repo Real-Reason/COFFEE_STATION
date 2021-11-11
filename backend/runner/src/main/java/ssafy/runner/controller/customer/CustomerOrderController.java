@@ -4,16 +4,21 @@ package ssafy.runner.controller.customer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
 import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
 import ssafy.runner.domain.dto.order.OrderRequestDto;
 import ssafy.runner.domain.dto.order.OrderResponseDto;
+import ssafy.runner.domain.dto.order.OrderUpdateRequestDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerOrderService;
+import ssafy.runner.service.PartnerOrderService;
 import ssafy.runner.util.CustomPrincipal;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,6 +28,7 @@ import java.util.List;
 public class CustomerOrderController {
 
     private final CustomerOrderService customerOrderService;
+    private final PartnerOrderService partnerOrderService;
 
     private String checkPrincipalReturnEmail(Authentication authentication) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
@@ -53,6 +59,16 @@ public class CustomerOrderController {
         OrderResponseDto orderResDto = customerOrderService.order(email, shopId, params);
 
         return orderResDto;
+    }
+
+    @GetMapping("/orders/{orderId}/paid")
+    @ApiOperation(value = "주문 결제 완료, 주문상태 변경 및 fcm 알림전송")
+    public ResponseEntity<String> orderPayCompleted(@PathVariable("orderId") Long orderId) throws IOException {
+
+        partnerOrderService.modifyStatus(orderId, new OrderUpdateRequestDto("PAID"));
+        customerOrderService.paidFcm(orderId);
+
+        return new ResponseEntity<>("주문 결제 완료", HttpStatus.OK);
     }
 
 }

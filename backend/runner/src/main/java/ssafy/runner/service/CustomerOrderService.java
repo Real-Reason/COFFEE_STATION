@@ -11,8 +11,10 @@ import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.repository.*;
+import ssafy.runner.firebase.FirebaseCloudMessageService;
 
 import javax.persistence.criteria.Order;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,17 @@ public class CustomerOrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMenuRepository orderMenuRepository;
+
     private final CustomerRepository customerRepository;
+    private final PartnerRepository partnerRepository;
+
     private final ShopRepository shopRepository;
     private final MenuRepository menuRepository;
     private final MenuSizeRepository menuSizeRepository;
     private final ExtraRepository extraRepository;
     private final OrderMenuExtraRepository orderMenuExtraRepository;
+
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     public List<CustomerOrderResponseDto> findOrdersByCustomer(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
@@ -118,5 +125,18 @@ public class CustomerOrderService {
 
         // OrderResponseDto 객체 반환
         return new OrderResponseDto(orders);
+    }
+
+    public void paidFcm(Long orderId) throws IOException {
+        Orders order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
+        List<OrderMenu> menuList = orderMenuRepository.findOneSimpleById(orderId);
+        int menuListSize = menuList.size();
+        String menuName = menuList.get(0).getMenu().getName();
+
+        Long shopId = order.getShop().getId();
+        Shop shop = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
+        String firebaseToken = shop.getPartner().getFirebaseToken();
+//        String firebaseToken = partner.getFirebaseToken();
+        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.");
     }
 }
