@@ -8,6 +8,9 @@ import axios from 'axios';
 import Sign from './registration/sign/Sign';
 import SignInScreen from './registration/sign/components/SignInScreen';
 import Main from './registration/store/Main';
+// Test
+import Test from './registration/store/components/Test';
+import ModalTest from './registration/store/components/ModalTest';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
@@ -136,7 +139,8 @@ export default function App({navigation}) {
             />
           ) : state.storeToken == null ? (
             // User is signed in && No storeToken
-            <Stack.Screen name="Home" component={Main} />
+            // <Stack.Screen name="Home" component={Main} />
+            <Stack.Screen name="Test" component={Test} />
           ) : (
             // storeToken 가지고 있는 상태
             <Stack.Screen name="Main" component={Main} />
