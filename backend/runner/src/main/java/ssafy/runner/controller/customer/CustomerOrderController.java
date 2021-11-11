@@ -5,12 +5,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
 import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
+import ssafy.runner.domain.dto.order.OrderRequestDto;
+import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerOrderService;
 import ssafy.runner.util.CustomPrincipal;
@@ -45,4 +44,15 @@ public class CustomerOrderController {
         String email = checkPrincipalReturnEmail(authentication);
         return customerOrderService.findOneOrder(email, orderId);
     }
+
+    @PostMapping("/shop/{shopId}/order")
+    @ApiOperation(value = "주문하기")
+    public OrderResponseDto orderProducts(Authentication authentication, @PathVariable("shopId") Long shopId, @RequestBody OrderRequestDto params) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        OrderResponseDto orderResDto = customerOrderService.order(email, shopId, params);
+
+        return orderResDto;
+    }
+
 }

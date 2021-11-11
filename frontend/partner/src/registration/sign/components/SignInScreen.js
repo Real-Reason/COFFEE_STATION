@@ -15,8 +15,8 @@ const StyledButton = styled.Button`
   margin: 10px 0;
 `;
 const StyledImage = styled.Image`
-  width: 50;
-  height: 50;
+  width: 50px;
+  height: 50px;
 `;
 const SingUpButton = styled(StyledButton)`
   border-width: 0;

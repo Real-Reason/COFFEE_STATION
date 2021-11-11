@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"shop", "customer"})
 public class Orders {
@@ -36,8 +37,7 @@ public class Orders {
 
     @NotNull
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     // DB에 Enum 상수값을 그대로 저장하기 위한 어노테이션
     @Enumerated(EnumType.STRING)
@@ -51,12 +51,11 @@ public class Orders {
     private String request;
 
     @Builder
-    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice, LocalDateTime date, String request) {
+    public Orders(Shop shop, Customer customer, OrderStatus status, int totalPrice, String request) {
 
         Assert.notNull(shop, "샵 정보는 필수 입니다.");
         Assert.notNull(customer, "고객 정보는 필수입니다.");
         Assert.notNull(status, "상태 정보는 필수 입니다.");
-        this.date = date;
         this.shop = shop;
         this.customer = customer;
         this.status = status;
@@ -66,5 +65,9 @@ public class Orders {
 
     public void modifyOrderStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public void modifyOrderPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

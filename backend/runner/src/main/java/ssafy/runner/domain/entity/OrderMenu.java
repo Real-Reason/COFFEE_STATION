@@ -51,11 +51,16 @@ public class OrderMenu {
     private int price;
 
     @Builder
-    public OrderMenu(Orders order, Menu menu, MenuSize menuSize, int quantity) {
+    public OrderMenu(Orders order, Menu menu, MenuSize menuSize, int quantity, int price) {
         this.order = order;
         this.menu = menu;
         this.menuSize = menuSize;
         this.quantity = quantity;
-        this.price = quantity;
+        this.price = price;
     }
+
+    public void modifyOrderMenuPrice(int price) {
+        this.price = price;
+    }
+
 }
