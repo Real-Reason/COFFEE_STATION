@@ -6,7 +6,8 @@ const Cafemenu = ({ route }) => {
 
   useEffect(() => {
     console.log(' cafe menu mount');
-    console.log(route.params)
+    console.log(route.params);
+    setCafeMenu();
     return () => console.log(' cafe menu Unmount');
   }, []);
 
