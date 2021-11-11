@@ -4,6 +4,8 @@ package ssafy.runner.controller.customer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
@@ -61,10 +63,12 @@ public class CustomerOrderController {
 
     @GetMapping("/orders/{orderId}/paid")
     @ApiOperation(value = "주문 결제 완료, 주문상태 변경 및 fcm 알림전송")
-    public void orderPayCompleted(@PathVariable("orderId") Long orderId) throws IOException {
+    public ResponseEntity<String> orderPayCompleted(@PathVariable("orderId") Long orderId) throws IOException {
 
         partnerOrderService.modifyStatus(orderId, new OrderUpdateRequestDto("PAID"));
         customerOrderService.paidFcm(orderId);
+
+        return new ResponseEntity<>("주문 결제 완료", HttpStatus.OK);
     }
 
 }

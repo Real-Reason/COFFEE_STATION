@@ -4,6 +4,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface ShopRepository extends JpaRepository<Shop, Long>, ShopRepositor
             " from shop where ST_Within(location, :circle)", nativeQuery = true)
     List<Shop> findNears(@Param("circle") Geometry circle);
 
-    @Query("select s.firebaseToken from Shop s where s.id = :shopId")
-    Optional<String> findFirebaseTokenById(@Param("shopId") Long shopId);
+    @Query(value = "select s from Shop s" +
+                    " join fetch s.partner" +
+                    " where s.id = :shopId")
+    Optional<Shop> findFirebaseTokenById(@Param("shopId") Long shopId);
 }

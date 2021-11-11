@@ -61,7 +61,6 @@ public class FirebaseCloudMessageService {
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
         googleCredentials.refreshIfExpired();
-        System.out.println("googleCredentials = " + googleCredentials.getAccessToken().getTokenValue());
         return googleCredentials.getAccessToken().getTokenValue();
     }
 }

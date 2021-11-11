@@ -43,8 +43,6 @@ public class Shop {
     private String intro;
     private String instagram;
 
-    private String firebaseToken = "";
-
     @Builder
     public Shop(Partner partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, org.locationtech.jts.geom.Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) throws ParseException {
         this.partner = partner;

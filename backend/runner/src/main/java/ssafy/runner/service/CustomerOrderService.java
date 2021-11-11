@@ -28,7 +28,10 @@ public class CustomerOrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMenuRepository orderMenuRepository;
+
     private final CustomerRepository customerRepository;
+    private final PartnerRepository partnerRepository;
+
     private final ShopRepository shopRepository;
     private final MenuRepository menuRepository;
     private final MenuSizeRepository menuSizeRepository;
@@ -125,15 +128,15 @@ public class CustomerOrderService {
     }
 
     public void paidFcm(Long orderId) throws IOException {
-        System.out.println("==========================================");
         Orders order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
         List<OrderMenu> menuList = orderMenuRepository.findOneSimpleById(orderId);
         int menuListSize = menuList.size();
         String menuName = menuList.get(0).getMenu().getName();
-        System.out.println("==========================================");
 
         Long shopId = order.getShop().getId();
-        String firebaseToken = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
+        Shop shop = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
+        String firebaseToken = shop.getPartner().getFirebaseToken();
+//        String firebaseToken = partner.getFirebaseToken();
         firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.");
     }
 }
