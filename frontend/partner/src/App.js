@@ -68,7 +68,7 @@ export default function App({navigation}) {
       messaging()
         .getToken()
         .then(token => {
-          return saveTokenToDatabase(token);
+          console.log(token);
         });
 
     // Fetch the token from storage then navigate to our appropriate place
