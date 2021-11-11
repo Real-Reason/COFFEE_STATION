@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import messaging from '@react-native-firebase/messaging'
+
 import Main from './views/Main'
 
 const Stack = createNativeStackNavigator();
@@ -88,6 +90,12 @@ const App = ({ navigation }) => {
     };
 
     bootstrapAsync();
+
+    // firebase 토큰 받아오기
+    console.log("토큰 받아오는 중")
+    const token = messaging.getToken()
+    console.log(token)
+
   }, []);
   
   const authContext = useMemo(
