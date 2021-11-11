@@ -24,7 +24,7 @@ public class Partner {
 
     @Size(min = 8, max = 50)
     private String password;
-    private String firebaseToken;
+    private String firebaseToken = "";
 
     @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
     private Shop shop;
@@ -34,4 +34,6 @@ public class Partner {
         this.email = email;
         this.password = password;
     }
+
+    public void changeFirebaseToken(String firebaseToken) {this.firebaseToken = firebaseToken;}
 }

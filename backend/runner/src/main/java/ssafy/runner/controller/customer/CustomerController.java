@@ -4,8 +4,11 @@ package ssafy.runner.controller.customer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinRequestDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
 import ssafy.runner.domain.dto.LoginRequestDto;
@@ -14,6 +17,7 @@ import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
 import ssafy.runner.util.CustomPrincipal;
 import ssafy.runner.util.JwtUtil;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -46,5 +50,15 @@ public class CustomerController {
         System.out.println(principal.getEmail());
         System.out.println(principal.getRole());
         return "success";
+    }
+
+    @PatchMapping("/firebase-token")
+    @ApiOperation("파이어베이스 토큰 저장 요청")
+    public ResponseEntity<String> registerFirebase(Authentication authentication,
+                                                   @RequestBody FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
+        String email = ((CustomPrincipal) authentication.getPrincipal()).getEmail();
+        if (customerService.saveOrUpdateFirebaseToken(email, firebaseTokenSaveRequestDto)) {
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } else return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST);
     }
 }
