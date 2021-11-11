@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import axios from 'axios';
 
 
-const Cafe = ({ route }) => {
+const Cafe = ({ navigation, route }) => {
 
   useEffect(() => {
     console.log(' cafe detail mount');
-    console.log(route);
     setCafeDetail();
     return () => console.log(' cafe detail Unmount');
   }, []);
@@ -34,8 +33,11 @@ const Cafe = ({ route }) => {
         <Text>Cafe</Text>
         <Text>{ cafeDetail.address }</Text>
 
-        {cafeMenus.map(cafeMenu => (
-          <Text>{ cafeMenu.name }</Text>
+        {cafeMenus.map((cafeMenu, index) => (
+          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuId: cafeMenu.menuId})}>
+            <Text> cafe name : { cafeMenu.name } </Text>
+          </Pressable>
+
         ))}
 
       </View>

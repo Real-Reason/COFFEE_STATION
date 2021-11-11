@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
+import Cafemenu from './Cafemenu';
 
 
 const Stack = createNativeStackNavigator();
@@ -100,6 +101,7 @@ const MainScreen = () => {
         <Stack.Screen name="MainCafeList" component={MainCafeList} />
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Cafe" component={Cafe} />
+        <Stack.Screen name="Cafemenu" component={Cafemenu} />
       </Stack.Navigator>
   );
 }
