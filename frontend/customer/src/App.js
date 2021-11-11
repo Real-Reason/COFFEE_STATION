@@ -93,8 +93,8 @@ const App = ({ navigation }) => {
 
     // firebase 토큰 받아오기
     console.log("토큰 받아오는 중")
-    const token = messaging.getToken()
-    console.log(token)
+    const token = messaging().getToken().then(token => console.log("진짜 토큰이야~~~~", token))
+    console.log("토큰이다 !!!!!!!", token)
 
   }, []);
   
