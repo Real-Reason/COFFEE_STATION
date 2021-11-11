@@ -28,7 +28,7 @@ public class ShopReqDto {
     private String instagram;
 
     @Builder
-    public ShopReqDto(String name, String business_no, String phone_number, String address, String detail_address, String zip_code, Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public ShopReqDto(String name, String business_no, String phone_number, String address, String detail_address, String zip_code, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
 
         this.name = name;
         this.business_no = business_no;
@@ -36,7 +36,6 @@ public class ShopReqDto {
         this.address = address;
         this.detail_address = detail_address;
         this.zip_code = zip_code;
-        this.location = location;
         this.status = status;
         this.open_at = open_at;
         this.close_at = close_at;
@@ -44,7 +43,7 @@ public class ShopReqDto {
         this.instagram = instagram;
     }
 
-    public Shop toEntity() throws ParseException {
+    public Shop toEntity(Point point) throws ParseException {
         return Shop.builder()
                 .name(this.name)
                 .business_no(this.business_no)
@@ -52,7 +51,7 @@ public class ShopReqDto {
                 .address(this.address)
                 .detail_address(this.detail_address)
                 .zip_code(this.zip_code)
-                .location(this.location)
+                .location(point)
                 .status(this.status)
                 .open_at(this.open_at)
                 .close_at(this.close_at)
