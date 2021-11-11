@@ -28,5 +28,8 @@ public class OrderResponseDto {
         this.date = order.getDate();
         this.status = order.getStatus();
         this.totalPrice = order.getTotalPrice();
+        if (!order.getRequest().isEmpty()) {
+            this.request = order.getRequest();
+        }
     }
 }
