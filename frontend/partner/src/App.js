@@ -101,7 +101,7 @@ export default function App({navigation}) {
         let userToken;
 
         await axios
-          .post('http://3.38.99.110:8080/api/partner/login', data)
+          .post('http://10.0.2.2:8080/api/partner/login', data)
           .then(function (response) {
             console.log('Login! Token : ', response.data.token);
             userToken = response.data.token;
@@ -113,7 +113,7 @@ export default function App({navigation}) {
           });
         if ( userToken !== null ){
 //        const fbData = {'firebaseToken': firebaseToken};
-          await axios.patch('http://3.38.99.110:8080/api/partner/firebase-token', {'firebaseToken': firebaseToken},{
+          await axios.patch('http://10.0.2.2:8080/api/partner/firebase-token', {'firebaseToken': firebaseToken},{
           headers: {
             'Authorization': "Bearer " + userToken
             },
