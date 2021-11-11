@@ -15,13 +15,9 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-
     @Transactional
     public CustomerJoinResponseDto join(String email, String password, String nickname) {
-        customerRepository.findByEmail(email)
-                .ifPresent(c -> {
-                    throw new IllegalStateException("이미 가입된 회원 입니다.");
-                });
+        validateDuplicate(email);
         Customer customer = customerRepository.save(new Customer(email, password, nickname));
         return CustomerJoinResponseDto.of(customer);
     }
@@ -29,5 +25,12 @@ public class CustomerService {
     public boolean findCustomerExist(String email, String password) {
         System.out.println("CustomerRepository 실행");
         return customerRepository.existsByEmailAndPassword(email, password);
+    }
+
+    private void validateDuplicate(String email){
+        customerRepository.findByEmail(email)
+            .ifPresent(c -> {
+                throw new IllegalStateException("이미 가입된 이메일 주소입니다.");
+                });
     }
 }

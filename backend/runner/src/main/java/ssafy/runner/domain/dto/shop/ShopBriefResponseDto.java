@@ -11,6 +11,7 @@ import ssafy.runner.domain.entity.Shop;
 @AllArgsConstructor
 public class ShopBriefResponseDto {
 
+    private Long id;
     private String name;
     private String address;
     private String detail_address;
@@ -19,7 +20,7 @@ public class ShopBriefResponseDto {
     private double distanceFrom;
 
     public ShopBriefResponseDto(Shop shop, double distance) {
-
+        this.id = shop.getId();
         this.name = shop.getName();
         this.address = shop.getAddress();
         this.detail_address = shop.getDetail_address();

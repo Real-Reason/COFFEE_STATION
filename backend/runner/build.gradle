@@ -98,7 +98,7 @@ dependencies {
 	// querydsl
 	implementation 'com.querydsl:querydsl-jpa'
 //	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
-//	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 //	testImplementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
 //	testAnnotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
