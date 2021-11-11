@@ -5,14 +5,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.customer.CustomerOrderResponseDto;
 import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
+import ssafy.runner.domain.dto.order.OrderMenuRequestDto;
+import ssafy.runner.domain.dto.order.OrderRequestDto;
+import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.entity.*;
-import ssafy.runner.domain.repository.CustomerRepository;
-import ssafy.runner.domain.repository.OrderMenuRepository;
-import ssafy.runner.domain.repository.OrderRepository;
+import ssafy.runner.domain.enums.OrderStatus;
+import ssafy.runner.domain.repository.*;
 
+import javax.persistence.criteria.Order;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,6 +27,11 @@ public class CustomerOrderService {
     private final OrderRepository orderRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final CustomerRepository customerRepository;
+    private final ShopRepository shopRepository;
+    private final MenuRepository menuRepository;
+    private final MenuSizeRepository menuSizeRepository;
+    private final ExtraRepository extraRepository;
+    private final OrderMenuExtraRepository orderMenuExtraRepository;
 
     public List<CustomerOrderResponseDto> findOrdersByCustomer(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
@@ -68,5 +78,45 @@ public class CustomerOrderService {
         System.out.println("===============조회종료====================");
         // 분해조립해서 알맞은 dto로 만들어주어야 함
         return OrderDetailResDto.of(orderMenuList);
+    }
+
+    @Transactional
+    public OrderResponseDto order(String email, Long shopId, OrderRequestDto params) {
+
+        // Order 객체 생성 및 저장
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        Shop shop = shopRepository.findById(shopId).orElseThrow(NoSuchElementException::new);
+        Orders orders = new Orders(shop, customer, OrderStatus.ORDERED, 0, params.getRequest());
+        orderRepository.save(orders);
+        int totalPrice = 0;
+
+        List<OrderMenuRequestDto> orderMenuListDto = params.getOrderMenuList();
+        for (OrderMenuRequestDto orderMenuDto : orderMenuListDto) {
+            // orderMenuDto를 기반으로한 OrderMenu 객체 생성
+            Menu menu = menuRepository.findById(orderMenuDto.getMenuId()).orElseThrow(NoSuchElementException::new);
+            MenuSize menuSize = menuSizeRepository.findById(orderMenuDto.getMenuSizeId()).orElseThrow(NoSuchElementException::new);
+            OrderMenu orderMenu = new OrderMenu(orders, menu, menuSize, orderMenuDto.getQuantity(),0);
+            orderMenuRepository.save(orderMenu);
+            int orderMenuPrice = menu.getPrice();
+
+            for (Long extraId : orderMenuDto.getExtraIdList()) {
+                // 해당 extra 찾고, OrderMenuExtra 객체 생성 및 저장
+                Extra extra = extraRepository.findById(extraId).orElseThrow(NoSuchElementException::new);
+                OrderMenuExtra orderMenuExtra = new OrderMenuExtra(orderMenu, extra);
+                orderMenuExtraRepository.save(orderMenuExtra);
+                orderMenuPrice += extra.getPrice();
+            }
+
+            // orderMenu
+            orderMenuPrice = orderMenuPrice * orderMenuDto.getQuantity();  // quantity 곱해주기
+            orderMenu.modifyOrderMenuPrice(orderMenuPrice); // orderMenu price 변경/업데이트
+            totalPrice += orderMenuPrice;  // order 전체가격(totalPrice)에 orderMenu price 더해주기
+        }
+
+        // order totalPrice 변경
+        orders.modifyOrderPrice(totalPrice);
+
+        // OrderResponseDto 객체 반환
+        return new OrderResponseDto(orders);
     }
 }
