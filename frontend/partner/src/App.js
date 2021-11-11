@@ -99,7 +99,7 @@ export default function App({navigation}) {
         let userToken;
 
         await axios
-          .post('http://localhost:8080/api/partner/login', data)
+          .post('http://10.0.2.2:8080/api/partner/login', data)
           .then(function (response) {
             console.log('Login! Token : ', response.data.token);
             userToken = response.data.token;

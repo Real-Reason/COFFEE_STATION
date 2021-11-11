@@ -12,8 +12,8 @@ const StyledText = styled.Text`
   margin: 10px 0;
 `;
 const StyledImage = styled.Image`
-  width: 20;
-  height: 20;
+  width: 20px;
+  height: 20px;
 `;
 const StyledButton = styled.Button`
   font-size: 20px;
