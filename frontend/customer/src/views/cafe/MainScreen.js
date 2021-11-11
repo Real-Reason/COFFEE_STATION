@@ -3,6 +3,7 @@ import { View, Text, Pressable, Button } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
@@ -19,7 +20,7 @@ const MainCafeList = ({ navigation }) => {
     const params = { radius: 0.008, x: 127.013625487132, y: 37.598830255568 };
     try {
       const response = await axios.get(
-        `http://10.0.2.2:8080/api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
+        `http://3.38.99.110:8080/api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
       );
       console.log(response.data);
       setCafeList(response.data)
@@ -61,9 +62,9 @@ const MainCafeList = ({ navigation }) => {
   }
 
   useEffect(() => {
-    console.log(' main screen mount');
+    console.log(' main screen mount!!');
     getInfo();
-    return () => console.log('main screen Unmount');
+    return () => console.log('main screen Unmount!');
   }, []);
 
   return (
@@ -83,8 +84,8 @@ const MainCafeList = ({ navigation }) => {
         <Text> latitude?: {latitude} </Text>
         <Text> longitude?: {longitude} </Text>
 
-        {cafeList.map(cafe => (
-          <Pressable onPress={() => goCafeDetail(cafe)}>
+        {cafeList.map((cafe, index) => (
+          <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
             <Text> cafe name : {cafe.name} </Text>
           </Pressable>
         ))}

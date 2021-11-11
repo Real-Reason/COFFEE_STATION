@@ -17,7 +17,7 @@ const Cafe = ({ navigation, route }) => {
   const setCafeDetail = async() => {
     console.log('get Cafe Detail');
     try {
-      const response = await axios.get(`http://10.0.2.2:8080/api/customer/shop/${route.params.id}`);
+      const response = await axios.get(`http://3.38.99.110:8080/api/customer/shop/${route.params.id}`);
       console.log(response.data);
       getCafeDetail(response.data);
       console.log(response.data.menuList.menuList);
@@ -32,9 +32,13 @@ const Cafe = ({ navigation, route }) => {
       <View>
         <Text>Cafe</Text>
         <Text>{ cafeDetail.address }</Text>
+        <Text>{ cafeDetail.intro }</Text>
+        <Text>{ cafeDetail.phone_number }</Text>
+        <Text>{ cafeDetail.open_at } ~ { cafeDetail.close_at }</Text>
+        <Text></Text>
 
         {cafeMenus.map((cafeMenu, index) => (
-          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuId: cafeMenu.menuId})}>
+          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu})}>
             <Text> cafe name : { cafeMenu.name } </Text>
           </Pressable>
 
