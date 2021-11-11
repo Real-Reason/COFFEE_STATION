@@ -57,27 +57,26 @@ public class ShopService {
     @Transactional
     public Long save(ShopReqDto params, Long partnerId) throws IOException, ParseException {
 
-        Optional<Partner> optional = partnerRepository.findById(partnerId);
-        if (optional.isEmpty()) throw new RuntimeException("회원이 없습니다");
-        Partner partner = optional.get();
+        Partner partner = partnerRepository.findById(partnerId)
+                .orElseThrow(NoSuchElementException::new);
         Point point = getPoint(params.getX(), params.getY());
-        Shop shop = new Shop(partner, params.getName(), params.getBusiness_no(), params.getPhone_number(), params.getAddress(), params.getDetail_address(), params.getZip_code(), point, params.getStatus(), params.getOpen_at(), params.getClose_at(), params.getIntro(), params.getInstagram());
+        Shop shop = params.toEntity(point);
         shopRepository.save(shop);
         return shop.getId();
     }
 
     public ShopResDto getShopDetail(Long shopId) {
 
-        Optional<Shop> optional = shopRepository.findById(shopId);
-        if (optional.isEmpty()) throw new RuntimeException("가게가 없습니다.");
-        Shop shop = optional.get();
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(NoSuchElementException::new);
         return ShopResDto.entityToDto(shop);
     }
 
     @Transactional
     public void changeShopStatus(String status, Long shopId) {
 
-        Shop shop = shopRepository.getById(shopId);
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(NoSuchElementException::new);
         ShopStatus enumStatus = ShopStatus.valueOf(status);
         shop.changeShopStatus(enumStatus);
     }
