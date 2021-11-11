@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import axios from 'axios';
 
 
@@ -37,6 +37,7 @@ const Cafe = ({ route }) => {
           <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuId: cafeMenu.menuId})}>
             <Text> cafe name : { cafeMenu.name } </Text>
           </Pressable>
+
         ))}
 
       </View>
