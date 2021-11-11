@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.net.HttpHeaders;
 import lombok.RequiredArgsConstructor;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
     // FirebaseCloudMessageService 객체를 생성하고, sendMessageTo() 메서드를 호출 하면 끝
-    private final String API_URL = "https://fcm/googleapis.com/v1/projects/runner-b31dd/messages:send";
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/runner-b31dd/messages:send";
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {
 
         String message = makeMessage(targetToken, title, body);
+        System.out.println("message ================= " + message);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
@@ -34,22 +32,27 @@ public class FirebaseCloudMessageService {
                 .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
                 .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
                 .build();
+        System.out.println("request ========================== " + request);
+
+        Response response = client.newCall(request).execute();
+        System.out.println("========== response ============== " + response.body().string());
     }
 
     private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
-                        .token(targetToken)
-                        .notification(FcmMessage.Notification.builder()
+                    .token(targetToken)
+                    .notification(FcmMessage.Notification.builder()
                         .title(title)
                         .body(body)
                         .image(null)
                         .build()
-                        )
-                .build()
+                    )
+                    .build()
                 )
                 .validate_only(false)
                 .build();
+
         return objectMapper.writeValueAsString(fcmMessage);
     }
 
@@ -59,7 +62,9 @@ public class FirebaseCloudMessageService {
 
         GoogleCredentials googleCredentials = GoogleCredentials.fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+
         googleCredentials.refreshIfExpired();
+        System.out.println("googleCredentials = " + googleCredentials.getAccessToken().getTokenValue());
         return googleCredentials.getAccessToken().getTokenValue();
     }
 }
