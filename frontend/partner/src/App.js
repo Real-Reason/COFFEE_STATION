@@ -12,7 +12,6 @@ import messaging from '@react-native-firebase/messaging';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
-
 const SplashScreen = () => {
   return (
     <View>
@@ -33,6 +32,7 @@ const HomeScreen = () => {
 };
 
 export default function App({navigation}) {
+  let firebaseToken;
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -65,10 +65,12 @@ export default function App({navigation}) {
 
   useEffect(() => {
   // Get the device token(firebase)
+
       messaging()
         .getToken()
         .then(token => {
-          console.log(token);
+          firebaseToken = token;
+          console.log(firebaseToken)
         });
 
     // Fetch the token from storage then navigate to our appropriate place
@@ -99,16 +101,30 @@ export default function App({navigation}) {
         let userToken;
 
         await axios
-          .post('http://localhost:8080/api/partner/login', data)
+          .post('http://3.38.99.110:8080/api/partner/login', data)
           .then(function (response) {
             console.log('Login! Token : ', response.data.token);
             userToken = response.data.token;
             AsyncStorage.setItem('userToken', userToken);
             dispatch({type: 'SIGN_IN', token: 'userToken'});
+            const fbData = {'firebaseToken': firebaseToken};
           })
           .catch(function (error) {
             console.log(error);
           });
+        if ( userToken !== null ){
+        await axios.patch('http://3.38.99.110:8080/api/partner/firebase-token', fbData,{
+          headers: {
+            'Authorization': "Bearer " + userToken
+            },
+          })
+          .then(res => {
+          console.log("success", res);
+          })
+          .catch(error => {
+          console.log("fail", error);
+          })
+        }
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
       // signUp: async data => {
