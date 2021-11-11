@@ -30,6 +30,7 @@ public class PartnerService {
         return partnerRepository.existsByEmailAndPassword(email, password);
     }
 
+    @Transactional
     public boolean saveOrUpdateFirebaseToken(String email, FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
         Partner partner= partnerRepository.findByEmail(email)
                 .orElseThrow(NoSuchElementException::new);

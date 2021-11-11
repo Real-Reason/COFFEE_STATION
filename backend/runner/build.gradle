@@ -98,7 +98,7 @@ dependencies {
 	// querydsl
 	implementation 'com.querydsl:querydsl-jpa'
 //	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
-	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+//	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 //	testImplementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
 //	testAnnotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
@@ -111,22 +111,22 @@ test {
 
 // querydsl
 
-//def querydslDir = "$buildDir/generated/querydsl"
-//
-//querydsl {
-//	jpa = true
-//	querydslSourcesDir = querydslDir
-//}
-//
-//sourceSets {
-//	main.java.srcDir querydslDir
-//}
-//
-//configurations {
-//	querydsl.extendsFrom compileClasspath
-//}
-//
-//compileQuerydsl {
-//	options.annotationProcessorPath = configurations.querydsl
-//}
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
 
