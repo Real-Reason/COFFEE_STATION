@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
     // FirebaseCloudMessageService 객체를 생성하고, sendMessageTo() 메서드를 호출 하면 끝
-    private final String API_URL = "https://fcm/googleapis.com/v1/projects/testnotificationserver-f267b/messages:send";
+    private final String API_URL = "https://fcm/googleapis.com/v1/projects/runner-b31dd/messages:send";
     private final ObjectMapper objectMapper;
 
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {

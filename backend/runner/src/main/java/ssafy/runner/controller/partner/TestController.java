@@ -12,6 +12,9 @@ import ssafy.runner.domain.dto.TestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayApprovalRequestDto;
 import ssafy.runner.domain.dto.customer.KakaoPayRequestDto;
 import ssafy.runner.domain.enums.UserType;
+import ssafy.runner.firebase.FcmMessage;
+import ssafy.runner.firebase.FcmMessageReqDto;
+import ssafy.runner.firebase.FirebaseCloudMessageService;
 import ssafy.runner.service.KakaoPayService;
 import ssafy.runner.service.PartnerService;
 import ssafy.runner.service.S3Uploader;
@@ -33,6 +36,7 @@ public class TestController {
     private final PartnerService partnerService;
     private final KakaoPayService kakaoPayService;
     private final S3Uploader s3Uploader;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @GetMapping("")
     @ApiOperation(value = "테스트")
@@ -106,5 +110,11 @@ public class TestController {
         s3Uploader.upload(multipartFile, "static");
 
         return "test";
+    }
+
+    @PostMapping("/firbase")
+    public void fcm(@RequestBody FcmMessageReqDto fcmMessageReqDto) throws IOException {
+
+        firebaseCloudMessageService.sendMessageTo(fcmMessageReqDto.getTargetToken(), fcmMessageReqDto.getTitle(), fcmMessageReqDto.getBody());
     }
 }
