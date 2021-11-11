@@ -101,25 +101,25 @@ export default function App({navigation}) {
         let userToken;
 
         await axios
-          .post('http://3.38.99.110:8080/api/partner/login', data)
+          .post('http://10.0.2.2:8080/api/partner/login', data)
           .then(function (response) {
             console.log('Login! Token : ', response.data.token);
             userToken = response.data.token;
             AsyncStorage.setItem('userToken', userToken);
             dispatch({type: 'SIGN_IN', token: 'userToken'});
-            const fbData = {'firebaseToken': firebaseToken};
           })
           .catch(function (error) {
             console.log(error);
           });
         if ( userToken !== null ){
-        await axios.patch('http://3.38.99.110:8080/api/partner/firebase-token', fbData,{
+//        const fbData = {'firebaseToken': firebaseToken};
+          await axios.patch('http://10.0.2.2:8080/api/partner/firebase-token', {'firebaseToken': firebaseToken},{
           headers: {
             'Authorization': "Bearer " + userToken
             },
           })
           .then(res => {
-          console.log("success", res);
+          console.log("success", res.data);
           })
           .catch(error => {
           console.log("fail", error);
