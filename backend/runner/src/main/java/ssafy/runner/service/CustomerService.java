@@ -3,9 +3,13 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
 import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.repository.CustomerRepository;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -25,6 +29,13 @@ public class CustomerService {
     public boolean findCustomerExist(String email, String password) {
         System.out.println("CustomerRepository 실행");
         return customerRepository.existsByEmailAndPassword(email, password);
+    }
+
+    public boolean saveOrUpdateFirebaseToken(String email, FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
+        Customer customer= customerRepository.findByEmail(email)
+                .orElseThrow(NoSuchElementException::new);
+        customer.changeFirebaseToken(firebaseTokenSaveRequestDto.getFirebaseToken());
+        return true;
     }
 
     private void validateDuplicate(String email){

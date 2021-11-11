@@ -26,7 +26,7 @@ public class Customer {
 
     @Size(min = 8, max = 20)
     private String password;
-    private String firebaseToken;
+    private String firebaseToken = "";
 
     @Size(min = 2, max = 10)
     private String nickname;
@@ -57,4 +57,5 @@ public class Customer {
     public void changeLocalToGoogle(String accessToken) {
         this.snsType = SnsType.GOOGLE;
     }
+    public void changeFirebaseToken(String firebaseToken) {this.firebaseToken = firebaseToken;}
 }
