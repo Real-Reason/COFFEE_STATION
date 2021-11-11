@@ -7,7 +7,6 @@ const Cafe = ({ route }) => {
 
   useEffect(() => {
     console.log(' cafe detail mount');
-    console.log(route);
     setCafeDetail();
     return () => console.log(' cafe detail Unmount');
   }, []);
@@ -35,7 +34,7 @@ const Cafe = ({ route }) => {
         <Text>{ cafeDetail.address }</Text>
 
         {cafeMenus.map((cafeMenu, index) => (
-          <Pressable key={index} onPress={() => alert(cafeMenu.name)}>
+          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuId: cafeMenu.menuId})}>
             <Text> cafe name : { cafeMenu.name } </Text>
           </Pressable>
         ))}
