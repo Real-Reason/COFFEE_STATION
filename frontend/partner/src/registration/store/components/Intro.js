@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {AuthContext} from '../../../App';
 
@@ -12,8 +12,8 @@ const StyledText = styled.Text`
   margin: 10px 0;
 `;
 const StyledImage = styled.Image`
-  width: 200;
-  height: 200;
+  width: 20;
+  height: 20;
 `;
 const StyledButton = styled.Button`
   font-size: 20px;
@@ -24,6 +24,9 @@ const StyledButton = styled.Button`
 const Intro = ({navigation}) => {
   const {signOut} = useContext(AuthContext);
 
+  useEffect(() => {
+    console.log('INTRO');
+  });
   return (
     <Container>
       <StyledText>똑똑한 테이크아웃을 위한 첫걸음</StyledText>
