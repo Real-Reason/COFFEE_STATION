@@ -7,11 +7,14 @@ import org.springframework.data.repository.query.Param;
 import ssafy.runner.domain.entity.Shop;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 public interface ShopRepository extends JpaRepository<Shop, Long>, ShopRepositoryCustom{
     @Query(value = "select * " +
             " from shop where ST_Within(location, :circle)", nativeQuery = true)
     List<Shop> findNears(@Param("circle") Geometry circle);
+
+    @Query("select s.firebaseToken from Shop s where s.id = :shopId")
+    Optional<String> findFirebaseTokenById(@Param("shopId") Long shopId);
 }

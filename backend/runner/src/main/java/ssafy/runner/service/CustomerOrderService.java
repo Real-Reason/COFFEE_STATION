@@ -11,8 +11,10 @@ import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.repository.*;
+import ssafy.runner.firebase.FirebaseCloudMessageService;
 
 import javax.persistence.criteria.Order;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class CustomerOrderService {
     private final MenuSizeRepository menuSizeRepository;
     private final ExtraRepository extraRepository;
     private final OrderMenuExtraRepository orderMenuExtraRepository;
+
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     public List<CustomerOrderResponseDto> findOrdersByCustomer(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
@@ -118,5 +122,16 @@ public class CustomerOrderService {
 
         // OrderResponseDto 객체 반환
         return new OrderResponseDto(orders);
+    }
+
+    public void paidFcm(Long orderId) throws IOException {
+        System.out.println("==========================================");
+        Orders order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
+        System.out.println("==========================================");
+
+        Long shopId = order.getShop().getId();
+        String shopName = order.getShop().getName();
+        String firebaseToken = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
+        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", shopName + "주문이 완료되었습니다");
     }
 }
