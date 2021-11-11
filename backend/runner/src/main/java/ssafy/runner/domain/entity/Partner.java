@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -17,10 +18,13 @@ public class Partner {
     @Column(name = "partner_id")
     private Long id;
 
+    @NotNull
+    @Column(unique = true)
     private String email;
 
     @Size(min = 8, max = 50)
     private String password;
+    private String firebaseToken;
 
     @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
     private Shop shop;
@@ -30,6 +34,4 @@ public class Partner {
         this.email = email;
         this.password = password;
     }
-
-
 }

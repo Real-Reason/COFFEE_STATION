@@ -13,11 +13,9 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
             " join fetch p.shop s" +
             " where p.email = :email")
     Optional<Partner> findByEmailWithShop(@Param("email") String email);
-
     Optional<Partner> findByEmailAndPassword(String email, String password);
-
+    Optional<Partner> findByEmail(String email);
     boolean existsByEmail(String email);
-
     boolean existsByEmailAndPassword(String email, String password);
 
 

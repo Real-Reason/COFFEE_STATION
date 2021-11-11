@@ -21,11 +21,12 @@ public class Customer {
     private Long id;
 
     @NotNull
-    @NotBlank
+    @Column(unique = true)
     private String email;
 
     @Size(min = 8, max = 20)
     private String password;
+    private String firebaseToken;
 
     @Size(min = 2, max = 10)
     private String nickname;
