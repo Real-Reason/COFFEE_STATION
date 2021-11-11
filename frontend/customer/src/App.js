@@ -2,16 +2,18 @@ import React, { useState, useEffect, useMemo, createContext, useContext } from '
 import { View, TextInput, Button, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-import messaging from '@react-native-firebase/messaging'
+import messaging from '@react-native-firebase/messaging';
 
-import Main from './views/Main'
+import Main from './views/Main';
+import Signup from './views/user/Signup';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
 
-const SignInScreen = () => {
+const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,6 +35,7 @@ const SignInScreen = () => {
       <Button title="Sign in" onPress={() => signIn({ email, password })} />
       
       <Text>Login</Text>
+      <Button title="Sign up" onPress={() => navigation.navigate('Signup')}></Button>
     </View>
   );
 }
@@ -110,7 +113,7 @@ const App = ({ navigation }) => {
         try {
           console.log(data)
           const response = await axios.post(
-            'http://10.0.2.2:8080/api/customer/login',
+            'http://3.38.99.110:8080/api/customer/login',
             data
           );
           
@@ -127,17 +130,18 @@ const App = ({ navigation }) => {
     []
   );
 
-  const dumy = 'dumy'
+  // const dumy = 'dumy'
 
   return (
   <AuthContext.Provider value={authContext}>
     <NavigationContainer>
         <Stack.Navigator>
-          {dumy == null ? (
+          {state.userToken == null ? (
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
           ) : (
             <Stack.Screen name="Main" component={Main} />
           )}
+          <Stack.Screen name="Signup" component={Signup} />
         </Stack.Navigator>
     </NavigationContainer>
   </AuthContext.Provider>
