@@ -22,7 +22,6 @@ public class FirebaseCloudMessageService {
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {
 
         String message = makeMessage(targetToken, title, body);
-        System.out.println("message ================= " + message);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
@@ -32,10 +31,8 @@ public class FirebaseCloudMessageService {
                 .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
                 .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
                 .build();
-        System.out.println("request ========================== " + request);
 
         Response response = client.newCall(request).execute();
-        System.out.println("========== response ============== " + response.body().string());
     }
 
     private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {

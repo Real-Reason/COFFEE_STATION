@@ -127,11 +127,13 @@ public class CustomerOrderService {
     public void paidFcm(Long orderId) throws IOException {
         System.out.println("==========================================");
         Orders order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
+        List<OrderMenu> menuList = orderMenuRepository.findOneSimpleById(orderId);
+        int menuListSize = menuList.size();
+        String menuName = menuList.get(0).getMenu().getName();
         System.out.println("==========================================");
 
         Long shopId = order.getShop().getId();
-        String shopName = order.getShop().getName();
         String firebaseToken = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
-        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", shopName + "주문이 완료되었습니다");
+        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.");
     }
 }
