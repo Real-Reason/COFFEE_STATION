@@ -33,6 +33,7 @@ public class FirebaseCloudMessageService {
                 .build();
 
         Response response = client.newCall(request).execute();
+        response.close();
     }
 
     private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
