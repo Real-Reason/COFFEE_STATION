@@ -9,7 +9,7 @@ import Sign from './registration/sign/Sign';
 import SignInScreen from './registration/sign/components/SignInScreen';
 import Main from './registration/store/Main';
 import messaging from '@react-native-firebase/messaging';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
@@ -57,6 +57,12 @@ export default function App({navigation}) {
             isSignout: true,
             userToken: null,
           };
+        case 'SIGN_UP':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: null,
+          };
       }
     },
     {
@@ -89,12 +95,12 @@ export default function App({navigation}) {
             }
           },
         ],
-        { cancelable: false }
+        {cancelable: false},
       );
     });
     return unsubscribe;
   }, []);
-  
+
   // 토큰 저장
   useEffect(() => {
     // Get the device token
@@ -106,7 +112,7 @@ export default function App({navigation}) {
       });
     // Listen to whether the token changes
     return messaging().onTokenRefresh(firebaseToken => {
-      saveTokenToDatabase({ firebaseToken });
+      saveTokenToDatabase({firebaseToken});
     });
   }, []);
   // const baseURL = 'http://10.0.2.2:8080/api/partner'
@@ -120,7 +126,7 @@ export default function App({navigation}) {
         },
       })
       .then(res => {
-      console.log("success", res.data);
+        console.log('status 변경 완료', res.data);
       })
       .catch(error => {
       console.log("fail", error);
@@ -183,16 +189,23 @@ export default function App({navigation}) {
           .catch(function (error) {
             console.log(error);
           });
-
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
-      // signUp: async data => {
-      //   dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
-      // },
+      signUp: async data => {
+        await axios
+          .post(baseURL + '/join', data)
+          .then(function (response) {
+            console.log('Sign Up!', response.data);
+            alert('회원가입 성공');
+            dispatch({type: 'SIGN_UP', token: 'null'});
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
     }),
     [],
   );
-
 
   return (
     // authContext를 value로 넘겨주고 useContext를 사용하기 때문에 AuthContext의 Children으로 있는

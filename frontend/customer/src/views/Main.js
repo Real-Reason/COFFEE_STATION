@@ -4,7 +4,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainScreen from './cafe/MainScreen'
 import Favorite from './user/Favorite'
-import Cart from './user/Cart'
+import CartAndOrder from './user/Cart'
 import Orderlist from './user/Orderlist'
 import Alarm from './Alarm';
 
@@ -16,7 +16,7 @@ const Main = () => {
     <Tab.Navigator>
       <Tab.Screen name="MainScreen" component={MainScreen} />
       <Tab.Screen name="Favorite" component={Favorite} />
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="CartAndOrder" component={CartAndOrder} />
       <Tab.Screen name="Orderlist" component={Orderlist} />
       <Tab.Screen name="Alarm" component={Alarm} />
     </Tab.Navigator>
