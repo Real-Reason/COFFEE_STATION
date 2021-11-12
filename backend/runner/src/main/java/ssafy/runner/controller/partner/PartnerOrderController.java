@@ -14,6 +14,7 @@ import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.PartnerOrderService;
 import ssafy.runner.util.CustomPrincipal;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class PartnerOrderController {
     @ApiOperation(value = "주문상태 변경")
     public ResponseEntity<OrderResponseDto> changeOrderStatus(Authentication authentication,
                                                               @PathVariable Long orderId,
-                                                              @RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
+                                                              @RequestBody OrderUpdateRequestDto orderUpdateRequestDto) throws IOException {
 
         checkPrincipalReturnEmail(authentication);
         OrderResponseDto order = partnerOrderService.modifyStatus(orderId, orderUpdateRequestDto);
