@@ -138,6 +138,6 @@ public class CustomerOrderService {
         Shop shop = shopRepository.findShopNPartnerById(shopId).orElseThrow(NoSuchElementException::new);
         String firebaseToken = shop.getPartner().getFirebaseToken();
 //        String firebaseToken = partner.getFirebaseToken();
-        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.");
+        firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.", orderId);
     }
 }

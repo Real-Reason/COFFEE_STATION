@@ -23,6 +23,8 @@ public class FcmMessage {
         private Notification notification;
         // 특정 디바이스에 알림을 보내기 위한 기기 토큰 token, topic, condition 중 하나만 지정
         private String token;
+        // 메시지에 보내고 싶은 데이터 추가하기
+        private FirebaseData data;
     }
 
     @Getter
@@ -34,4 +36,13 @@ public class FcmMessage {
         private String body;
         private String image;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class FirebaseData {
+
+        private String orderId;
+    }
+
 }

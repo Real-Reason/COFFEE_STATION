@@ -115,6 +115,6 @@ public class TestController {
     @PostMapping("/firbase")
     public void fcm(@RequestBody FcmMessageReqDto fcmMessageReqDto) throws IOException {
 
-        firebaseCloudMessageService.sendMessageTo(fcmMessageReqDto.getTargetToken(), fcmMessageReqDto.getTitle(), fcmMessageReqDto.getBody());
+        firebaseCloudMessageService.sendMessageTo(fcmMessageReqDto.getTargetToken(), fcmMessageReqDto.getTitle(), fcmMessageReqDto.getBody(), fcmMessageReqDto.getOrderId());
     }
 }

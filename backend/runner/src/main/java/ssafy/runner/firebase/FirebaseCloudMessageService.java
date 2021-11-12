@@ -19,9 +19,9 @@ public class FirebaseCloudMessageService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/runner-b31dd/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
+    public void sendMessageTo(String targetToken, String title, String body, Long orderId) throws IOException {
 
-        String message = makeMessage(targetToken, title, body);
+        String message = makeMessage(targetToken, title, body, orderId);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
@@ -36,7 +36,7 @@ public class FirebaseCloudMessageService {
         response.close();
     }
 
-    private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body, Long orderId) throws JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                     .token(targetToken)
@@ -46,6 +46,9 @@ public class FirebaseCloudMessageService {
                         .image(null)
                         .build()
                     )
+                    .data(FcmMessage.FirebaseData.builder()
+                        .orderId(String.valueOf(orderId))
+                        .build())
                     .build()
                 )
                 .validate_only(false)
