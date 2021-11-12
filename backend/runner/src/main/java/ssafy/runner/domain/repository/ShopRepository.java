@@ -19,5 +19,5 @@ public interface ShopRepository extends JpaRepository<Shop, Long>, ShopRepositor
     @Query(value = "select s from Shop s" +
                     " join fetch s.partner" +
                     " where s.id = :shopId")
-    Optional<Shop> findFirebaseTokenById(@Param("shopId") Long shopId);
+    Optional<Shop> findShopNPartnerById(@Param("shopId") Long shopId);
 }

@@ -10,11 +10,17 @@ import ssafy.runner.domain.enums.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Orders, Long> {
     @Query("select o from Orders o join fetch o.customer " +
             "where o.shop = :shop")
     List<Orders> findByShop(@Param("shop") Shop shop);
+
+    @Query("select o from Orders o" +
+            " join fetch o.shop" +
+            " where o.id = :orderId")
+    Optional<Orders> findOrderNShopById(@Param("orderId") Long orderId);
 
     @Query("select o from Orders o join fetch o.customer " +
             "where o.shop = :shop and o.date > :date")

@@ -11,6 +11,8 @@ import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.OrderStatus;
 import ssafy.runner.domain.repository.OrderRepository;
 import ssafy.runner.domain.repository.PartnerRepository;
+import ssafy.runner.domain.repository.ShopRepository;
+import ssafy.runner.firebase.FirebaseCloudMessageService;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,6 +27,8 @@ public class PartnerOrderService {
 
     private final OrderRepository orderRepository;
     private final PartnerRepository partnerRepository;
+    private final ShopRepository shopRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     // 해당 샵의 전체 주문 내역 조회
     public List<OrderResponseDto> findByShop(String email) {
@@ -76,10 +80,27 @@ public class PartnerOrderService {
     @Transactional
     public OrderResponseDto modifyStatus(Long orderId, OrderUpdateRequestDto orderUpdateRequestDto) {
 
-        Orders order = orderRepository.findById(orderId)
+        Orders order = orderRepository.findOrderNShopById(orderId)
                 .orElseThrow(NoSuchElementException::new);
         OrderStatus enumStatus = OrderStatus.from(orderUpdateRequestDto.getStatus());
-        order.modifyOrderStatus(enumStatus);
+
+        // firebase Token 가져오기
+        Long shopId = order.getShop().getId();
+        Shop shop = shopRepository.findShopNPartnerById(shopId).orElseThrow(NoSuchElementException::new);
+        String firebaseToken = shop.getPartner().getFirebaseToken();
+
+        if (enumStatus == OrderStatus.PREPARING){
+            System.out.println("메뉴 수락했습니다.");
+        } else if (enumStatus == OrderStatus.REJECT) {
+            System.out.println("메뉴 거절했습니다.");
+        } else if (enumStatus == OrderStatus.ORDERED) {
+            System.out.println("메뉴 준비완료 했습니다.");
+        } else if (enumStatus == OrderStatus.COMPLETED) {
+            System.out.println("메뉴 픽업 완료했습니다.");
+        }
+//        firebaseCloudMessageService.sendMessageTo(Token, Title, body);
+
+        order.modifyOrderStatus(enumStatus);  // 현재 이 코드가 메뉴 상태 변경
         return new OrderResponseDto(order);
     }
 
@@ -101,10 +122,6 @@ public class PartnerOrderService {
         Integer totalPrices =  orderRepository.findTotalRevenue(shop, OrderStatus.COMPLETED);
         return totalPrices == null ? 0 : totalPrices;
     }
-
-
-
-
 
     private LocalDateTime startDateTime(LocalDateTime dateTime) {
         return LocalDateTime.of(dateTime.toLocalDate(), LocalTime.of(0,0,0));

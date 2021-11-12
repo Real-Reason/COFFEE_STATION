@@ -128,13 +128,14 @@ public class CustomerOrderService {
     }
 
     public void paidFcm(Long orderId) throws IOException {
-        Orders order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
+        // shop을 fetch join으로 같이 가져오기
+        Orders order = orderRepository.findOrderNShopById(orderId).orElseThrow(NoSuchElementException::new);
         List<OrderMenu> menuList = orderMenuRepository.findOneSimpleById(orderId);
         int menuListSize = menuList.size();
         String menuName = menuList.get(0).getMenu().getName();
 
         Long shopId = order.getShop().getId();
-        Shop shop = shopRepository.findFirebaseTokenById(shopId).orElseThrow(NoSuchElementException::new);
+        Shop shop = shopRepository.findShopNPartnerById(shopId).orElseThrow(NoSuchElementException::new);
         String firebaseToken = shop.getPartner().getFirebaseToken();
 //        String firebaseToken = partner.getFirebaseToken();
         firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", menuName + " 외 " + menuListSize + "건의 주문이 접수되었습니다.");
