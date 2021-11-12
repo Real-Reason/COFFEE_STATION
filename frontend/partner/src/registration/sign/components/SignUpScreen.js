@@ -1,5 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components/native';
+import {AuthContext} from '../../../App';
 
 const StyledInput = styled.TextInput`
   border: 1px solid #111111;
@@ -18,10 +19,21 @@ const StyledImage = styled.Image`
   height: 50px;
 `;
 
-const SignUpScreen = () => {
+const SignUpScreen = navigation => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const {signUp} = useContext(AuthContext);
+
+  // const handleSignUp = () => {
+  //   try {
+  //     signUp({email, password, passwordConfirm});
+  //     // navigation.navigate('SignIn');
+  //   } catch (error) {
+  //     alert('회원가입 실패');
+  //   }
+  // };
 
   const refEmail = useRef(null);
   const refPassword = useRef(null);
@@ -66,7 +78,7 @@ const SignUpScreen = () => {
       />
       <StyledButton
         title="Sign Up"
-        onPress={() => console.log('Sign Up Button pressed')}
+        onPress={() => signUp({email, password, passwordConfirm})}
       />
     </>
   );
