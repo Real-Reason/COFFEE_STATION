@@ -67,6 +67,7 @@ export default function App({navigation}) {
   );
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const orderId = remoteMessage['data'].orderId
       Alert.alert(                    // 말그대로 Alert를 띄운다
         "주문을 수락하시겠습니까?",        // 첫번째 text: 타이틀 제목
         JSON.stringify(remoteMessage['notification']),
