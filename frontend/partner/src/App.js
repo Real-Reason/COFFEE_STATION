@@ -118,6 +118,7 @@ export default function App({navigation}) {
   // const baseURL = 'http://10.0.2.2:8080/api/partner'
   const saveTokenToDatabase = async (data) => {
     let userToken = await AsyncStorage.getItem('userToken');
+    console.log('====usertoken========'+userToken);
     if ( userToken !== null ){
       await axios.patch(baseURL + '/firebase-token', 
       data,
@@ -126,7 +127,7 @@ export default function App({navigation}) {
         },
       })
       .then(res => {
-        console.log('status 변경 완료', res.data);
+        console.log('success', res.data);
       })
       .catch(error => {
       console.log("fail", error);
@@ -136,6 +137,7 @@ export default function App({navigation}) {
 
   const updateOrderStatus = async (orderId, data) => {
     let userToken = await AsyncStorage.getItem('userToken');
+    console.log('====usertoken========'+userToken);
     await axios.patch(baseURL + `/shop/orders/${orderId}/status`,
       data,
       {headers: {
