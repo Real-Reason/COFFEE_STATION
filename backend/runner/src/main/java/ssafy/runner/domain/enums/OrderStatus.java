@@ -21,7 +21,6 @@ public enum OrderStatus {
     private final int statusCode;
     private final String statusType;
 
-    @JsonCreator
     public static OrderStatus from(String status) {
         return OrderStatus.valueOf(status.toUpperCase());
     }
