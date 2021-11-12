@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
-import {Modal, Button} from 'react-native';
+import {Modal, Button, TouchableOpacity} from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import styled from 'styled-components/native';
 import axios from 'axios';
@@ -34,20 +34,6 @@ const AddressInput = styled(StyledInput)`
   width: 500px;
 `;
 
-const validateBuis = async data => {
-  console.log('validation progressing...');
-  console.log(data);
-  try {
-    const response = await axios.post(
-      'http:10.0.2.2:8080/api/partner/validation',
-      data,
-    );
-    console.log(response.data);
-  } catch (error) {
-    alert('사업자 인증에 실패하셨습니다!');
-  }
-};
-
 const AuthUser = ({navigation}) => {
   // Store state
   const [b_no, setb_no] = useState('');
@@ -64,6 +50,28 @@ const AuthUser = ({navigation}) => {
 
   // KAKAO POSTCODE
   const [isModal, setModal] = useState(false);
+
+  // 다음 버튼으로 넘어가기 위한 boolean
+  const [isValidated, setIsValidated] = useState(false);
+
+  // 사업자 등록 검증 함수
+  const validateBuis = async data => {
+    console.log('validation progressing...');
+    console.log(data);
+    try {
+      const response = await axios.post(
+        'http:10.0.2.2:8080/api/partner/validation',
+        data,
+      );
+      setIsValidated(true);
+      alert('사업자 인증에 성공했습니다.');
+      console.log(response.data);
+    } catch (error) {
+      // 혹시 true로 만들어놓고 이상한 값을 다시 넣을수도 있으니까
+      setIsValidated(false);
+      alert('사업자 인증에 실패했습니다.');
+    }
+  };
 
   return (
     <Container>
@@ -84,37 +92,50 @@ const AuthUser = ({navigation}) => {
         returnKeyType="done"
       />
       <StyledText>사업장 소재지</StyledText>
-      <StyledInput
-        placeholder="우편번호"
-        value={zoncode}
-        onPressIn={() => setModal(true)}
-      />
-      <Modal visible={isModal}>
-        <Postcode
-          style={{flex: 1}}
-          jsOptions={{
-            animation: true,
-            animationType: 'slide',
-            hideMapBtn: true,
-          }}
-          onSelected={data => {
-            // 여기서 setData로 넘겨줘야 할 듯
-            setZoncode(data.zonecode);
-            setAddress(data.address);
-            alert(JSON.stringify(data));
-            setModal(false);
-          }}
-        />
-      </Modal>
-      <AddressInput placeholder="주소" value={address} editable={false} />
+      <TouchableOpacity onPressIn={() => setModal(true)}>
+        <StyledInput placeholder="우편번호" value={zoncode} editable={false} />
+        <Modal visible={isModal}>
+          <Postcode
+            style={{flex: 1}}
+            jsOptions={{
+              animation: true,
+              animationType: 'slide',
+              hideMapBtn: true,
+            }}
+            onSelected={data => {
+              // 여기서 setData로 넘겨줘야 할 듯
+              setZoncode(data.zonecode);
+              setAddress(data.address);
+              alert(JSON.stringify(data));
+              setModal(false);
+            }}
+          />
+        </Modal>
+        <AddressInput placeholder="주소" value={address} editable={false} />
+      </TouchableOpacity>
       <AddressInput
         placeholder="상세주소"
         value={detailAddress}
         onChangeText={setDetailAddress}
       />
       <RegisterBtn
+        // 1. 사업자 등록번호
+        // 2. 상호
+        // 3. 사업장 소재지(우편번호, 주소, 상세주소)
         title="다음"
-        onPress={() => navigation.navigate('AuthUser')}></RegisterBtn>
+        onPress={() =>
+          isValidated
+            ? navigation.navigate('RegiStore', {
+                b_no: b_no,
+                shopName: shopName,
+                generalAddress: {
+                  address: address,
+                  detailAddress: detailAddress,
+                  zoncode: zoncode,
+                },
+              })
+            : alert('사업자 검증을 완료해주세요!')
+        }></RegisterBtn>
     </Container>
   );
 };
