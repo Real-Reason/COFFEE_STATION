@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.dto.order.OrderUpdateRequestDto;
+import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.entity.Orders;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.OrderStatus;
+import ssafy.runner.domain.repository.CustomerRepository;
 import ssafy.runner.domain.repository.OrderRepository;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopRepository;
@@ -28,6 +30,7 @@ public class PartnerOrderService {
 
     private final OrderRepository orderRepository;
     private final PartnerRepository partnerRepository;
+    private final CustomerRepository customerRepository;
     private final ShopRepository shopRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
@@ -81,14 +84,14 @@ public class PartnerOrderService {
     @Transactional
     public OrderResponseDto modifyStatus(Long orderId, OrderUpdateRequestDto orderUpdateRequestDto) throws IOException {
 
-        Orders order = orderRepository.findOrderNShopById(orderId)
+        Orders order = orderRepository.findOrderNCustomerById(orderId)
                 .orElseThrow(NoSuchElementException::new);
         OrderStatus enumStatus = OrderStatus.from(orderUpdateRequestDto.getStatus());
 
         // firebase Token 가져오기
-        Long shopId = order.getShop().getId();
-        Shop shop = shopRepository.findShopNPartnerById(shopId).orElseThrow(NoSuchElementException::new);
-        String firebaseToken = shop.getPartner().getFirebaseToken();
+        Long customerId = order.getCustomer().getId();
+        Customer customer = customerRepository.findById(customerId).orElseThrow(NoSuchElementException::new);
+        String firebaseToken = customer.getFirebaseToken();
 
         if (enumStatus == OrderStatus.PREPARING){
             System.out.println("메뉴 수락했습니다.");
@@ -100,7 +103,8 @@ public class PartnerOrderService {
             System.out.println("메뉴 준비완료 했습니다.");
             firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴 준비가 완료되었어요! 픽업 부탁드려요", orderId);
         } else if (enumStatus == OrderStatus.COMPLETED) {
-            System.out.println("메뉴 픽업 완료했습니다.");
+            System.out.println("메뉴 픽업 완료했습니다. ====================================");
+            System.out.println("firebaseToken ====================================== " + firebaseToken);
             firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "이용해 주셔서 감사합니다. 다음에 또 이용해주새요.", orderId);
         }
 //        firebaseCloudMessageService.sendMessageTo(Token, Title, body, orderId);
