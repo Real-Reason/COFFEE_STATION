@@ -48,7 +48,7 @@ public class MenuController {
         // 가게용 조회이므로
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
-            throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
+            throw new IllegalStateException("점주가 아니면 메뉴를 조회할 수 없습니다.");
 
         return menuService.findShopMenuList(principal.getEmail());
     }
@@ -58,7 +58,7 @@ public class MenuController {
     public MenuResponseDto findOneMenu(Authentication authentication, @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
-            throw new RuntimeException("점주가 아니면 메뉴를 조회할 수 없습니다.");
+            throw new IllegalStateException("점주가 아니면 메뉴를 조회할 수 없습니다.");
         return menuService.findShopMenu(principal.getEmail(), menuId);
     }
 
@@ -69,7 +69,7 @@ public class MenuController {
                                       @RequestBody MenuUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
-            throw new RuntimeException("점주가 아니면 메뉴를 수정할 수 없습니다.");
+            throw new IllegalStateException("점주가 아니면 메뉴를 수정할 수 없습니다.");
 
         return menuService.updateMenu(
                 principal.getEmail(),
@@ -87,7 +87,7 @@ public class MenuController {
                                         @PathVariable("menuId") Long menuId) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))
-            throw new RuntimeException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
+            throw new IllegalStateException("점주가 아니면 메뉴를 삭제할 수 없습니다.");
 
         return menuService.deleteMenu(principal.getEmail(), menuId);
     }
@@ -98,7 +98,7 @@ public class MenuController {
                                               @PathVariable("menuId") Long menuId,
                                               @RequestBody MenuSizeCreateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new IllegalStateException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
         return menuSizeService.createMenuSize(principal.getEmail(), menuId, requestDto.getSizeId(), requestDto.getPrice());
     }
@@ -109,7 +109,7 @@ public class MenuController {
                                                   @PathVariable("menuId") Long menuId,
                                                   @RequestBody MenuSizeUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new RuntimeException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new IllegalStateException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
         return menuSizeService.updateMenuSize(principal.getEmail(), requestDto.getMenuSizeId(), menuId, requestDto.getSizeId(), requestDto.getPrice());
     }
@@ -120,7 +120,7 @@ public class MenuController {
                                                   @PathVariable("menuId") Long menuId,
                                                   @RequestBody MenuStatusUpdateRequestDto requestDto) {
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
-        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new RuntimeException("점주가 아니면 메뉴상태를 변경할 수 없습니다.");
+        if (principal.getRole().equals(UserType.CUSTOMER.toString())) throw new IllegalStateException("점주가 아니면 메뉴상태를 변경할 수 없습니다.");
         return menuService.updateMenuStatus(principal.getEmail(), menuId, requestDto.getStatus());
     }
 }
