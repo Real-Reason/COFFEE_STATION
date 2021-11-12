@@ -11,11 +11,11 @@ const Favorite = () => {
   useEffect(() => {
     console.log(' favorite mount!');
     getFavorite();
-    return () => console.log(' favorite Unmount');
+    return () => console.log(' favorite Unmount!');
   }, []);
 
   const getFavorite = async() => {
-    console.log('좋아요 한 메뉴랑 가게 목록 가져오기');
+    console.log('좋아요 한 메뉴랑 가게 목록 가져오기!');
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
@@ -28,6 +28,7 @@ const Favorite = () => {
       console.log(e);
     }
     try {
+      // 에러가남
       const response = await axios.get(
         `http://3.38.99.110:8080/api/customer/favorites/shop`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
