@@ -9,6 +9,7 @@ import Sign from './registration/sign/Sign';
 import SignInScreen from './registration/sign/components/SignInScreen';
 import Main from './registration/store/Main';
 import messaging from '@react-native-firebase/messaging';
+import { Alert } from 'react-native';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
@@ -62,16 +63,22 @@ export default function App({navigation}) {
       userToken: null,
     },
   );
+  useEffect(() => {
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        Alert.alert('주문 알림!', JSON.stringify(remoteMessage['notification'].body));
+      });
+
+      return unsubscribe;
+    }, []);
 
   useEffect(() => {
   // Get the device token(firebase)
-
-      messaging()
-        .getToken()
-        .then(token => {
-          firebaseToken = token;
-          console.log(firebaseToken)
-        });
+    messaging()
+      .getToken()
+      .then(token => {
+        firebaseToken = token;
+        console.log(firebaseToken)
+      });
 
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {

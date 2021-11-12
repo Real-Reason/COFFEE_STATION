@@ -20,7 +20,7 @@ public class ShopResDto {
     private String zip_code;
 //    private double x;
 //    private double y;
-    private Point location;
+    private String location;
     private ShopStatus status;
     private String open_at;
     private String close_at;
@@ -37,9 +37,7 @@ public class ShopResDto {
         this.address = address;
         this.detail_address = detail_address;
         this.zip_code = zip_code;
-//        this.x = x;
-//        this.y = y;
-        this.location = location;
+        this.location = location.toString();
         this.status = status;
         this.open_at = open_at;
         this.close_at = close_at;
