@@ -13,6 +13,8 @@ import { Alert } from 'react-native';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
+const baseURL = 'http://10.0.2.2:8080/api/partner'
+
 const SplashScreen = () => {
   return (
     <View>
@@ -64,22 +66,78 @@ export default function App({navigation}) {
     },
   );
   useEffect(() => {
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        Alert.alert('주문 알림!', JSON.stringify(remoteMessage['notification'].body));
-      });
-
-      return unsubscribe;
-    }, []);
-
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(                    // 말그대로 Alert를 띄운다
+        "주문을 수락하시겠습니까?",        // 첫번째 text: 타이틀 제목
+        JSON.stringify(remoteMessage['notification']),
+        [
+          {
+          text: "수락하기", // 버튼 제목
+          onPress: (orderId) => {
+            updateOrderStatus(orderId, {'status': 'PREPARING'})
+            Alert.alert("주문을 수락했습니다.")
+            },
+          },
+          { text: "거절하기",
+            onPress: (orderId) => {
+            updateOrderStatus(orderId, {'status': 'REJECT'})
+            Alert.alert("주문을 거절했습니다.")
+            }
+          },
+        ],
+        { cancelable: false }
+      );
+    });
+    return unsubscribe;
+  }, []);
+  
+  // 토큰 저장
   useEffect(() => {
-  // Get the device token(firebase)
+    // Get the device token
     messaging()
       .getToken()
-      .then(token => {
-        firebaseToken = token;
-        console.log(firebaseToken)
+      .then(firebaseToken => {
+        return saveTokenToDatabase({ firebaseToken });
       });
+    // Listen to whether the token changes
+    return messaging().onTokenRefresh(firebaseToken => {
+      saveTokenToDatabase({ firebaseToken });
+    });
+  }, []);
+  // const baseURL = 'http://10.0.2.2:8080/api/partner'
+  const saveTokenToDatabase = async (data) => {
+    if ( userToken !== null ){
+      await axios.patch(baseURL + '/firebase-token', 
+      data,
+      {headers: {
+        'Authorization': "Bearer " + userToken
+        },
+      })
+      .then(res => {
+      console.log("success", res.data);
+      })
+      .catch(error => {
+      console.log("fail", error);
+      })
+    }
+  }
 
+  const updateOrderStatus = async (orderId, data) => {
+    await axios.patch(baseURL + `/shop/orders/${orderId}/status`,
+      data,
+      {headers: {
+        'Authorization': "Bearer " + userToken
+      },
+    })
+    .then(res => {
+      console.log("status 변경 완료", res.data);
+    })
+    .catch(error => {
+      console.log("status 변경 실패", error);
+    })
+  }
+
+  useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
@@ -108,7 +166,7 @@ export default function App({navigation}) {
         let userToken;
 
         await axios
-          .post('http://10.0.2.2:8080/api/partner/login', data)
+          .post(baseURL + '/login', data)
           .then(function (response) {
             console.log('Login! Token : ', response.data.token);
             userToken = response.data.token;
@@ -118,20 +176,7 @@ export default function App({navigation}) {
           .catch(function (error) {
             console.log(error);
           });
-        if ( userToken !== null ){
-//        const fbData = {'firebaseToken': firebaseToken};
-          await axios.patch('http://10.0.2.2:8080/api/partner/firebase-token', {'firebaseToken': firebaseToken},{
-          headers: {
-            'Authorization': "Bearer " + userToken
-            },
-          })
-          .then(res => {
-          console.log("success", res.data);
-          })
-          .catch(error => {
-          console.log("fail", error);
-          })
-        }
+
       },
       signOut: () => dispatch({type: 'SIGN_OUT'}),
       // signUp: async data => {
@@ -140,6 +185,7 @@ export default function App({navigation}) {
     }),
     [],
   );
+
 
   return (
     // authContext를 value로 넘겨주고 useContext를 사용하기 때문에 AuthContext의 Children으로 있는
