@@ -2,6 +2,7 @@ package ssafy.runner.domain.dto.customer.Like;
 
 import lombok.*;
 import ssafy.runner.domain.dto.shop.ShopResDto;
+import ssafy.runner.domain.dto.shop.ShopSimpleResponseDto;
 import ssafy.runner.domain.entity.CustomerShop;
 
 
@@ -11,10 +12,10 @@ import ssafy.runner.domain.entity.CustomerShop;
 public class LikeShopResponseDto {
 
     private Long  customerShopId;
-    private ShopResDto shop;
+    private ShopSimpleResponseDto shop;
 
     @Builder
-    public LikeShopResponseDto(Long customerShopId, ShopResDto shop) {
+    public LikeShopResponseDto(Long customerShopId, ShopSimpleResponseDto shop) {
         this.customerShopId = customerShopId;
         this.shop = shop;
     }
@@ -22,7 +23,7 @@ public class LikeShopResponseDto {
     public static LikeShopResponseDto of(CustomerShop customerShop) {
         return LikeShopResponseDto.builder()
                 .customerShopId(customerShop.getId())
-                .shop(ShopResDto.entityToDto(customerShop.getShop()))
+                .shop(new ShopSimpleResponseDto(customerShop.getShop()))
                 .build();
     }
 

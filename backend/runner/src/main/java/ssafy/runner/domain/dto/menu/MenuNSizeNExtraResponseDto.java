@@ -2,7 +2,9 @@ package ssafy.runner.domain.dto.menu;
 
 import lombok.*;
 import ssafy.runner.domain.dto.extra.ExtraListResponseDto;
+import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
+import ssafy.runner.domain.dto.shop.ShopSimpleResponseDto;
 import ssafy.runner.domain.entity.Menu;
 import ssafy.runner.domain.enums.MenuStatus;
 
@@ -11,7 +13,8 @@ import ssafy.runner.domain.enums.MenuStatus;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MenuNSizeNExtraResponseDto {
     private Long id;
-    private ShopResDto shop;
+//    private ShopResDto shop;
+    private ShopSimpleResponseDto shop;
     private ExtraListResponseDto extraList;
     private MenuSizeListResponseDto menuSizeList;
     private String name;
@@ -21,7 +24,7 @@ public class MenuNSizeNExtraResponseDto {
     private MenuStatus menuStatus;
 
     @Builder
-    public MenuNSizeNExtraResponseDto(Long id, ShopResDto shop, ExtraListResponseDto extraList, MenuSizeListResponseDto menuSizeList,
+    public MenuNSizeNExtraResponseDto(Long id, ShopSimpleResponseDto shop, ExtraListResponseDto extraList, MenuSizeListResponseDto menuSizeList,
                                       String name, String imgUrl, int price, boolean isSignature, MenuStatus menuStatus) {
         this.id = id;
         this.shop = shop;
@@ -37,7 +40,8 @@ public class MenuNSizeNExtraResponseDto {
     public static MenuNSizeNExtraResponseDto entityToDto(Menu menu) {
         return MenuNSizeNExtraResponseDto.builder()
                 .id(menu.getId())
-                .shop(ShopResDto.entityToDto(menu.getShop()))
+//                .shop(ShopResDto.entityToDto(menu.getShop()))
+                .shop(new ShopSimpleResponseDto(menu.getShop()))
                 .extraList(ExtraListResponseDto.of(menu.getExtraList()))
                 .menuSizeList(MenuSizeListResponseDto.of(menu.getMenuSizeList()))
                 .name(menu.getName())
