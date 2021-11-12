@@ -12,7 +12,7 @@ import Signup from './views/user/Signup';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
-const baseURL = 'http://3.38.99.110:8080/api/partner'
+const baseURL = 'http://3.38.99.110:8080/api/customer'
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
