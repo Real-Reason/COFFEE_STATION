@@ -12,6 +12,7 @@ import Signup from './views/user/Signup';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
+const baseURL = 'http://3.38.99.110:8080/api/partner'
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -42,7 +43,53 @@ const SignInScreen = ({ navigation }) => {
 
 
 const App = ({ navigation }) => {
+  //firebase  관련
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // const orderId = remoteMessage['data'].orderId;
+      // console.log(orderId);
+      Alert.alert(                    // 말그대로 Alert를 띄운다
+        "주문 현황!!",        // 첫번째 text: 타이틀 제목
+        JSON.stringify(remoteMessage['notification']),
+      );
+    });
+    return unsubscribe;
+  }, []);
 
+  // 토큰 저장
+  useEffect(() => {
+    // Get the device token
+    messaging()
+      .getToken()
+      .then(firebaseToken => {
+        console.log(firebaseToken);
+        return saveTokenToDatabase({ firebaseToken });
+      });
+    // Listen to whether the token changes
+    return messaging().onTokenRefresh(firebaseToken => {
+      saveTokenToDatabase({firebaseToken});
+    });
+  }, []);
+
+  const saveTokenToDatabase = async (data) => {
+    let userToken = await AsyncStorage.getItem('userToken');
+    if ( userToken !== null ){
+      await axios.patch(baseURL + '/firebase-token', 
+      data,
+      {headers: {
+        'Authorization': "Bearer " + userToken
+        },
+      })
+      .then(res => {
+        console.log('success', res.data);
+      })
+      .catch(error => {
+      console.log("fail", error);
+      })
+    }
+  }
+
+  //--------------
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
