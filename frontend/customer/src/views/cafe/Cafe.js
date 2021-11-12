@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Button } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Cafe = ({ navigation, route }) => {
@@ -25,7 +26,21 @@ const Cafe = ({ navigation, route }) => {
     } catch (e) {
       console.log(e);
     }
+  }
 
+  const likeCafe = async() => {
+    console.log(`${route.params.id}번 카페 좋아여`);
+    let JWTToken = await AsyncStorage.getItem('userToken');
+    try {
+      const response = await axios.post(
+        `http://3.38.99.110:8080/api/customer/favorites/shop/${route.params.id}`, 
+        {},
+        { headers: {"Authorization" : `Bearer ${JWTToken}`} }
+      );
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -41,8 +56,9 @@ const Cafe = ({ navigation, route }) => {
           <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu})}>
             <Text> cafe name : { cafeMenu.name } </Text>
           </Pressable>
-
         ))}
+
+        <Button title='좋아요~' onPress={() => likeCafe()}></Button>
 
       </View>
   );

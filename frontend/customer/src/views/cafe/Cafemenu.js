@@ -54,6 +54,21 @@ const Cafemenu = ({ route }) => {
     alert(`장바구니에 ${route.params.menuInfo.name} 추가`);
   }
 
+  const likeMenu = async() => {
+    console.log(`${route.params.menuInfo.menuId}번 메뉴 좋아여`);
+    let JWTToken = await AsyncStorage.getItem('userToken');
+    try {
+      const response = await axios.post(
+        `http://3.38.99.110:8080/api/customer/favorites/menu/${route.params.menuInfo.menuId}`, 
+        {},
+        { headers: {"Authorization" : `Bearer ${JWTToken}`} }
+      );
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
       <View>
         <Image 
@@ -68,6 +83,8 @@ const Cafemenu = ({ route }) => {
         <Text>{ count }</Text>
         <Button title="+1" onPress={() => setCount(count+1)}></Button>
         <Button title="장바구니에 추가하기" onPress={() => addCart(route.params.menuInfo)}></Button>
+        <Text> </Text>
+        <Button title='좋아요~' onPress={() => likeMenu()}></Button>
         
       </View>
   );
