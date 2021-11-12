@@ -22,6 +22,11 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             " where o.id = :orderId")
     Optional<Orders> findOrderNShopById(@Param("orderId") Long orderId);
 
+    @Query("select o from Orders o" +
+            " join fetch o.customer" +
+            " where o.id = :orderId")
+    Optional<Orders> findOrderNCustomerById(@Param("orderId") Long orderId);
+
     @Query("select o from Orders o join fetch o.customer " +
             "where o.shop = :shop and o.date > :date")
     List<Orders> findByShopAndDateAfter(@Param("shop") Shop shop, @Param("date") LocalDateTime date);
