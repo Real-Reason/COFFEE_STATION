@@ -14,6 +14,7 @@ import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopRepository;
 import ssafy.runner.firebase.FirebaseCloudMessageService;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class PartnerOrderService {
     }
 
     @Transactional
-    public OrderResponseDto modifyStatus(Long orderId, OrderUpdateRequestDto orderUpdateRequestDto) {
+    public OrderResponseDto modifyStatus(Long orderId, OrderUpdateRequestDto orderUpdateRequestDto) throws IOException {
 
         Orders order = orderRepository.findOrderNShopById(orderId)
                 .orElseThrow(NoSuchElementException::new);
@@ -91,14 +92,18 @@ public class PartnerOrderService {
 
         if (enumStatus == OrderStatus.PREPARING){
             System.out.println("메뉴 수락했습니다.");
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴를 준비중입니다.", orderId);
         } else if (enumStatus == OrderStatus.REJECT) {
             System.out.println("메뉴 거절했습니다.");
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "가게 사정으로 메뉴가 거절되었습니다.", orderId);
         } else if (enumStatus == OrderStatus.ORDERED) {
             System.out.println("메뉴 준비완료 했습니다.");
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴 준비가 완료되었어요! 픽업 부탁드려요", orderId);
         } else if (enumStatus == OrderStatus.COMPLETED) {
             System.out.println("메뉴 픽업 완료했습니다.");
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "이용해 주셔서 감사합니다. 다음에 또 이용해주새요.", orderId);
         }
-//        firebaseCloudMessageService.sendMessageTo(Token, Title, body);
+//        firebaseCloudMessageService.sendMessageTo(Token, Title, body, orderId);
 
         order.modifyOrderStatus(enumStatus);  // 현재 이 코드가 메뉴 상태 변경
         return new OrderResponseDto(order);
