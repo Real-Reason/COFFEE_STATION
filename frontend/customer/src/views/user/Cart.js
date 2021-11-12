@@ -40,6 +40,7 @@ const Cart = ({ navigation }) => {
     }
     setCartList({'items': []});
     setIsCart(false);
+    setCartListItems([]);
   }
 
   const goOrder = () => {
