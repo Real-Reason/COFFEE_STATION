@@ -94,7 +94,8 @@ public class PartnerOrderService {
         String firebaseToken = customer.getFirebaseToken();
 
         if (enumStatus == OrderStatus.PREPARING){
-            System.out.println("메뉴 수락했습니다.");
+            System.out.println("메뉴 수락했습니다.=========================================");
+            System.out.println("firebaseToken ====================================== " + firebaseToken);
             firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴를 준비중입니다.", orderId);
         } else if (enumStatus == OrderStatus.REJECT) {
             System.out.println("메뉴 거절했습니다.");
