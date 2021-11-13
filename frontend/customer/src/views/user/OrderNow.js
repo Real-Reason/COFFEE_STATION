@@ -22,7 +22,7 @@ const OrderNow = ({ route }) => {
       orderMenuList.push(tmp);
     })
     console.log({orderMenuList});
-    const data = {orderMenuList};
+    const data = {orderMenuList, request: ''};
     // console.log(orderItems[0].cafeId);
 
     let JWTToken = await AsyncStorage.getItem('userToken');
