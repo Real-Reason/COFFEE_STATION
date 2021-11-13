@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {  Text, Button, ScrollView } from 'react-native';
+import {  Text, Button, ScrollView, TextInput } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OrderNow = ({ route }) => {
+const OrderNow = ({ navigation, route }) => {
 
-  const [orderItems, setOrderItems] = useState([])
+  const [orderItems, setOrderItems] = useState([]);
+  const [request, onChangeText] = useState("주문 요청 사항을 입력해주세요");
 
   useEffect(() => {
     console.log(route.params);
@@ -21,8 +22,7 @@ const OrderNow = ({ route }) => {
       tmp = { menuId: item.menuId, extraIdList: item.extraIdList, menuSizeId: item.menuSizeId, quantity: item.count };
       orderMenuList.push(tmp);
     })
-    console.log({orderMenuList});
-    const data = {orderMenuList, request: ''};
+    const data = {orderMenuList, request};
     // console.log(orderItems[0].cafeId);
 
     let JWTToken = await AsyncStorage.getItem('userToken');
@@ -33,6 +33,8 @@ const OrderNow = ({ route }) => {
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
+      const orderCheck = response.data
+      navigation.navigate('Paystart', orderCheck);
     } catch (e) {
       console.log(e);
     }
@@ -44,6 +46,10 @@ const OrderNow = ({ route }) => {
       {orderItems.map((item, index) => (
         <Text key={index}> { item.item.name } </Text>
       ))}
+      <TextInput 
+        onChangeText={ onChangeText }
+        value={ request }
+      />
       <Button title="결제하기" onPress={() => money()}></Button>
     </ScrollView>
   )

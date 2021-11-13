@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,15 +7,16 @@ const Favorite = () => {
 
   const [likeShopList, setLikeShopList] = useState([]);
   const [likeMenuList, setLikeMenuList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    console.log(' favorite mount!');
+    console.log(' favorite mount');
     getFavorite();
     return () => console.log(' favorite Unmount!');
   }, []);
 
   const getFavorite = async() => {
-    console.log('좋아요 한 메뉴랑 가게 목록 가져오기!');
+    console.log('좋아요 한 메뉴랑 가게 목록 가져오기');
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
@@ -41,12 +42,27 @@ const Favorite = () => {
   }
 
   return (
-      <View>
-        <Text>like shop</Text>
-        {/* <Text>{ likeShopList }</Text> */}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={getFavorite} 
+          />
+        }
+      >
         <Text>like menu</Text>
-        {/* <Text>{ likeMenuList }</Text> */}
-      </View>
+        {likeMenuList.map((likeMenu, index) => (
+          <Pressable key={index}>
+            <Text>{ likeMenu.menu.name }</Text>
+          </Pressable> 
+        ))}
+        <Text>like shop</Text>
+        {likeShopList.map((likeShop, index) => (
+          <Pressable key={index}>
+            <Text>{ likeShop.shop.name }</Text>
+          </Pressable> 
+        ))}
+      </ScrollView>
   );
 }
 
