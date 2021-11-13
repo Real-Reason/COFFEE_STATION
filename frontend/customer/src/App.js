@@ -9,7 +9,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import Main from './views/Main';
 import Signup from './views/user/Signup';
-
+import {Alert} from 'react-native';
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
 const baseURL = 'http://3.38.99.110:8080/api/customer'
