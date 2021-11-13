@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {  Text, Button, ScrollView, RefreshControl, Pressable } from 'react-native';
+import { Text, Button, ScrollView, RefreshControl, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderNow from './OrderNow';
+import Paystart from '../pay/Paystart';
 
 
 
@@ -80,6 +81,7 @@ const CartAndOrder = () => {
     <Stack.Navigator>
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="OrderNow" component={OrderNow} />
+      <Stack.Screen name="Paystart" component={Paystart} />
     </Stack.Navigator>
   );
 }
