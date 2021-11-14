@@ -44,7 +44,6 @@ const Orderlist = ({ navigation }) => {
   }
 
   const goOrderDetail = (orderId) => {
-    console.log('주문 상세 ㄱㄱ');
     navigation.navigate('Orderdetail', orderId);
   }
 
@@ -52,7 +51,8 @@ const Orderlist = ({ navigation }) => {
       <ScrollContainer>
         <Text>Orderlist</Text>
         {myOrderList.map((myOrder, index) => (
-          <Pressable key={index} onPress={() => goOrderDetail(5)}>
+          <Pressable key={index} onPress={() => goOrderDetail(myOrder.orderId)}>
+            <Text>{ myOrder.orderId }</Text>
             <Text>{ myOrder.date }</Text>
             <Text>{ myOrder.shopName }</Text>
             <Text>{ myOrder.totalPrice }</Text>
