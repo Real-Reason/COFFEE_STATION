@@ -1,9 +1,9 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
-import {Modal, Button, TouchableOpacity} from 'react-native';
+import {Modal, TouchableOpacity} from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import styled from 'styled-components/native';
 import axios from 'axios';
+import Geocoder from 'react-native-geocoding';
 
 const Container = styled.View`
   justify-content: center;
@@ -73,6 +73,22 @@ const AuthUser = ({navigation}) => {
     }
   };
 
+  // X, Y 좌표
+  const [x, setX] = useState('');
+  const [y, setY] = useState('');
+
+  // Geocoder
+  Geocoder.init('AIzaSyBsxnrrFBrc23fegjtAYgkjr-PtQhXHKEs', {language: 'ko'});
+  const setXY = data => {
+    Geocoder.from(data)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        console.log(location);
+        setX(location.lat);
+        setY(location.lng);
+      })
+      .catch(error => console.warn(error));
+  };
   return (
     <Container>
       <StyledText>사업자 등록번호</StyledText>
@@ -92,7 +108,9 @@ const AuthUser = ({navigation}) => {
         returnKeyType="done"
       />
       <StyledText>사업장 소재지</StyledText>
-      <TouchableOpacity onPressIn={() => setModal(true)}>
+      <TouchableOpacity
+        style={{backgroundColor: '#DDDDDD', width: '42%'}}
+        onPressIn={() => setModal(true)}>
         <StyledInput placeholder="우편번호" value={zoncode} editable={false} />
         <Modal visible={isModal}>
           <Postcode
@@ -106,7 +124,8 @@ const AuthUser = ({navigation}) => {
               // 여기서 setData로 넘겨줘야 할 듯
               setZoncode(data.zonecode);
               setAddress(data.address);
-              alert(JSON.stringify(data));
+              // alert(JSON.stringify(data));
+              setXY(data.address);
               setModal(false);
             }}
           />
@@ -122,19 +141,28 @@ const AuthUser = ({navigation}) => {
         // 1. 사업자 등록번호
         // 2. 상호
         // 3. 사업장 소재지(우편번호, 주소, 상세주소)
+        // 4. x,y 좌표
         title="다음"
         onPress={() =>
           isValidated
-            ? navigation.navigate('RegiStore', {
-                b_no: b_no,
-                shopName: shopName,
-                generalAddress: {
-                  address: address,
-                  detailAddress: detailAddress,
-                  zoncode: zoncode,
-                },
-              })
-            : alert('사업자 검증을 완료해주세요!')
+            ? shopName != ''
+              ? address != ''
+                ? detailAddress != ''
+                  ? navigation.navigate('RegiStore', {
+                      b_no: b_no,
+                      shopName: shopName,
+                      generalAddress: {
+                        address: address,
+                        detailAddress: detailAddress,
+                        zoncode: zoncode,
+                      },
+                      x: x,
+                      y: y,
+                    })
+                  : alert('상세 주소를 입력해 주세요.')
+                : alert('주소는 빈 값일수 없습니다.')
+              : alert('상호는 빈 값일수 없습니다')
+            : alert('사업자 검증을 완료해주세요.')
         }></RegisterBtn>
     </Container>
   );
