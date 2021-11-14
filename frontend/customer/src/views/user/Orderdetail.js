@@ -16,7 +16,7 @@ const Orderdetail = ({ route }) => {
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/orders/${route.params}`, 
+        `http://3.38.99.110:8080/api/customer/orders/${5}`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
