@@ -14,14 +14,16 @@ import styled from 'styled-components/native';
 const StyledCafeList = styled.View`
   justify-content: center;
   width: 410px;
-  height: 120px;
+  height: 80px;
   padding: 5px;
-  border: 1px;
-  border-radius: 10px;
+  border: 1px #dcdcdc;
+  border-radius: 5px;
   overflow-y: scroll;
 `
 const StyledCafeItem = styled.Text`
-  font-size: ${props => props.title ? "15px" : "13px"};
+  font-size: ${props => props.title ? "16px" : "13px"};
+  font-weight : ${props => props.title ? "bold" : "normal"};
+  padding-bottom: ${props => props.title ? "10px" : "0px"};
   color: ${props => props.distance ? "white" : "black"};
 `
 const StyledDistance = styled.View`
