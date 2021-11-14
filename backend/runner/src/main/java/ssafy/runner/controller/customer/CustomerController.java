@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
+import ssafy.runner.domain.dto.LoginCustomerResponseDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinRequestDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
 import ssafy.runner.domain.dto.LoginRequestDto;
-import ssafy.runner.domain.dto.LoginResponseDto;
+import ssafy.runner.domain.dto.LoginPartnerResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
 import ssafy.runner.util.CustomPrincipal;
@@ -37,9 +38,9 @@ public class CustomerController {
 
     @PostMapping("/login")
     @ApiOperation(value = "유저 로그인")
-    public LoginResponseDto login(@RequestBody LoginRequestDto requestDto) {
+    public LoginCustomerResponseDto login(@RequestBody LoginRequestDto requestDto) {
         String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.CUSTOMER);
-        return new LoginResponseDto(token);
+        return new LoginCustomerResponseDto(token);
     }
 
     // token 접근 테스트 용도

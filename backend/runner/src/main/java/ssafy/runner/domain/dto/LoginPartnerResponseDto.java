@@ -9,6 +9,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDto {
+public class LoginPartnerResponseDto {
+
     private String token;
+    private Boolean registerShop;
 }
