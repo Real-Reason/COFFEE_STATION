@@ -65,8 +65,12 @@ const OrderNow = ({ navigation, route }) => {
         paydata,
       );
       console.log(response.data);
-      const paysucess = response.data
-      navigation.navigate('Paystart', paysucess);
+      const payInfo = {
+        paysuccess: response.data, 
+        partner_order_id: orderCheck.orderInfo.id, 
+        partner_user_id: orderCheck.cafeId
+      }
+      navigation.navigate('Paystart', payInfo);
     } catch (e) {
       console.log(e);
     }

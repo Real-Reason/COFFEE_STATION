@@ -7,6 +7,7 @@ import org.locationtech.jts.io.ParseException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,9 +15,11 @@ import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.dto.shop.CategoryResponseDto;
+import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CategoryService;
 import ssafy.runner.service.S3Uploader;
 import ssafy.runner.service.ShopService;
+import ssafy.runner.util.CustomPrincipal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,27 +39,29 @@ public class ShopController {
     // 가게 생성
     @PostMapping("/shop")
     @ApiOperation(value = "샵 생성")
-    public Long createShop(@RequestBody ShopReqDto params) throws IOException, ParseException {
-        Long partnerId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
+    public ResponseEntity<String> createShop(Authentication authentication, @RequestBody ShopReqDto params) throws IOException, ParseException {
 
-        return shopService.save(params, partnerId);
+        String email = checkPrincipalReturnEmail(authentication);
+        shopService.save(params, email);
+        return new ResponseEntity<>("가게 등록 성공", HttpStatus.CREATED);
     }
 
     // 가게 상세 조회
     @GetMapping("/shop")
     @ApiOperation(value = "샵 상세조회")
-    public ShopResDto getShopDetail() {
-        Long shopId = 1L;  // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
-        return shopService.getShopDetail(shopId);
+    public ShopResDto getShopDetail(Authentication authentication) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        return shopService.getShopDetail(email);
     }
 
     // 영업 상태 변경
     @PatchMapping("/shop/status")
     @ApiOperation(value = "영업 상태변경")
-    public ResponseEntity<String> changeShopStatus(@RequestBody HashMap<String, String> status) {
+    public ResponseEntity<String> changeShopStatus(Authentication authentication, @RequestBody HashMap<String, String> status) {
 
-        Long shopId = 1L; // 원래는 토큰에서 정보 얻어서 넣을 값 (임시 값)
-        shopService.changeShopStatus(status.get("status").toString(), shopId);
+        String email = checkPrincipalReturnEmail(authentication);
+        shopService.changeShopStatus(status.get("status").toString(), email);
         return new ResponseEntity<>("영업상태 변경 성공", HttpStatus.OK);
     }
 
@@ -66,4 +71,12 @@ public class ShopController {
 
         return categoryService.getCategoryList();
     }
+
+    private String checkPrincipalReturnEmail(Authentication authentication) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))
+            throw new IllegalStateException("점주만 조회가능합니다.");
+        return principal.getEmail();
+    }
+
 }
