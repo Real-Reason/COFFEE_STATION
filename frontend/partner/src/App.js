@@ -13,7 +13,7 @@ import {Alert} from 'react-native';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
-const baseURL = 'http://3.38.99.110:8080/api/partner'
+const baseURL = 'http://10.0.2.2:8080/api/partner'
 
 const SplashScreen = () => {
   return (
