@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {View, Text, Button, Platform, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
+import axios from 'axios';
 
 Date.prototype.format = function (f) {
   if (!this.valueOf()) return ' ';
@@ -90,9 +91,32 @@ const StyledBtn = styled.Button`
   margin: 10px 0;
 `;
 
+const register = async data => {
+  try {
+    console.log(data);
+    const response = await axios.post(
+      'http:10.0.2.2:8080/api/partner/shop',
+      data,
+    );
+    console.log(response.data);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const RegiStore = ({route, navigation}) => {
   // Get the params (전 페이지에서 넘겨받은 데이터)
-  const {b_no, shopName, generalAddress} = route.params;
+  const {b_no, shopName, generalAddress, x, y} = route.params;
+
+  // Intro
+  const [intro, setIntro] = useState('');
+  const refIntro = useRef(null);
+  // Instgram
+  const [instagram, setInstagram] = useState('');
+  const refInstagram = useRef(null);
+  // phoneNumber
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const refPhoneNumber = useRef(null);
 
   //DateTimePicker from
   const [fromDate, setFromDate] = useState(new Date(1598051730000));
@@ -127,7 +151,7 @@ const RegiStore = ({route, navigation}) => {
     setToShow(true);
   };
   // Picker
-  const [selectedState, setSelectedState] = useState();
+  const [selectedState, setSelectedState] = useState('OPEN');
 
   return (
     <MainContainer>
@@ -135,15 +159,33 @@ const RegiStore = ({route, navigation}) => {
         <StyledText>로고 사진등록</StyledText>
         <StyledText>이미지 인풋자리</StyledText>
         <StyledText>가게명</StyledText>
-        <StyledInput></StyledInput>
+        <StyledInput value={shopName} editable={false} />
         <StyledText>가게소개</StyledText>
-        <StyledInput style={{height: 150}}></StyledInput>
+        <StyledInput
+          style={{height: 150}}
+          value={intro}
+          ref={refIntro}
+          onChangeText={setIntro}
+          returnKeyType="next"
+          onSubmitEditing={() => refInstagram.current.focus()}
+        />
         <StyledText>Instagram</StyledText>
-        <StyledInput></StyledInput>
+        <StyledInput
+          value={instagram}
+          ref={refInstagram}
+          onChangeText={setInstagram}
+          returnKeyType="next"
+          onSubmitEditing={() => refPhoneNumber.current.focus()}
+        />
       </Container>
       <Container>
         <StyledText>가게 전화번호</StyledText>
-        <StyledInput></StyledInput>
+        <StyledInput
+          value={phoneNumber}
+          ref={refPhoneNumber}
+          onChangeText={setPhoneNumber}
+          returnKeyType="done"
+        />
         {/* 운영시간 */}
         <StyledText>운영시간</StyledText>
         <TimeContainer>
@@ -194,6 +236,28 @@ const RegiStore = ({route, navigation}) => {
           <Picker.Item label="CLOSE" value="CLOSE" />
           <Picker.Item label="READY" value="READY" />
         </Picker>
+        {/* address, business_no, close_at, detail_address, instagram */}
+        {/* intro, name, open_at, phone_number, status, x, y, zip_code */}
+        <StyledBtn
+          title="가게등록"
+          onPress={() => {
+            register({
+              address: generalAddress.address,
+              business_no: b_no,
+              close_at: to,
+              detail_address: generalAddress.detailAddress,
+              instagram: instagram,
+              intro: intro,
+              name: shopName,
+              open_at: from,
+              phone_number: phoneNumber,
+              status: selectedState,
+              x: x,
+              y: y,
+              zip_code: generalAddress.zoncode,
+            });
+          }}
+        />
       </Container>
     </MainContainer>
   );
