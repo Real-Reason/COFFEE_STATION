@@ -57,6 +57,7 @@ public class CustomerController {
     @ApiOperation("파이어베이스 토큰 저장 요청")
     public ResponseEntity<String> registerFirebase(Authentication authentication,
                                                    @RequestBody FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
+        System.out.println("firebaseTokenSaveRequestDto ======== " + firebaseTokenSaveRequestDto.getFirebaseToken());
         String email = ((CustomPrincipal) authentication.getPrincipal()).getEmail();
         if (customerService.saveOrUpdateFirebaseToken(email, firebaseTokenSaveRequestDto)) {
             return new ResponseEntity<>("success", HttpStatus.OK);

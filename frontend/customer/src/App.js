@@ -65,29 +65,28 @@ const App = ({ navigation }) => {
       .getToken()
       .then(firebaseToken => {
         console.log(firebaseToken);
-        return saveTokenToDatabase({ firebaseToken });
+        return saveTokenToDatabase(firebaseToken);
       });
     // Listen to whether the token changes
     return messaging().onTokenRefresh(firebaseToken => {
-      saveTokenToDatabase({firebaseToken});
+      saveTokenToDatabase(firebaseToken);
     });
   }, []);
 
-  const saveTokenToDatabase = async (data) => {
+  const saveTokenToDatabase = async (token) => {
     let userToken = await AsyncStorage.getItem('userToken');
+    console.log(userToken, "현재 로그읺한 유저 토큰임")
     if ( userToken !== null ){
-      await axios.patch(baseURL + '/firebase-token', 
-      data,
-      {headers: {
-        'Authorization': "Bearer " + userToken
-        },
-      })
-      .then(res => {
-        console.log('success', res.data);
-      })
-      .catch(error => {
-      console.log("fail", error);
-      })
+      try {
+      const response = await axios.patch(
+        baseURL + '/firebase-token', 
+        {'firebaseToken': token},
+        { headers: {"Authorization" : `Bearer ${userToken}`} }
+      );
+      console.log('zzzzzz리스폰스임!',response.data, '\n');
+    } catch (e) {
+      console.log(e);
+    }
     }
   }
 
@@ -143,11 +142,6 @@ const App = ({ navigation }) => {
 
     bootstrapAsync();
 
-    // firebase 토큰 받아오기
-    console.log("토큰 받아오는 중")
-    const token = messaging().getToken().then(token => console.log("진짜 토큰이야~~~~", token))
-    console.log("토큰이다 !!!!!!!", token)
-
   }, []);
   
   const authContext = useMemo(
@@ -166,6 +160,19 @@ const App = ({ navigation }) => {
           userToken = response.data.token
           await AsyncStorage.setItem('userToken', userToken);
           dispatch({ type: 'SIGN_IN', token: userToken });
+          // firebase 토큰 받아오기
+          console.log("토큰 받아오는 중")
+          const token = messaging().getToken()
+          .then(async token => {
+            console.log("진짜 토큰이야~~~~", token)
+            let userToken = await AsyncStorage.getItem('userToken');
+            if (userToken !== null ){
+              console.log('유저 토큰은', userToken)
+              console.log('로그인한 상태니까 저장도 해줄게.')
+              saveTokenToDatabase(token)
+            }
+          })
+          console.log("토큰이다 !!!!!!!", token)
         } catch (e) {
           console.log(e)
         }

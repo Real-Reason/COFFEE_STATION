@@ -187,6 +187,17 @@ export default function App({navigation}) {
             userToken = response.data.token;
             AsyncStorage.setItem('userToken', userToken);
             dispatch({type: 'SIGN_IN', token: 'userToken'});
+
+            // firebase 토큰 받아오기
+            console.log("토큰 받아오는 중")
+            const firebaseToken = messaging().getToken()
+            .then(async firebaseToken => {
+              console.log("진짜 ㅍㅏ이어베이스토큰이야~~~~", firebaseToken)
+              console.log('유저 토큰은', userToken)
+              console.log('로그인한 상태니까 저장도 해줄게.')
+              saveTokenToDatabase({firebaseToken})
+            })
+            console.log("토큰이다 !!!!!!!", token)
           })
           .catch(function (error) {
             console.log(error);
