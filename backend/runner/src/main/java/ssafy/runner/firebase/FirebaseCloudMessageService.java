@@ -34,7 +34,6 @@ public class FirebaseCloudMessageService {
         System.out.println("=============================================================================");
         System.out.println("request = " + request);
         Response response = client.newCall(request).execute();
-        response.close();
     }
 
     private String makeMessage(String targetToken, String title, String body, Long orderId) throws JsonProcessingException {
