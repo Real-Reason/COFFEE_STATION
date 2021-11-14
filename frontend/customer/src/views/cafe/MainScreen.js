@@ -43,7 +43,7 @@ const MainCafeList = ({ navigation }) => {
 
   const getInfo = async() => {
     console.log('get카페리스트...');
-    const params = { radius: 0.008, x: 127.013625487132, y: 37.598830255568 };
+    const params = { radius: 0.01, x: 127.013625487132, y: 37.598830255568 };
     try {
       const response = await axios.get(
         `http://3.38.99.110:8080/api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
@@ -52,7 +52,7 @@ const MainCafeList = ({ navigation }) => {
       setCafeList(response.data)
     }
     catch (e) {
-      console.log('카페리스트 받기 실패')
+      console.log('카페리스트 받기 실패!')
       console.log(e);
     }
   }
