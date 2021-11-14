@@ -128,6 +128,7 @@ public class CustomerOrderService {
     }
 
     public void paidFcm(Long orderId) throws IOException {
+        System.out.println("이제 보낸다!");
         // shop을 fetch join으로 같이 가져오기
         Orders order = orderRepository.findOrderNShopById(orderId).orElseThrow(NoSuchElementException::new);
         List<OrderMenu> menuList = orderMenuRepository.findOneSimpleById(orderId);

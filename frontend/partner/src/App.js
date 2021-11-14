@@ -82,14 +82,14 @@ export default function App({navigation}) {
           {
           text: "수락하기", // 버튼 제목
           onPress: () => {
-            updateOrderStatus(remoteMessage['data'].orderId, {'status': 'PREPARING'})
+            updateOrderStatus(remoteMessage['data'].orderId, 'PREPARING')
             console.log(remoteMessage['data'].orderId)
             Alert.alert("주문을 수락했습니다.");
             },
           },
           { text: "거절하기",
             onPress: () => {
-            updateOrderStatus(remoteMessage['data'].orderId, {'status': 'REJECT'})
+            updateOrderStatus(remoteMessage['data'].orderId, 'REJECT')
             console.log(remoteMessage['data'].orderId)
             Alert.alert("주문을 거절했습니다.");
             }
@@ -135,11 +135,11 @@ export default function App({navigation}) {
     }
   }
 
-  const updateOrderStatus = async (orderId, data) => {
+  const updateOrderStatus = async (orderId, status) => {
     let userToken = await AsyncStorage.getItem('userToken');
     console.log('====usertoken========'+userToken);
     await axios.patch(baseURL + `/shop/orders/${orderId}/status`,
-      data,
+      {'status': status},
       {headers: {
         'Authorization': "Bearer " + userToken
       },
