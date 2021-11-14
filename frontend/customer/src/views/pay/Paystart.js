@@ -14,17 +14,23 @@ const Paystart = ({ navigation, route }) => {
   const runTimeout = `
     setTimeout(function () {
       window.ReactNativeWebView.postMessage(document.location.href)
-    }, 2000);
+    }, 200000);
     true; // note: this is required, or you'll sometimes get silent failures
   `;
 
   const goPayEnd = (payMessage) => {
-    navigation.navigate('Payend', payMessage);
+    const payComplete = {
+      cid: 'TC0ONETIME',
+      tid: route.params.paysuccess.tid,
+      partner_order_id: route.params.partner_order_id,
+      partner_user_id: route.params.partner_user_id,
+    }
+    navigation.navigate('Payend', { payComplete, payMessage });
   }
 
   return (
     <WebView
-      source={{ uri: route.params.success_url }}
+      source={{ uri: route.params.paysuccess.success_url }}
       injectedJavaScript={runTimeout}
       onMessage={(event) => {alert(event.nativeEvent.data)}}
       onError={(syntheticEvent) => {
