@@ -14,14 +14,16 @@ import styled from 'styled-components/native';
 const StyledCafeList = styled.View`
   justify-content: center;
   width: 410px;
-  height: 120px;
+  height: 80px;
   padding: 5px;
-  border: 1px;
-  border-radius: 10px;
+  border: 1px #dcdcdc;
+  border-radius: 5px;
   overflow-y: scroll;
 `
 const StyledCafeItem = styled.Text`
-  font-size: ${props => props.title ? "15px" : "13px"};
+  font-size: ${props => props.title ? "16px" : "13px"};
+  font-weight : ${props => props.title ? "bold" : "normal"};
+  padding-bottom: ${props => props.title ? "10px" : "0px"};
   color: ${props => props.distance ? "white" : "black"};
 `
 const StyledDistance = styled.View`
@@ -41,7 +43,7 @@ const MainCafeList = ({ navigation }) => {
 
   const getInfo = async() => {
     console.log('get카페리스트...');
-    const params = { radius: 0.008, x: 127.013625487132, y: 37.598830255568 };
+    const params = { radius: 0.01, x: 127.013625487132, y: 37.598830255568 };
     try {
       const response = await axios.get(
         `http://3.38.99.110:8080/api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
@@ -50,7 +52,7 @@ const MainCafeList = ({ navigation }) => {
       setCafeList(response.data)
     }
     catch (e) {
-      console.log('카페리스트 받기 실패')
+      console.log('카페리스트 받기 실패!')
       console.log(e);
     }
   }
