@@ -59,12 +59,14 @@ public class FirebaseCloudMessageService {
 
     // Access 토큰 발급
     private String getAccessToken() throws IOException {
+        System.out.println("\n토큰 발급 시작함-===================================================\n");
         String firebaseConfigPath = "firebase/firebase-notification-key.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials.fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
         googleCredentials.refreshIfExpired();
+        System.out.println("\n=========발급한 토큰 생김새=================" + googleCredentials.getAccessToken().getTokenValue() + "\n");
         return googleCredentials.getAccessToken().getTokenValue();
     }
 }
