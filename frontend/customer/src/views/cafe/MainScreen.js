@@ -8,6 +8,14 @@ import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
 
+import styled from 'styled-components/native';
+
+
+const StyledMainScreen = styled.Button`
+  font-size: 50px;
+  padding: 10px;
+  margin: 10px 0;
+`;
 
 const Stack = createNativeStackNavigator();
 
@@ -68,43 +76,47 @@ const MainCafeList = ({ navigation }) => {
   }, []);
 
   return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <Button title="maps" onPress={() => goMaps()}></Button>
-        <Text>Ccafe List will be here!!</Text>
-        <Pressable onPress={() => geoLocation()}>
-            <Text> Get GeoLocation </Text>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <StyledMainScreen title="Click"></StyledMainScreen>
+      <Button title="maps" onPress={() => goMaps()}></Button>
+      <Text>Ccafe List will be here!!</Text>
+      <Pressable onPress={() => geoLocation()}>
+          <Text> Get GeoLocation </Text>
+      </Pressable>
+      <Text> latitude?: {latitude} </Text>
+      <Text> longitude?: {longitude} </Text>
+
+      {cafeList.map((cafe, index) => (
+        <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
+          <Text> cafe name : {cafe.name} </Text>
         </Pressable>
-        <Text> latitude?: {latitude} </Text>
-        <Text> longitude?: {longitude} </Text>
+      ))}
 
-        {cafeList.map((cafe, index) => (
-          <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
-            <Text> cafe name : {cafe.name} </Text>
-          </Pressable>
-        ))}
-
-      </View>
+    </View>
   );
-}
 
+
+}
 
 const MainScreen = () => {
 
   return (
-      <Stack.Navigator>
-        <Stack.Screen name="MainCafeList" component={MainCafeList} />
-        <Stack.Screen name="Maps" component={Maps} />
-        <Stack.Screen name="Cafe" component={Cafe} />
-        <Stack.Screen name="Cafemenu" component={Cafemenu} />
-      </Stack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="MainCafeList" component={MainCafeList} />
+      <Stack.Screen name="Maps" component={Maps} />
+      <Stack.Screen name="Cafe" component={Cafe} />
+      <Stack.Screen name="Cafemenu" component={Cafemenu} />
+    </Stack.Navigator>
   );
 }
 
 export default MainScreen;
+
+
