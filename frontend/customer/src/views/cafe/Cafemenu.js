@@ -8,6 +8,8 @@ const Cafemenu = ({ route }) => {
   const [count, setCount] = useState(1);
   const [extras, setExtras] = useState([]);
   const [extraForOrder, setExtraForOrder] = useState([]);
+  const [sizes, setSize] = useState([]);
+  const [menuSizeId, setSizeForOrder] = useState('');
 
   useEffect(() => {
     console.log(' cafe menu mount');
@@ -23,6 +25,9 @@ const Cafemenu = ({ route }) => {
       const response = await axios.get(
         `http://3.38.99.110:8080/api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`
       );
+      console.log(response.data.menuSizeList.menuSizeList);
+      setSize(response.data.menuSizeList.menuSizeList);
+      setSizeForOrder(response.data.menuSizeList.menuSizeList[0].menuSizeId);
       console.log(response.data.extraList.extraList);
       setExtras(response.data.extraList.extraList);
     } catch (e) {
@@ -30,7 +35,7 @@ const Cafemenu = ({ route }) => {
     }
   }
 
-  const setExtraList = (extraId) => {
+  const getExtraList = (extraId) => {
     console.log(`${extraId} 추가`);
     let tmplist = extraForOrder;
     const fn = tmplist.indexOf(extraId);
@@ -42,6 +47,11 @@ const Cafemenu = ({ route }) => {
       setExtraForOrder(tmplist);
     }
     console.log(extraForOrder);
+  }
+
+  const getSize = (menuSizeId) => {
+    console.log(`${menuSizeId} 사이즈 설정`);
+    setSizeForOrder(menuSizeId);
   }
 
   const addCart = async(item) => {
@@ -62,12 +72,12 @@ const Cafemenu = ({ route }) => {
         }
       });
       if (isSame) {
-        cartlistall.push({cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder });
+        cartlistall.push({cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId });
         isSame = true;
       }
       cartlist = {items: cartlistall};
     } else {
-      cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder }]}
+      cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId }]}
     }
     await AsyncStorage.setItem('cartList', JSON.stringify(cartlist));
     alert(`장바구니에 ${route.params.menuInfo.name} 추가`);
@@ -99,8 +109,14 @@ const Cafemenu = ({ route }) => {
         <Text>{ route.params.menuInfo.name }</Text>
         <Text>{ route.params.menuInfo.menuStatus }</Text>
 
+        {sizes.map((size, index) => (
+          <Pressable onPress={() => getSize(size.menuSizeId)}>
+            <Text key={index}> 사이즈업 : { size.price } </Text>
+          </Pressable>
+        ))}
+
         {extras.map((extra, index) => (
-          <Pressable onPress={() => setExtraList(extra.extraId)}>
+          <Pressable onPress={() => getExtraList(extra.extraId)}>
             <Extras key={index} extra={extra} />
           </Pressable>
         ))}
@@ -129,9 +145,7 @@ const Extras = props => {
   return (
     <View>
         {/* <Text>{ props.extra.extraId }</Text> */}
-        <Text>{ props.extra.name }</Text>
-        <Text>{ props.extra.price }</Text>
-        <Text></Text>
+        <Text>{ props.extra.name } : { props.extra.price }</Text>
     </View>
   )
 }

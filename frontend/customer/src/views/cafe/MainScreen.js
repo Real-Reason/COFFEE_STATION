@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Button } from 'react-native';
+import { View, Text, Pressable, Button, ScrollView, SafeAreaView } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,6 +8,32 @@ import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
 
+import styled from 'styled-components/native';
+
+
+const StyledCafeList = styled.View`
+  justify-content: center;
+  width: 410px;
+  height: 80px;
+  padding: 5px;
+  border: 1px #dcdcdc;
+  border-radius: 5px;
+  overflow-y: scroll;
+`
+const StyledCafeItem = styled.Text`
+  font-size: ${props => props.title ? "16px" : "13px"};
+  font-weight : ${props => props.title ? "bold" : "normal"};
+  padding-bottom: ${props => props.title ? "10px" : "0px"};
+  color: ${props => props.distance ? "white" : "black"};
+`
+const StyledDistance = styled.View`
+  justify-content: center;
+  align-items: center;
+  background: green;
+  width: 60px;
+  height: 20px;
+  border-radius: 20px;
+`
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +43,7 @@ const MainCafeList = ({ navigation }) => {
 
   const getInfo = async() => {
     console.log('get카페리스트...');
-    const params = { radius: 0.008, x: 127.013625487132, y: 37.598830255568 };
+    const params = { radius: 0.01, x: 127.013625487132, y: 37.598830255568 };
     try {
       const response = await axios.get(
         `http://3.38.99.110:8080/api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
@@ -26,7 +52,7 @@ const MainCafeList = ({ navigation }) => {
       setCafeList(response.data)
     }
     catch (e) {
-      console.log('카페리스트 받기 실패')
+      console.log('카페리스트 받기 실패!')
       console.log(e);
     }
   }
@@ -68,43 +94,56 @@ const MainCafeList = ({ navigation }) => {
   }, []);
 
   return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <Button title="maps" onPress={() => goMaps()}></Button>
-        <Text>Ccafe List will be here!!</Text>
-        <Pressable onPress={() => geoLocation()}>
-            <Text> Get GeoLocation </Text>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Button title="maps" onPress={() => goMaps()}></Button>
+      <Text>Ccafe List will be here!!</Text>
+      
+
+      <Pressable onPress={() => geoLocation()}>
+          <Text> Get GeoLocation </Text>
+      </Pressable>
+      <Text> latitude?: {latitude} </Text>
+      <Text> longitude?: {longitude} </Text>
+
+      {cafeList.map((cafe, index) => (
+        <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
+          {/* <ScrollView scrollEnabled={scrollEnabled}> */}
+          <StyledCafeList>
+            <StyledCafeItem title>{cafe.name}</StyledCafeItem>
+            <StyledCafeItem>{cafe.address}</StyledCafeItem>
+            <StyledDistance>
+              <StyledCafeItem distance>{(cafe.distanceFrom * 100).toFixed(3)} m</StyledCafeItem>
+            </StyledDistance>
+          </StyledCafeList>
+          {/* </ScrollView> */}
         </Pressable>
-        <Text> latitude?: {latitude} </Text>
-        <Text> longitude?: {longitude} </Text>
+      ))}
 
-        {cafeList.map((cafe, index) => (
-          <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
-            <Text> cafe name : {cafe.name} </Text>
-          </Pressable>
-        ))}
-
-      </View>
+    </View>
   );
-}
 
+
+}
 
 const MainScreen = () => {
 
   return (
-      <Stack.Navigator>
-        <Stack.Screen name="MainCafeList" component={MainCafeList} />
-        <Stack.Screen name="Maps" component={Maps} />
-        <Stack.Screen name="Cafe" component={Cafe} />
-        <Stack.Screen name="Cafemenu" component={Cafemenu} />
-      </Stack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="MainCafeList" component={MainCafeList} />
+      <Stack.Screen name="Maps" component={Maps} />
+      <Stack.Screen name="Cafe" component={Cafe} />
+      <Stack.Screen name="Cafemenu" component={Cafemenu} />
+    </Stack.Navigator>
   );
 }
 
 export default MainScreen;
+
+

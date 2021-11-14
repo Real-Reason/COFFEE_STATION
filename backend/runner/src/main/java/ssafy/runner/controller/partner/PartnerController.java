@@ -14,7 +14,7 @@ import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
 import ssafy.runner.domain.dto.partner.PartnerJoinRequestDto;
 import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
 import ssafy.runner.domain.dto.LoginRequestDto;
-import ssafy.runner.domain.dto.LoginResponseDto;
+import ssafy.runner.domain.dto.LoginPartnerResponseDto;
 import ssafy.runner.domain.dto.partner.PartnerValiReqDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.PartnerService;
@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -49,9 +48,11 @@ public class PartnerController {
 
     @PostMapping("/login")
     @ApiOperation(value = "파트너 로그인")
-    public LoginResponseDto login(@RequestBody LoginRequestDto requestDto) {
+    public LoginPartnerResponseDto login(@RequestBody LoginRequestDto requestDto) {
         String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.PARTNER);
-        return new LoginResponseDto(token);
+        // 가게 등록 여부에 대해서 받아오기
+        Boolean registerShop = partnerService.registerShop(requestDto.getEmail());
+        return new LoginPartnerResponseDto(token, registerShop);
     }
 
     // token 접근 테스트 용도

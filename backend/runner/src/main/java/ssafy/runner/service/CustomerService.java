@@ -31,8 +31,9 @@ public class CustomerService {
         return customerRepository.existsByEmailAndPassword(email, password);
     }
 
+    @Transactional
     public boolean saveOrUpdateFirebaseToken(String email, FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
-        Customer customer= customerRepository.findByEmail(email)
+        Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(NoSuchElementException::new);
         customer.changeFirebaseToken(firebaseTokenSaveRequestDto.getFirebaseToken());
         return true;

@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CustomerOrderResponseDto {
 
+    private Long orderId;
     private Long shopId;
     private String shopName;
     private LocalDateTime date;
@@ -30,7 +31,7 @@ public class CustomerOrderResponseDto {
 
 
     public static CustomerOrderResponseDto of(Orders order) {
-        return new CustomerOrderResponseDto(order.getShop().getId(), order.getShop().getName(), order.getDate(), order.getStatus(), order.getTotalPrice());
+        return new CustomerOrderResponseDto(order.getId(), order.getShop().getId(), order.getShop().getName(), order.getDate(), order.getStatus(), order.getTotalPrice());
     }
 
 }

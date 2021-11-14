@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
+import ssafy.runner.domain.dto.LoginCustomerResponseDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinRequestDto;
 import ssafy.runner.domain.dto.customer.CustomerJoinResponseDto;
 import ssafy.runner.domain.dto.LoginRequestDto;
-import ssafy.runner.domain.dto.LoginResponseDto;
+import ssafy.runner.domain.dto.LoginPartnerResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerService;
 import ssafy.runner.util.CustomPrincipal;
@@ -37,9 +38,9 @@ public class CustomerController {
 
     @PostMapping("/login")
     @ApiOperation(value = "유저 로그인")
-    public LoginResponseDto login(@RequestBody LoginRequestDto requestDto) {
+    public LoginCustomerResponseDto login(@RequestBody LoginRequestDto requestDto) {
         String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.CUSTOMER);
-        return new LoginResponseDto(token);
+        return new LoginCustomerResponseDto(token);
     }
 
     // token 접근 테스트 용도
@@ -56,6 +57,7 @@ public class CustomerController {
     @ApiOperation("파이어베이스 토큰 저장 요청")
     public ResponseEntity<String> registerFirebase(Authentication authentication,
                                                    @RequestBody FirebaseTokenSaveRequestDto firebaseTokenSaveRequestDto) {
+        System.out.println("firebaseTokenSaveRequestDto ======== " + firebaseTokenSaveRequestDto.getFirebaseToken());
         String email = ((CustomPrincipal) authentication.getPrincipal()).getEmail();
         if (customerService.saveOrUpdateFirebaseToken(email, firebaseTokenSaveRequestDto)) {
             return new ResponseEntity<>("success", HttpStatus.OK);

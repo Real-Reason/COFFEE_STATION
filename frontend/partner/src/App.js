@@ -13,7 +13,7 @@ import {Alert} from 'react-native';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
-const baseURL = 'http://10.0.2.2:8080/api/partner';
+const baseURL = 'http://10.0.2.2:8080/api/partner'
 
 const SplashScreen = () => {
   return (
@@ -73,25 +73,26 @@ export default function App({navigation}) {
   );
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const orderId = remoteMessage['data'].orderId;
-      Alert.alert(
-        // 말그대로 Alert를 띄운다
-        '주문을 수락하시겠습니까?', // 첫번째 text: 타이틀 제목
+      // const orderId = remoteMessage['data'].orderId;
+      // console.log(orderId);
+      Alert.alert(                    // 말그대로 Alert를 띄운다
+        "주문을 수락하시겠습니까?",        // 첫번째 text: 타이틀 제목
         JSON.stringify(remoteMessage['notification']),
         [
           {
-            text: '수락하기', // 버튼 제목
-            onPress: orderId => {
-              updateOrderStatus(orderId, {status: 'PREPARING'});
-              Alert.alert('주문을 수락했습니다.');
+          text: "수락하기", // 버튼 제목
+          onPress: () => {
+            updateOrderStatus(remoteMessage['data'].orderId, 'PREPARING')
+            console.log(remoteMessage['data'].orderId)
+            Alert.alert("주문을 수락했습니다.");
             },
           },
-          {
-            text: '거절하기',
-            onPress: orderId => {
-              updateOrderStatus(orderId, {status: 'REJECT'});
-              Alert.alert('주문을 거절했습니다.');
-            },
+          { text: "거절하기",
+            onPress: () => {
+            updateOrderStatus(remoteMessage['data'].orderId, 'REJECT')
+            console.log(remoteMessage['data'].orderId)
+            Alert.alert("주문을 거절했습니다.");
+            }
           },
         ],
         {cancelable: false},
@@ -106,7 +107,8 @@ export default function App({navigation}) {
     messaging()
       .getToken()
       .then(firebaseToken => {
-        return saveTokenToDatabase({firebaseToken});
+        console.log(firebaseToken);
+        return saveTokenToDatabase({ firebaseToken });
       });
     // Listen to whether the token changes
     return messaging().onTokenRefresh(firebaseToken => {
@@ -114,37 +116,41 @@ export default function App({navigation}) {
     });
   }, []);
   // const baseURL = 'http://10.0.2.2:8080/api/partner'
-  const saveTokenToDatabase = async data => {
-    if (userToken !== null) {
-      await axios
-        .patch(baseURL + '/firebase-token', data, {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
-          },
-        })
-        .then(res => {
-          console.log('success', res.data);
-        })
-        .catch(error => {
-          console.log('fail', error);
-        });
-    }
-  };
-
-  const updateOrderStatus = async (orderId, data) => {
-    await axios
-      .patch(baseURL + `/shop/orders/${orderId}/status`, data, {
-        headers: {
-          Authorization: 'Bearer ' + userToken,
+  const saveTokenToDatabase = async (data) => {
+    let userToken = await AsyncStorage.getItem('userToken');
+    console.log('====usertoken========'+userToken);
+    if ( userToken !== null ){
+      await axios.patch(baseURL + '/firebase-token', 
+      data,
+      {headers: {
+        'Authorization': "Bearer " + userToken
         },
       })
       .then(res => {
-        console.log('status 변경 완료', res.data);
+        console.log('success', res.data);
       })
       .catch(error => {
-        console.log('status 변경 실패', error);
-      });
-  };
+      console.log("fail", error);
+      })
+    }
+  }
+
+  const updateOrderStatus = async (orderId, status) => {
+    let userToken = await AsyncStorage.getItem('userToken');
+    console.log('====usertoken========'+userToken);
+    await axios.patch(baseURL + `/shop/orders/${orderId}/status`,
+      {'status': status},
+      {headers: {
+        'Authorization': "Bearer " + userToken
+      },
+    })
+    .then(res => {
+      console.log("status 변경 완료", res.data);
+    })
+    .catch(error => {
+      console.log("status 변경 실패", error);
+    })
+  }
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -181,6 +187,17 @@ export default function App({navigation}) {
             userToken = response.data.token;
             AsyncStorage.setItem('userToken', userToken);
             dispatch({type: 'SIGN_IN', token: 'userToken'});
+
+            // firebase 토큰 받아오기
+            console.log("토큰 받아오는 중")
+            const firebaseToken = messaging().getToken()
+            .then(async firebaseToken => {
+              console.log("진짜 ㅍㅏ이어베이스토큰이야~~~~", firebaseToken)
+              console.log('유저 토큰은', userToken)
+              console.log('로그인한 상태니까 저장도 해줄게.')
+              saveTokenToDatabase({firebaseToken})
+            })
+            console.log("토큰이다 !!!!!!!", token)
           })
           .catch(function (error) {
             console.log(error);

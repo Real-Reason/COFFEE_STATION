@@ -9,9 +9,10 @@ import messaging from '@react-native-firebase/messaging';
 
 import Main from './views/Main';
 import Signup from './views/user/Signup';
-
+import {Alert} from 'react-native';
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
+const baseURL = 'http://3.38.99.110:8080/api/customer'
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -43,6 +44,53 @@ const SignInScreen = ({ navigation }) => {
 
 const App = ({ navigation }) => {
 
+
+  //firebase  관련
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // const orderId = remoteMessage['data'].orderId;
+      // console.log(orderId);
+      Alert.alert(                    // 말그대로 Alert를 띄운다
+        "주문 현황!!",        // 첫번째 text: 타이틀 제목
+        JSON.stringify(remoteMessage['notification']),
+      );
+    });
+    return unsubscribe;
+  }, []);
+
+  // 토큰 저장
+  useEffect(() => {
+    // Get the device token
+    messaging()
+      .getToken()
+      .then(firebaseToken => {
+        console.log(firebaseToken);
+        return saveTokenToDatabase(firebaseToken);
+      });
+    // Listen to whether the token changes
+    return messaging().onTokenRefresh(firebaseToken => {
+      saveTokenToDatabase(firebaseToken);
+    });
+  }, []);
+
+  const saveTokenToDatabase = async (token) => {
+    let userToken = await AsyncStorage.getItem('userToken');
+    console.log(userToken, "현재 로그읺한 유저 토큰임")
+    if ( userToken !== null ){
+      try {
+      const response = await axios.patch(
+        baseURL + '/firebase-token', 
+        {'firebaseToken': token},
+        { headers: {"Authorization" : `Bearer ${userToken}`} }
+      );
+      console.log('zzzzzz리스폰스임!',response.data, '\n');
+    } catch (e) {
+      console.log(e);
+    }
+    }
+  }
+
+  //--------------
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -94,21 +142,12 @@ const App = ({ navigation }) => {
 
     bootstrapAsync();
 
-    // firebase 토큰 받아오기
-    console.log("토큰 받아오는 중")
-    const token = messaging().getToken().then(token => console.log("진짜 토큰이야~~~~", token))
-    console.log("토큰이다 !!!!!!!", token)
-
   }, []);
   
   const authContext = useMemo(
     () => ({
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-        // 여기서 axios로 api에 요청 보내서 토큰 가져오기
         let userToken;
         try {
           console.log(data)
@@ -121,13 +160,25 @@ const App = ({ navigation }) => {
           userToken = response.data.token
           await AsyncStorage.setItem('userToken', userToken);
           dispatch({ type: 'SIGN_IN', token: userToken });
+          // firebase 토큰 받아오기
+          console.log("토큰 받아오는 중")
+          const token = messaging().getToken()
+          .then(async token => {
+            console.log("진짜 토큰이야~~~~", token)
+            let userToken = await AsyncStorage.getItem('userToken');
+            if (userToken !== null ){
+              console.log('유저 토큰은', userToken)
+              console.log('로그인한 상태니까 저장도 해줄게.')
+              saveTokenToDatabase(token)
+            }
+          })
+          console.log("토큰이다 !!!!!!!", token)
         } catch (e) {
           console.log(e)
         }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
     }),
-    []
+    [],
   );
 
   // const dumy = 'dumy'
@@ -139,7 +190,16 @@ const App = ({ navigation }) => {
           {state.userToken == null ? (
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
           ) : (
-            <Stack.Screen name="Main" component={Main} />
+            <Stack.Screen 
+              name="Main" 
+              component={Main} 
+              options = {{
+                headerTitle: () => <Text>Cafe Station</Text>,
+                headerRight: () => (
+                  <Button title="SignOut" onPress={() => authContext.signOut()} />
+                )
+              }}
+            />
           )}
           <Stack.Screen name="Signup" component={Signup} />
         </Stack.Navigator>

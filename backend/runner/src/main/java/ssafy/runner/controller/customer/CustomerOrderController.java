@@ -66,7 +66,7 @@ public class CustomerOrderController {
     public ResponseEntity<String> orderPayCompleted(@PathVariable("orderId") Long orderId) throws IOException {
 
         partnerOrderService.modifyStatus(orderId, new OrderUpdateRequestDto("PAID"));
-        customerOrderService.paidFcm(orderId);
+        customerOrderService.paidFcm(orderId); // Partner 쪽으로 메시지 보내느 것!! Customer로 확인하지마....
 
         return new ResponseEntity<>("주문 결제 완료", HttpStatus.OK);
     }
