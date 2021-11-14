@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Button } from 'react-native';
+import { View, Text, Pressable, Button, ScrollView, SafeAreaView } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,11 +11,27 @@ import Cafemenu from './Cafemenu';
 import styled from 'styled-components/native';
 
 
-const StyledMainScreen = styled.Button`
-  font-size: 50px;
-  padding: 10px;
-  margin: 10px 0;
-`;
+const StyledCafeList = styled.View`
+  justify-content: center;
+  width: 410px;
+  height: 120px;
+  padding: 5px;
+  border: 1px;
+  border-radius: 10px;
+  overflow-y: scroll;
+`
+const StyledCafeItem = styled.Text`
+  font-size: ${props => props.title ? "15px" : "13px"};
+  color: ${props => props.distance ? "white" : "black"};
+`
+const StyledDistance = styled.View`
+  justify-content: center;
+  align-items: center;
+  background: green;
+  width: 60px;
+  height: 20px;
+  border-radius: 20px;
+`
 
 const Stack = createNativeStackNavigator();
 
@@ -84,9 +100,10 @@ const MainCafeList = ({ navigation }) => {
         justifyContent: 'center'
       }}
     >
-      <StyledMainScreen title="Click"></StyledMainScreen>
       <Button title="maps" onPress={() => goMaps()}></Button>
       <Text>Ccafe List will be here!!</Text>
+      
+
       <Pressable onPress={() => geoLocation()}>
           <Text> Get GeoLocation </Text>
       </Pressable>
@@ -95,7 +112,15 @@ const MainCafeList = ({ navigation }) => {
 
       {cafeList.map((cafe, index) => (
         <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
-          <Text> cafe name : {cafe.name} </Text>
+          {/* <ScrollView scrollEnabled={scrollEnabled}> */}
+          <StyledCafeList>
+            <StyledCafeItem title>{cafe.name}</StyledCafeItem>
+            <StyledCafeItem>{cafe.address}</StyledCafeItem>
+            <StyledDistance>
+              <StyledCafeItem distance>{(cafe.distanceFrom * 100).toFixed(3)} m</StyledCafeItem>
+            </StyledDistance>
+          </StyledCafeList>
+          {/* </ScrollView> */}
         </Pressable>
       ))}
 
