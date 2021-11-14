@@ -57,5 +57,8 @@ public class Customer {
     public void changeLocalToGoogle(String accessToken) {
         this.snsType = SnsType.GOOGLE;
     }
-    public void changeFirebaseToken(String firebaseToken) {this.firebaseToken = firebaseToken;}
+    public void changeFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
+        System.out.println("firebaseToken이 커스토머에 저장됨 " + firebaseToken +"요렇게 ㅋㅋ");
+    }
 }
