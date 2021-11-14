@@ -43,6 +43,8 @@ const SignInScreen = ({ navigation }) => {
 
 
 const App = ({ navigation }) => {
+
+
   //firebase  관련
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -150,12 +152,8 @@ const App = ({ navigation }) => {
   
   const authContext = useMemo(
     () => ({
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-        // 여기서 axios로 api에 요청 보내서 토큰 가져오기
         let userToken;
         try {
           console.log(data)
@@ -172,9 +170,8 @@ const App = ({ navigation }) => {
           console.log(e)
         }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
     }),
-    []
+    [],
   );
 
   // const dumy = 'dumy'
@@ -186,7 +183,16 @@ const App = ({ navigation }) => {
           {state.userToken == null ? (
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
           ) : (
-            <Stack.Screen name="Main" component={Main} />
+            <Stack.Screen 
+              name="Main" 
+              component={Main} 
+              options = {{
+                headerTitle: () => <Text>Cafe Station</Text>,
+                headerRight: () => (
+                  <Button title="SignOut" onPress={() => authContext.signOut()} />
+                )
+              }}
+            />
           )}
           <Stack.Screen name="Signup" component={Signup} />
         </Stack.Navigator>
