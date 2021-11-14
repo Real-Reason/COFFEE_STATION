@@ -55,26 +55,28 @@ public class ShopService {
     }
 
     @Transactional
-    public Long save(ShopReqDto params, Long partnerId) throws IOException, ParseException {
-
-        Partner partner = partnerRepository.findById(partnerId)
-                .orElseThrow(NoSuchElementException::new);
+    public Long save(ShopReqDto params, String email) throws IOException, ParseException {
+        Partner partner = partnerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         Point point = getPoint(params.getX(), params.getY());
-        Shop shop = params.toEntity(point);
+        Shop shop = params.toEntity(point, partner);
         shopRepository.save(shop);
         return shop.getId();
     }
 
-    public ShopResDto getShopDetail(Long shopId) {
+    public ShopResDto getShopDetail(String email) {
 
+        Partner partner = partnerRepository.findByEmailWithShop(email).orElseThrow(NoSuchElementException::new);
+        Long shopId = partner.getShop().getId();
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
         return ShopResDto.entityToDto(shop);
     }
 
     @Transactional
-    public void changeShopStatus(String status, Long shopId) {
+    public void changeShopStatus(String status, String email) {
 
+        Partner partner = partnerRepository.findByEmailWithShop(email).orElseThrow(NoSuchElementException::new);
+        Long shopId = partner.getShop().getId();
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
         ShopStatus enumStatus = ShopStatus.valueOf(status);

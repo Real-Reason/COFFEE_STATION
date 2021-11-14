@@ -3,6 +3,7 @@ package ssafy.runner.domain.dto.shop;
 import lombok.*;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
+import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 
@@ -43,8 +44,9 @@ public class ShopReqDto {
         this.instagram = instagram;
     }
 
-    public Shop toEntity(Point point) throws ParseException {
+    public Shop toEntity(Point point, Partner partner) throws ParseException {
         return Shop.builder()
+                .partner(partner)
                 .name(this.name)
                 .business_no(this.business_no)
                 .phone_number(this.phone_number)
