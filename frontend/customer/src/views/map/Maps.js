@@ -5,8 +5,6 @@ import NaverMapView, {Circle, Marker, Path, Polyline, Polygon} from "react-nativ
 
 const Maps = ({ navigation, route }) => {
 
-  const pointList = [{id: 1, latitude: 37.564362, longitude: 126.977011}, {id: 2, latitude: 37.565051, longitude: 126.978567}, {id: 3, latitude: 37.565383, longitude: 126.976292}];
-
   const [mypoints, setMypoint] = useState([])
 
   useEffect(() => {
@@ -34,9 +32,9 @@ const Maps = ({ navigation, route }) => {
       <Marker coordinate={P1} pinColor="blue" onClick={() => console.warn('onClick! p1')}/>
       <Marker coordinate={P2} pinColor="red" onClick={() => console.warn('onClick! p2')}/> */}
 
-      {pointList.map((point, index) => (
+      {/* {pointList.map((point, index) => (
         <Marker key={index} coordinate={point} onClick={() => goCafeDetail(point)}></Marker>
-      ))}
+      ))} */}
       {mypoints.map((point, index) => (
         <Marker key={index} coordinate={{longitude: point.lat, latitude: point.lng}} onClick={() => goCafeDetail(point)}></Marker>
       ))}

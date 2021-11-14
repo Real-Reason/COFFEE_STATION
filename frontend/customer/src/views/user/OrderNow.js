@@ -26,6 +26,8 @@ const OrderNow = ({ navigation, route }) => {
     // console.log(orderItems[0].cafeId);
 
     let JWTToken = await AsyncStorage.getItem('userToken');
+    let orderCheck
+
     try {
       const response = await axios.post(
         `http://3.38.99.110:8080/api/customer/shop/${orderItems[0].cafeId}/order`, 
@@ -33,8 +35,38 @@ const OrderNow = ({ navigation, route }) => {
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
-      const orderCheck = response.data
-      navigation.navigate('Paystart', orderCheck);
+      orderCheck = {
+        orderInfo: response.data, 
+        cafeId: orderItems[0].cafeId, 
+        orderItem: orderItems[0].item.name, 
+        orderItemCount: orderItems.length}
+      // navigation.navigate('Paystart', orderCheck);
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log('kakaopay READY');
+    const paydata = {
+      "cid" : "TC0ONETIME",
+      "partner_order_id" : orderCheck.orderInfo.id,
+      "partner_user_id" : orderCheck.cafeId,
+      "item_name" : `${orderCheck.orderItem} 외 ${orderCheck.orderItemCount} 건`,
+      "quantity" : "1",
+      "total_amount" : `${orderCheck.orderInfo.totalPrice}`,
+      "tax_free_amount" : "0",
+      "approval_url" : "http://localhost:8080/api/test/kakaoPaySuccess",
+      "cancel_url" : "http://localhost:8080/kakaoPayCancel",
+      "fail_url" : "http://localhost:8080/kakaoPaySuccessFail"
+    };
+    
+    try {
+      const response = await axios.post(
+        `http://3.38.99.110:8080/kakaoPay/ready`, 
+        paydata,
+      );
+      console.log(response.data);
+      const paysucess = response.data
+      navigation.navigate('Paystart', paysucess);
     } catch (e) {
       console.log(e);
     }

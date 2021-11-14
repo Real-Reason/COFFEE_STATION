@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderNow from './OrderNow';
 import Paystart from '../pay/Paystart';
+import Payend from '../pay/Payend';
 
 
 
@@ -82,6 +83,7 @@ const CartAndOrder = () => {
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="OrderNow" component={OrderNow} />
       <Stack.Screen name="Paystart" component={Paystart} />
+      <Stack.Screen name="Payend" component={Payend} />
     </Stack.Navigator>
   );
 }
