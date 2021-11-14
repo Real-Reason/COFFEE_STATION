@@ -7,7 +7,9 @@ import ssafy.runner.domain.dto.FirebaseTokenSaveRequestDto;
 import ssafy.runner.domain.dto.partner.PartnerJoinResponseDto;
 import ssafy.runner.domain.entity.Customer;
 import ssafy.runner.domain.entity.Partner;
+import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.repository.PartnerRepository;
+import ssafy.runner.domain.repository.ShopRepository;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class PartnerService {
 
     private final PartnerRepository partnerRepository;
+    private final ShopRepository shopRepository;
 
     @Transactional
     public PartnerJoinResponseDto join(String email, String password) {
@@ -43,5 +46,18 @@ public class PartnerService {
             .ifPresent(p -> {
                 throw new IllegalStateException("이미 가입된 이메일 주소입니다.");
         });
+    }
+
+    public Boolean registerShop(String email) {
+        Partner partner = partnerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        Optional<Shop> shopNPartnerById = shopRepository.findShopNPartnerById(partner.getId());
+
+        Boolean registerShop = true;
+
+        if (shopNPartnerById.isEmpty()) {
+            registerShop = false;
+        }
+
+        return registerShop;
     }
 }
