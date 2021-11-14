@@ -29,7 +29,7 @@ public class FirebaseCloudMessageService {
                 .url(API_URL)
                 .post(requestBody)
                 .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json;")
                 .build();
         System.out.println("=============================================================================");
         System.out.println("request = " + request);
