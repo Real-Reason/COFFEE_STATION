@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Button, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, Pressable, Button, ScrollView, SafeAreaView, ImageBackground } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,22 +21,43 @@ const StyledCafeList = styled.View`
   border: 1px #dcdcdc;
   border-radius: 5px;
   overflow-y: scroll;
-`
+`;
+
 const StyledCafeItem = styled.Text`
   font-size: ${props => props.title ? "16px" : "13px"};
   font-weight : ${props => props.title ? "bold" : "normal"};
   padding-bottom: ${props => props.title ? "10px" : "0px"};
   color: ${props => props.distance ? "white" : "black"};
-`
+`;
+
 const StyledDistance = styled.View`
   justify-content: center;
   align-items: center;
-  background: green;
+  background: #FF7F00;
   width: 60px;
   height: 20px;
   border-radius: 20px;
+`;
+
+const StyledMapView = styled.View`
+  /* align-items: flex-end; */
+  width: 100%;
+  height: 100px;
+`;
+
+const StyledMapBtn = styled.Pressable`
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  width: 65px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #FF7F00;
 `
 
+
+
+const mapImgUrl = {uri : "https://blog.kakaocdn.net/dn/cVaDdC/btqKEz4LyEY/EyMCIu2K3zbzwaPAO4RN71/img.png"};
 const Stack = createNativeStackNavigator();
 
 const MainCafeList = ({ navigation }) => {
@@ -100,25 +121,22 @@ const MainCafeList = ({ navigation }) => {
   return (
     <View
       style={{
-        flex: 1,
+        // flex: 2,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
       }}
-    >
-      <Button title="maps" onPress={() => goMaps()}></Button>
-      <Text>Ccafe List will be here!!</Text>
-      
+      >
 
-      <Pressable onPress={() => geoLocation()}>
-          <Text> Get GeoLocation </Text>
-      </Pressable>
-      <Text> latitude?: {latitude} </Text>
-      <Text> longitude?: {longitude} </Text>
+      <StyledMapView>
+        <ImageBackground source={mapImgUrl} resizeMode="cover" style={{flex: 1}}>
+          <StyledMapBtn title="maps" onPress={() => goMaps()}>
+            <Text style={{color: "white"}}>maps</Text>
+          </StyledMapBtn>
+        </ImageBackground>
+      </StyledMapView>
 
       {cafeList.map((cafe, index) => (
         <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
-          {/* <ScrollView scrollEnabled={scrollEnabled}> */}
           <StyledCafeList>
             <StyledCafeItem title>{cafe.name}</StyledCafeItem>
             <StyledCafeItem>{cafe.address}</StyledCafeItem>
@@ -126,9 +144,9 @@ const MainCafeList = ({ navigation }) => {
               <StyledCafeItem distance>{(cafe.distanceFrom * 100).toFixed(3)} m</StyledCafeItem>
             </StyledDistance>
           </StyledCafeList>
-          {/* </ScrollView> */}
         </Pressable>
       ))}
+
 
     </View>
   );
