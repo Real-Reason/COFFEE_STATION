@@ -33,6 +33,7 @@ public class CustomerOrderService {
     private final PartnerRepository partnerRepository;
 
     private final ShopRepository shopRepository;
+    private final ShopImageRepository shopImageRepository;
     private final MenuRepository menuRepository;
     private final MenuSizeRepository menuSizeRepository;
     private final ExtraRepository extraRepository;
@@ -45,7 +46,9 @@ public class CustomerOrderService {
         List<Orders> orderList = orderRepository.findByCustomer(customer);
         List<CustomerOrderResponseDto> dtoList = new ArrayList<>();
         orderList.forEach(o->{
-            dtoList.add(CustomerOrderResponseDto.of(o));
+            Long shopId = o.getShop().getId();
+            String shopImgUrl = shopImageRepository.findByIdAndIndex(shopId, 1).orElseThrow(NoSuchElementException::new);
+            dtoList.add(CustomerOrderResponseDto.of(o, shopImgUrl));
         });
         return dtoList;
     }
