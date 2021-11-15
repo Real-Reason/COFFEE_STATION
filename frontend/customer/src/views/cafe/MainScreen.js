@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Button, ScrollView, SafeAreaView, ImageBackground } from 'react-native';
+import { View, Text, Pressable, Button, ScrollView, SafeAreaView, ImageBackground, Image } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {REACT_APP_BASE_URL} from '@env';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
-import Search from '../search/Search';
-
 import styled from 'styled-components/native';
 
 
 const StyledCafeList = styled.View`
-  justify-content: center;
-  width: 410px;
-  height: 80px;
+  width: ${props => props.img ? "100px" : "410px"};
+  height: ${props => props.img ? "100px" : "38%"};
   padding: 5px;
   border: 1px #dcdcdc;
-  border-radius: 5px;
-  overflow-y: scroll;
+  border-radius: ${props => props.img ? "15px" : "5px"};
+  background-color: ${props => props.img ? "black" : "white"};
 `;
 
 const StyledCafeItem = styled.Text`
@@ -54,7 +50,6 @@ const StyledMapBtn = styled.Pressable`
   border-radius: 5px;
   background-color: #FF7F00;
 `
-
 
 
 const mapImgUrl = {uri : "https://blog.kakaocdn.net/dn/cVaDdC/btqKEz4LyEY/EyMCIu2K3zbzwaPAO4RN71/img.png"};
@@ -113,8 +108,6 @@ const MainCafeList = ({ navigation }) => {
   useEffect(() => {
     console.log(' main screen mount!!');
     getInfo();
-    console.log(`url: ${process.env.REACT_APP_BASE_URL}`);
-    console.log(`url: ${REACT_APP_BASE_URL}`);
     return () => console.log('main screen Unmount!');
   }, []);
 
@@ -137,6 +130,7 @@ const MainCafeList = ({ navigation }) => {
 
       {cafeList.map((cafe, index) => (
         <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
+          <Image source={{uri : cafe.shopImgUrl}} style={{width: 50, height: 50}}></Image>
           <StyledCafeList>
             <StyledCafeItem title>{cafe.name}</StyledCafeItem>
             <StyledCafeItem>{cafe.address}</StyledCafeItem>
@@ -154,37 +148,14 @@ const MainCafeList = ({ navigation }) => {
 
 }
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="MainCafeList" 
-        component={MainCafeList} 
-        options = {{
-          headerShown: false,
-          headerRight: () => (
-            <Button title="search" onPress={() => navigation.navigate('Search')} />
-          )
-        }}
-      
-      />
-      <Stack.Screen 
-        name="Maps" 
-        component={Maps} 
-        options = {{ title: '주변 카페 보기' }}
-      />
-      <Stack.Screen 
-        name="Cafe" 
-        component={Cafe} 
-        options={({ route }) => ({ title: route.params.name })}
-      />
-      <Stack.Screen 
-        name="Cafemenu" 
-        component={Cafemenu} 
-        options={({ route }) => ({ title: route.params.menuInfo.name })}
-      />
-      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="MainCafeList" component={MainCafeList} />
+      <Stack.Screen name="Maps" component={Maps} />
+      <Stack.Screen name="Cafe" component={Cafe} />
+      <Stack.Screen name="Cafemenu" component={Cafemenu} />
     </Stack.Navigator>
   );
 }
