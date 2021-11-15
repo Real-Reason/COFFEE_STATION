@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Button, ScrollView, SafeAreaView, ImageBackground, Image } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,20 +9,47 @@ import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
 import styled from 'styled-components/native';
 
+const Row = styled.View`
+  flex-direction: row;
+`
+
+const Col1 = styled.View`
+  flex-direction: column;
+  width: 30%;
+`
+
+const Col2 = styled.View`
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: 50%;
+`
+
+const Col3 = styled.View`
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 20%;
+`
+
+const Image = styled.Image`
+  align-items: center;
+  margin: 5px;
+  width: 80px;
+  height: 60px;
+  border-radius: 5px;
+`
 
 const StyledCafeList = styled.View`
-  width: ${props => props.img ? "100px" : "410px"};
-  height: ${props => props.img ? "100px" : "38%"};
   padding: 5px;
+  margin-bottom: 5px;
   border: 1px #dcdcdc;
-  border-radius: ${props => props.img ? "15px" : "5px"};
-  background-color: ${props => props.img ? "black" : "white"};
+  border-radius: 5px;
 `;
 
 const StyledCafeItem = styled.Text`
   font-size: ${props => props.title ? "16px" : "13px"};
   font-weight : ${props => props.title ? "bold" : "normal"};
-  padding-bottom: ${props => props.title ? "10px" : "0px"};
   color: ${props => props.distance ? "white" : "black"};
 `;
 
@@ -50,7 +77,10 @@ const StyledMapBtn = styled.Pressable`
   border-radius: 5px;
   background-color: #FF7F00;
 `
-
+const ScrollContainer = styled.ScrollView`
+  height: 80%;
+  background-color: #ffffff;
+`;
 
 const mapImgUrl = {uri : "https://blog.kakaocdn.net/dn/cVaDdC/btqKEz4LyEY/EyMCIu2K3zbzwaPAO4RN71/img.png"};
 const Stack = createNativeStackNavigator();
@@ -128,20 +158,34 @@ const MainCafeList = ({ navigation }) => {
         </ImageBackground>
       </StyledMapView>
 
-      {cafeList.map((cafe, index) => (
-        <Pressable key={index} onPress={() => goCafeDetail(cafe)}>
-          <Image source={{uri : cafe.shopImgUrl}} style={{width: 50, height: 50}}></Image>
-          <StyledCafeList>
-            <StyledCafeItem title>{cafe.name}</StyledCafeItem>
-            <StyledCafeItem>{cafe.address}</StyledCafeItem>
-            <StyledDistance>
-              <StyledCafeItem distance>{(cafe.distanceFrom * 100).toFixed(3)} m</StyledCafeItem>
-            </StyledDistance>
-          </StyledCafeList>
-        </Pressable>
-      ))}
-
-
+      <ScrollContainer>
+        {cafeList.map((cafe, index) => (
+          <TouchableOpacity key={index} onPress={() => goCafeDetail(cafe)}>
+            <StyledCafeList>
+              <Row>
+                <Col1>
+                  <Image source={{uri : cafe.shopImgUrl}}></Image>
+                </Col1>
+                <Col2>
+                  <StyledCafeItem title>
+                    {cafe.name}
+                  </StyledCafeItem>
+                  <StyledCafeItem>
+                    {cafe.address}
+                  </StyledCafeItem>
+                </Col2>
+                <Col3>
+                  <StyledDistance>
+                    <StyledCafeItem distance>
+                      {(cafe.distanceFrom * 100).toFixed(3)} m
+                    </StyledCafeItem>
+                  </StyledDistance>
+                </Col3>
+              </Row>
+            </StyledCafeList>
+          </TouchableOpacity>
+        ))}
+      </ScrollContainer>
     </View>
   );
 
