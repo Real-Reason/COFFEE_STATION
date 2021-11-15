@@ -16,11 +16,13 @@ const Orderdetail = ({ route }) => {
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/orders/${5}`, 
+        `http://3.38.99.110:8080/api/customer/orders/${route.params}`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
       setMyOrderDetail(response.data);
+      // console.log(myOrderDetail.menus[0].menuName)
+      
     } catch (e) {
       console.log(e);
     }
@@ -33,6 +35,12 @@ const Orderdetail = ({ route }) => {
         <Text>{ myOrderDetail.request }</Text>
         <Text>{ myOrderDetail.shopName }</Text>
         <Text>{ myOrderDetail.totalPrice }</Text>
+        <Text>{ myOrderDetail.menus[0].menuName }</Text>
+        <Text>{ myOrderDetail.menus[0].menuSize }</Text>
+        <Text>{ myOrderDetail.menus[0].quantity }</Text>
+        <Text>{ myOrderDetail.menus[1].menuName }</Text>
+        <Text>{ myOrderDetail.menus[1].menuSize }</Text>
+        <Text>{ myOrderDetail.menus[1].quantity }</Text>
       </View>
   );
 }

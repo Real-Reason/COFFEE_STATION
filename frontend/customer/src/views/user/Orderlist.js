@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View,  Pressable } from 'react-native';
 import styled from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -17,8 +17,13 @@ const Container = styled.View`
 `;
 const ScrollContainer = styled.ScrollView`
   flex: 1;
-  background-color: #f5fcff;
+  background-color: #ffffff;
+  padding: 50px;
 `;
+const Text = styled.Text`
+  font-family: 'InfinitySansR';
+`
+
 
 const Orderlist = ({ navigation }) => {
 
@@ -49,7 +54,6 @@ const Orderlist = ({ navigation }) => {
 
   return (
       <ScrollContainer>
-        <Text>Orderlist</Text>
         {myOrderList.map((myOrder, index) => (
           <Pressable key={index} onPress={() => goOrderDetail(myOrder.orderId)}>
             <Text>{ myOrder.orderId }</Text>
