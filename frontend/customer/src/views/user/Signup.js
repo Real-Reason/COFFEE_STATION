@@ -1,6 +1,43 @@
 import React, {useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
 import axios from 'axios';
+import styled from 'styled-components/native';
+
+const Container = styled.View`
+  padding: 50px;
+  background-color: white;
+  border-radius: 5px;
+  height: 100%;
+  
+`
+const StTextInput = styled.TextInput`
+  font-family: 'InfinitySansR';
+  padding-left: 20px;
+  margin-bottom: 5px;
+  background-color: white;
+  border-radius: 5px;
+  border: #cacaca 1px;
+`
+const StPressable = styled.Pressable`
+  background: black;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  border-radius: 5px;
+  align-items: center;
+`
+
+const StText = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: white;
+  text-align: center;
+  margin-bottom: 5px;
+`
+
+const StView = styled.View`
+  background: white;
+  height: 100%;
+  padding: 50px;
+`
 
 const Signup = ({ navigation }) => {
 
@@ -27,33 +64,34 @@ const Signup = ({ navigation }) => {
   }
 
   return (
-    <View>
-      <TextInput
-        placeholder="Email"
+    <StView>
+      <StTextInput
+        placeholder="이메일"
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        placeholder="Password"
+      <StTextInput
+        placeholder="비밀번호"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TextInput
-        placeholder="PasswordConfirm"
+      <StTextInput
+        placeholder="비밀번호 확인"
         value={passwordConfirm}
         onChangeText={setPasswordConfirm}
         secureTextEntry
       />
-      <TextInput
-        placeholder="nickname"
+      <StTextInput
+        placeholder="별명"
         value={nickname}
         onChangeText={setNickname}
       />
-      <Button title="Sign UP" onPress={() => signUp()} />
+      <StPressable title="Sign UP" onPress={() => signUp()} >
+        <StText>회원 가입</StText>  
+      </StPressable>
       
-      <Text>SignUp</Text>
-    </View>
+    </StView>
   );
 }
 
