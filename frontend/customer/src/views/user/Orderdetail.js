@@ -21,6 +21,8 @@ const Orderdetail = ({ route }) => {
       );
       console.log(response.data);
       setMyOrderDetail(response.data);
+      // console.log(myOrderDetail.menus[0].menuName)
+      
     } catch (e) {
       console.log(e);
     }
@@ -33,6 +35,12 @@ const Orderdetail = ({ route }) => {
         <Text>{ myOrderDetail.request }</Text>
         <Text>{ myOrderDetail.shopName }</Text>
         <Text>{ myOrderDetail.totalPrice }</Text>
+        <Text>{ myOrderDetail.menus[0].menuName }</Text>
+        <Text>{ myOrderDetail.menus[0].menuSize }</Text>
+        <Text>{ myOrderDetail.menus[0].quantity }</Text>
+        <Text>{ myOrderDetail.menus[1].menuName }</Text>
+        <Text>{ myOrderDetail.menus[1].menuSize }</Text>
+        <Text>{ myOrderDetail.menus[1].quantity }</Text>
       </View>
   );
 }
