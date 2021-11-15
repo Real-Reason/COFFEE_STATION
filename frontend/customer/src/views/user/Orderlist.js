@@ -38,6 +38,7 @@ const Text = styled.Text`
 const DateText = styled(Text)`
   font-size: 10px;
   text-align: right;
+  margin-top : 10px;
 `
 const TitleText = styled(Text)`
   text-align: left;
@@ -54,6 +55,9 @@ const StatusText = styled(Text)`
   border-radius: 5px;
   border: solid #cacaca 1px;
   color: white;
+`
+const PriceText = styled(Text)`
+  margin-top : 10px;
 `
 
 const StatusView = styled.View`
@@ -139,7 +143,7 @@ const Orderlist = ({ navigation }) => {
                 </Col2>
                 <Col3>
                   <DateText>{ myOrder.date.slice(0, 10) }</DateText>
-                  <Text>{ myOrder.totalPrice }원</Text>
+                  <PriceText>{ myOrder.totalPrice }원</PriceText>
                 </Col3>
               </Row>
             </TouchableOpacity>
