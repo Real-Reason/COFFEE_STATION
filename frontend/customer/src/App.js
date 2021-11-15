@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, createContext, useContext } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +9,46 @@ import messaging from '@react-native-firebase/messaging';
 import Main from './views/Main';
 import Signup from './views/user/Signup';
 import {Alert} from 'react-native';
+
+import styled from 'styled-components/native';
+
+const Container = styled.View`
+  padding: 50px;
+  background-color: white;
+  border-radius: 5px;
+  height: 100%;
+  
+`
+const StTextInput = styled.TextInput`
+  font-family: 'InfinitySansR';
+  padding-left: 20px;
+  margin-bottom: 5px;
+  background-color: white;
+  border-radius: 5px;
+  border: #cacaca 1px;
+  box-shadow: 2px 2px 5px #cacaca;
+`
+const StPressable = styled.Pressable`
+  background: black;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  width: 49.2%;
+  align-items: center;
+`
+
+const StText = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: #ffffff;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+`
+
+const StView = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`
+
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
 const baseURL = 'http://3.38.99.110:8080/api/customer'
@@ -21,29 +60,42 @@ const SignInScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
 
   return (
-    <View>
-      <TextInput
-        placeholder="Username"
+    <Container>
+      <StTextInput
+        placeholder="이메일"
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button title="Sign in" onPress={() => signIn({ email, password })} />
+        <StTextInput
+          placeholder="비밀번호"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          />
+        <StView>
+        <StPressable color="#FF7F00" 
+        onPress={() => signIn({ email, password })} 
+        >
+          <StText>
+            로그인
+          </StText>
+        </StPressable>
+        <StPressable 
+        color="#FF7F00" 
+        onPress={() => navigation.navigate('Signup')}
+        >
+          <StText>
+            회원 가입
+          </StText>
+        </StPressable>
+      </StView>
       
-      <Text>Login</Text>
-      <Button title="Sign up" onPress={() => navigation.navigate('Signup')}></Button>
-    </View>
+    </Container>
   );
 }
 
 
 const App = ({ navigation }) => {
-
 
   //firebase  관련
   useEffect(() => {
@@ -194,9 +246,9 @@ const App = ({ navigation }) => {
               name="Main" 
               component={Main} 
               options = {{
-                headerTitle: () => <Text>Cafe Station</Text>,
+                headerTitle: () => <StText>Cafe Station</StText>,
                 headerRight: () => (
-                  <Button title="SignOut" onPress={() => authContext.signOut()} />
+                  <StPressable title="SignOut" onPress={() => authContext.signOut()} />
                 )
               }}
             />
