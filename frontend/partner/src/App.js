@@ -3,10 +3,8 @@ import {View, Text, Button, TextInput} from 'react-native';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styled from 'styled-components/native';
 import axios from 'axios';
 import Sign from './registration/sign/Sign';
-import SignInScreen from './registration/sign/components/SignInScreen';
 import RegiMain from './registration/store/RegiMain';
 import ManageMain from './management/ManageMain';
 import messaging from '@react-native-firebase/messaging';
@@ -56,6 +54,11 @@ export default function App({navigation}) {
             ...prevState,
             isSignout: false,
             userToken: null,
+          };
+        case 'REGI_SHOP':
+          return {
+            ...prevState,
+            hasRegistered: true,
           };
       }
     },
@@ -182,12 +185,18 @@ export default function App({navigation}) {
     () => ({
       signIn: async data => {
         let userToken;
+        let hasRegistered;
 
         await axios
           .post(baseURL + '/login', data)
           .then(function (response) {
             console.log('data를 이렇게 받아옴', response.data);
             userToken = response.data.token;
+            // axios default header 설정
+            axios.defaults.headers.common[
+              'Authorization'
+            ] = `Bearer ${userToken}`;
+            // AsyncStorage 아이템 저장
             hasRegistered = JSON.stringify(response.data.registerShop);
             AsyncStorage.setItem('userToken', userToken);
             AsyncStorage.setItem('hasRegistered', hasRegistered);
@@ -230,6 +239,17 @@ export default function App({navigation}) {
             console.log(error);
           });
       },
+      registerShop: async data => {
+        try {
+          console.log(data);
+          const response = await axios.post(baseURL + '/shop', data);
+          console.log(response.data);
+          // dispatch 필요
+          dispatch({type: 'REGI_SHOP'});
+        } catch (e) {
+          console.log('whyrano', e);
+        }
+      },
     }),
     [],
   );
@@ -248,7 +268,7 @@ export default function App({navigation}) {
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
           ) : state.userToken == null ? (
-            // No token found, user isn't signed in
+            // 유저 토큰이 없음, sign in 되지 않은 상태
             <Stack.Screen
               name="Sign"
               component={Sign}
@@ -259,10 +279,10 @@ export default function App({navigation}) {
               }}
             />
           ) : state.hasRegistered == false ? (
-            // User is signed in && No Registration
+            // 로그인은 했지만 가게등록을 하지 않은 상태
             <Stack.Screen name="Home" component={RegiMain} />
           ) : (
-            // store를 등록한 상태
+            // 가게까지 등록한 상태
             <Stack.Screen name="Main" component={ManageMain} />
           )}
         </Stack.Navigator>
