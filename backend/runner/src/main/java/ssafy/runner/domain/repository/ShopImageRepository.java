@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ShopImageRepository extends JpaRepository<ShopImage, Long> {
 
-    @Query("select si.imgUrl from ShopImage si " +
-            "where si.id = :shopImageId and si.idx = :index")
-    Optional<String> findByIdAndIndex(@Param("shopImageId") Long id, @Param("index") int index);
+//    @Query("select si.imgUrl from ShopImage si " +
+//            "where si.id = :shopImageId and si.idx = :index")
+//    Optional<String> findByIdAndIndex(@Param("shopImageId") Long id, @Param("index") int index);
 
     @Query("select si.imgUrl from ShopImage si" +
             " join si.shop s" +

@@ -115,7 +115,7 @@ public class ShopService {
         List<Shop> shops = shopRepository.searchShop(searchWord);
 
         for (Shop shop : shops) {
-            String imgUrl = shopImageRepository.findByIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
+            String imgUrl = shopImageRepository.findByShopIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
 
             SearchShopResponseDto searchResponse = SearchShopResponseDto.entityToDto(shop, imgUrl.toString());
             result.add(searchResponse);
