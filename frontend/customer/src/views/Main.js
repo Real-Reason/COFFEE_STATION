@@ -6,9 +6,7 @@ import MainScreen from './cafe/MainScreen'
 import Favorite from './user/Favorite'
 import CartAndOrder from './user/Cart'
 import Order from './user/Orderlist'
-import Alarm from './Alarm';
 import { AuthContext } from '../App'
-import styled from 'styled-components';
 
 const Tab = createBottomTabNavigator();
 const TabBarIcon = (focused, name) => {
@@ -27,9 +25,9 @@ const TabBarIcon = (focused, name) => {
     iconImagePathActive = require('../assets/icons/orderlist-active.png')
     iconImagePathInActive = require('../assets/icons/orderlist-inactive.png')  
   } 
-  // else if (name === 'Alarm') {
-  //   iconImagePathActive = require('../assets/icons/cart-active.png')
-  //   iconImagePathInActive = require('../assets/icons/cart-inactive.png')  
+  // else if (name === 'Search') {
+  //   iconImagePathActive = require('../assets/icons/search-active.png')
+  //   iconImagePathInActive = require('../assets/icons/search-inactive.png')  
   // }
 
   return (
@@ -82,7 +80,10 @@ const Main = () => {
         name="Order" component={Order} 
         options={{ tabBarLabel: '주문내역' }} 
       />
-      {/* <Tab.Screen name="Alarm" component={Alarm} /> */}
+      {/* <Tab.Screen 
+        name="Search" component={Search} 
+        options={{ tabBarLabel: '검색' }} 
+      /> */}
     </Tab.Navigator>
   );
 }
