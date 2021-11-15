@@ -1,4 +1,4 @@
-package com.customer;
+package com.ssafy.runner;
 
 import android.app.Application;
 import android.content.Context;

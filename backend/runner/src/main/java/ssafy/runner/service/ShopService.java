@@ -15,6 +15,7 @@ import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
 import ssafy.runner.domain.entity.Partner;
 import ssafy.runner.domain.entity.Shop;
+import ssafy.runner.domain.entity.ShopImage;
 import ssafy.runner.domain.enums.ShopStatus;
 import ssafy.runner.domain.repository.PartnerRepository;
 import ssafy.runner.domain.repository.ShopImageRepository;
@@ -47,7 +48,9 @@ public class ShopService {
         } else {
             for (Shop shop: shops) {
                 double howFar = new DistanceOp(point, shop.getLocation()).distance();
-                ShopBriefResponseDto shopBriefResponseDto = new ShopBriefResponseDto(shop, howFar);
+                String shopImgUrl = shopImageRepository.findByShopIdAndIndex(shop.getId(), 1).orElseThrow(NoSuchFieldError::new);
+//                String shopImgUrl = shopImage.getImgUrl();
+                ShopBriefResponseDto shopBriefResponseDto = new ShopBriefResponseDto(shop, howFar, shopImgUrl);
                 shopList.add(shopBriefResponseDto);
             }
         }
@@ -112,7 +115,7 @@ public class ShopService {
         List<Shop> shops = shopRepository.searchShop(searchWord);
 
         for (Shop shop : shops) {
-            String imgUrl = shopImageRepository.findByIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
+            String imgUrl = shopImageRepository.findByShopIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
 
             SearchShopResponseDto searchResponse = SearchShopResponseDto.entityToDto(shop, imgUrl.toString());
             result.add(searchResponse);

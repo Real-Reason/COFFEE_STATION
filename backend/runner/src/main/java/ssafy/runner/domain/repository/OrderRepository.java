@@ -48,8 +48,6 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     @Query("select sum(o.totalPrice) from Orders o where o.shop = :shop and o.status = :status")
     Integer findTotalRevenue(@Param("shop") Shop shop, @Param("status") OrderStatus status);
 
-
-
     /*
     * Customer 관련 로직
     * */

@@ -25,13 +25,14 @@ public class CustomerOrderResponseDto {
     private Long orderId;
     private Long shopId;
     private String shopName;
+    private String shopImgUrl;
     private LocalDateTime date;
     private OrderStatus status; // 주문 상태
     private int totalPrice; // 총 가격 넣어야 함
 
 
-    public static CustomerOrderResponseDto of(Orders order) {
-        return new CustomerOrderResponseDto(order.getId(), order.getShop().getId(), order.getShop().getName(), order.getDate(), order.getStatus(), order.getTotalPrice());
+    public static CustomerOrderResponseDto of(Orders order, String shopImgUrl) {
+        return new CustomerOrderResponseDto(order.getId(), order.getShop().getId(), order.getShop().getName(), shopImgUrl, order.getDate(), order.getStatus(), order.getTotalPrice());
     }
 
 }

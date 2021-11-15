@@ -33,6 +33,7 @@ public class CustomerOrderService {
     private final PartnerRepository partnerRepository;
 
     private final ShopRepository shopRepository;
+    private final ShopImageRepository shopImageRepository;
     private final MenuRepository menuRepository;
     private final MenuSizeRepository menuSizeRepository;
     private final ExtraRepository extraRepository;
@@ -40,17 +41,22 @@ public class CustomerOrderService {
 
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
+    @Transactional
     public List<CustomerOrderResponseDto> findOrdersByCustomer(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         List<Orders> orderList = orderRepository.findByCustomer(customer);
         List<CustomerOrderResponseDto> dtoList = new ArrayList<>();
         orderList.forEach(o->{
-            dtoList.add(CustomerOrderResponseDto.of(o));
+            Long shopId = o.getShop().getId();
+            String shopImgUrl = shopImageRepository.findByShopIdAndIndex(shopId, 1).orElseThrow(NoSuchElementException::new);
+//            String shopImgUrl = shopImage.getImgUrl();
+            dtoList.add(CustomerOrderResponseDto.of(o, shopImgUrl));
         });
         return dtoList;
     }
 
     // 주문 상세 내역 조회하기
+    @Transactional
     public OrderDetailResDto findOneOrder(String email, Long orderId) {
         // orderId로 오더메뉴 페치해서 가져오기
         List<OrderMenu> orderMenuList = orderMenuRepository.findOneFetched(orderId);
