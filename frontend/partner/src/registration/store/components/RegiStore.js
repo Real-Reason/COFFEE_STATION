@@ -1,9 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {View, Text, Button, Platform, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
-import axios from 'axios';
+import {AuthContext} from '../../../App';
+
+const baseURL = 'http://3.38.99.110:8080/api/partner';
 
 Date.prototype.format = function (f) {
   if (!this.valueOf()) return ' ';
@@ -91,20 +93,9 @@ const StyledBtn = styled.Button`
   margin: 10px 0;
 `;
 
-const register = async data => {
-  try {
-    console.log(data);
-    const response = await axios.post(
-      'http:10.0.2.2:8080/api/partner/shop',
-      data,
-    );
-    console.log(response.data);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 const RegiStore = ({route, navigation}) => {
+  // Authcontext
+  const {registerShop} = useContext(AuthContext);
   // Get the params (전 페이지에서 넘겨받은 데이터)
   const {b_no, shopName, generalAddress, x, y} = route.params;
 
@@ -241,7 +232,7 @@ const RegiStore = ({route, navigation}) => {
         <StyledBtn
           title="가게등록"
           onPress={() => {
-            register({
+            registerShop({
               address: generalAddress.address,
               business_no: b_no,
               close_at: to,

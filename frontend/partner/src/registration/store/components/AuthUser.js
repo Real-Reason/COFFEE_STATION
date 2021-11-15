@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
 
+const baseURL = 'http://3.38.99.110:8080/api/partner';
+
 const Container = styled.View`
   justify-content: center;
   /* align-items: center; */
@@ -59,16 +61,14 @@ const AuthUser = ({navigation}) => {
     console.log('validation progressing...');
     console.log(data);
     try {
-      const response = await axios.post(
-        'http:10.0.2.2:8080/api/partner/validation',
-        data,
-      );
+      const response = await axios.post(baseURL + '/validation', data);
       setIsValidated(true);
       alert('사업자 인증에 성공했습니다.');
       console.log(response.data);
     } catch (error) {
       // 혹시 true로 만들어놓고 이상한 값을 다시 넣을수도 있으니까
       setIsValidated(false);
+      console.log(error);
       alert('사업자 인증에 실패했습니다.');
     }
   };
