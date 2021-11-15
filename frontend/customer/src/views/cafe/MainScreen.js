@@ -4,6 +4,7 @@ import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {REACT_APP_BASE_URL} from '@env';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
@@ -90,6 +91,8 @@ const MainCafeList = ({ navigation }) => {
   useEffect(() => {
     console.log(' main screen mount!!');
     getInfo();
+    console.log(`url: ${process.env.REACT_APP_BASE_URL}`);
+    console.log(`url: ${REACT_APP_BASE_URL}`);
     return () => console.log('main screen Unmount!');
   }, []);
 
