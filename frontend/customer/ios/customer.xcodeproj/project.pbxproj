@@ -12,6 +12,13 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		2CD9A26C97CD4E7BBB4D964B /* InfinitySans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 479205270DAB4508AB98C77B /* InfinitySans-Bold.otf */; };
+		3EAEC987318E4EB1A57F97AF /* InfinitySans-CondBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 18F8E95D8924475B824EE896 /* InfinitySans-CondBold.otf */; };
+		1E9A7219A8174D63A6C3B28E /* InfinitySansR.otf in Resources */ = {isa = PBXBuildFile; fileRef = 935D797CF34B4F91A68CD081 /* InfinitySansR.otf */; };
+		E932AF12E31343FF8076C3C7 /* paybooc Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 411B41221CE549A0B6D18773 /* paybooc Bold.ttf */; };
+		D4910FC9CCF34C588C308FBB /* paybooc ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8BB2674939834782BBA58F12 /* paybooc ExtraBold.ttf */; };
+		2DD27F1ADCF6426F91A4F132 /* paybooc Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4901CCA262BE4B2EBDDCD5BC /* paybooc Medium.ttf */; };
+		1FBE2C99913144A0A629B3EE /* paybooc-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F31889DDEE304B1BA381303C /* paybooc-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +43,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = customer/main.m; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = customer/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		479205270DAB4508AB98C77B /* InfinitySans-Bold.otf */ = {isa = PBXFileReference; name = "InfinitySans-Bold.otf"; path = "../assets/fonts/InfinitySans-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		18F8E95D8924475B824EE896 /* InfinitySans-CondBold.otf */ = {isa = PBXFileReference; name = "InfinitySans-CondBold.otf"; path = "../assets/fonts/InfinitySans-CondBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		935D797CF34B4F91A68CD081 /* InfinitySansR.otf */ = {isa = PBXFileReference; name = "InfinitySansR.otf"; path = "../assets/fonts/InfinitySansR.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		411B41221CE549A0B6D18773 /* paybooc Bold.ttf */ = {isa = PBXFileReference; name = "paybooc Bold.ttf"; path = "../assets/fonts/paybooc Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8BB2674939834782BBA58F12 /* paybooc ExtraBold.ttf */ = {isa = PBXFileReference; name = "paybooc ExtraBold.ttf"; path = "../assets/fonts/paybooc ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4901CCA262BE4B2EBDDCD5BC /* paybooc Medium.ttf */ = {isa = PBXFileReference; name = "paybooc Medium.ttf"; path = "../assets/fonts/paybooc Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F31889DDEE304B1BA381303C /* paybooc-Light.ttf */ = {isa = PBXFileReference; name = "paybooc-Light.ttf"; path = "../assets/fonts/paybooc-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +123,7 @@
 				00E356EF1AD99517003FC87E /* customerTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				F03DD586BB0E41B18338D411 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -123,6 +138,21 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		F03DD586BB0E41B18338D411 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				479205270DAB4508AB98C77B /* InfinitySans-Bold.otf */,
+				18F8E95D8924475B824EE896 /* InfinitySans-CondBold.otf */,
+				935D797CF34B4F91A68CD081 /* InfinitySansR.otf */,
+				411B41221CE549A0B6D18773 /* paybooc Bold.ttf */,
+				8BB2674939834782BBA58F12 /* paybooc ExtraBold.ttf */,
+				4901CCA262BE4B2EBDDCD5BC /* paybooc Medium.ttf */,
+				F31889DDEE304B1BA381303C /* paybooc-Light.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -214,6 +244,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				2CD9A26C97CD4E7BBB4D964B /* InfinitySans-Bold.otf in Resources */,
+				3EAEC987318E4EB1A57F97AF /* InfinitySans-CondBold.otf in Resources */,
+				1E9A7219A8174D63A6C3B28E /* InfinitySansR.otf in Resources */,
+				E932AF12E31343FF8076C3C7 /* paybooc Bold.ttf in Resources */,
+				D4910FC9CCF34C588C308FBB /* paybooc ExtraBold.ttf in Resources */,
+				2DD27F1ADCF6426F91A4F132 /* paybooc Medium.ttf in Resources */,
+				1FBE2C99913144A0A629B3EE /* paybooc-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
