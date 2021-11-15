@@ -68,8 +68,16 @@ const Order = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Orderlist" component={Orderlist} />
-      <Stack.Screen name="Orderdetail" component={Orderdetail} />
+      <Stack.Screen 
+        name="Orderlist" 
+        component={Orderlist} 
+        options = {{ title: ' 주문 내역' }}
+      />
+      <Stack.Screen 
+        name="Orderdetail" 
+        component={Orderdetail} 
+        options = {{ title: ' 주문 내역 상세' }}
+      />
     </Stack.Navigator>
   );
 }

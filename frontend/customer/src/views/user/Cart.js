@@ -80,10 +80,26 @@ const CartAndOrder = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Cart" component={Cart} />
-      <Stack.Screen name="OrderNow" component={OrderNow} />
-      <Stack.Screen name="Paystart" component={Paystart} />
-      <Stack.Screen name="Payend" component={Payend} />
+      <Stack.Screen 
+        name="Cart" 
+        component={Cart} 
+        options = {{ title: '장바구니' }}
+      />
+      <Stack.Screen 
+      name="OrderNow" 
+      component={OrderNow} 
+      options = {{ title: '주문하기' }}
+      />
+      <Stack.Screen 
+        name="Paystart" 
+        component={Paystart} 
+        options = {{ title: '결제 중..' }}
+      />
+      <Stack.Screen 
+        name="Payend" 
+        component={Payend} 
+        options = {{ title: '결제 완료!' }}
+      />
     </Stack.Navigator>
   );
 }

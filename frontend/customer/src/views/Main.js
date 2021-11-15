@@ -6,6 +6,7 @@ import MainScreen from './cafe/MainScreen'
 import Favorite from './user/Favorite'
 import CartAndOrder from './user/Cart'
 import Order from './user/Orderlist'
+import Search from './search/Search';
 import { AuthContext } from '../App'
 
 const Tab = createBottomTabNavigator();
@@ -25,10 +26,10 @@ const TabBarIcon = (focused, name) => {
     iconImagePathActive = require('../assets/icons/orderlist-active.png')
     iconImagePathInActive = require('../assets/icons/orderlist-inactive.png')  
   } 
-  // else if (name === 'Search') {
-  //   iconImagePathActive = require('../assets/icons/search-active.png')
-  //   iconImagePathInActive = require('../assets/icons/search-inactive.png')  
-  // }
+  else if (name === 'Search') {
+    iconImagePathActive = require('../assets/icons/search-active.png')
+    iconImagePathInActive = require('../assets/icons/search-inactive.png')  
+  }
 
   return (
     <Image
@@ -47,6 +48,7 @@ const Main = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({ //각 탭에 그림 삽입 및 선택 효과
+        headerShown: false,
         tabBarStyle: {
           height: 60,
           backgroundColor: 'white',
@@ -80,10 +82,10 @@ const Main = () => {
         name="Order" component={Order} 
         options={{ tabBarLabel: '주문내역' }} 
       />
-      {/* <Tab.Screen 
+      <Tab.Screen 
         name="Search" component={Search} 
         options={{ tabBarLabel: '검색' }} 
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
