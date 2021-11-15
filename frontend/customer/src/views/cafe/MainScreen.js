@@ -8,6 +8,7 @@ import {REACT_APP_BASE_URL} from '@env';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
+import Search from '../search/Search';
 
 import styled from 'styled-components/native';
 
@@ -135,14 +136,24 @@ const MainCafeList = ({ navigation }) => {
 
 }
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="MainCafeList" component={MainCafeList} />
+      <Stack.Screen 
+      name="MainCafeList" 
+      component={MainCafeList} 
+      options = {{
+        headerRight: () => (
+          <Button title="search" onPress={() => navigation.navigate('Search')} />
+        )
+      }}
+      
+      />
       <Stack.Screen name="Maps" component={Maps} />
       <Stack.Screen name="Cafe" component={Cafe} />
       <Stack.Screen name="Cafemenu" component={Cafemenu} />
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
 }
