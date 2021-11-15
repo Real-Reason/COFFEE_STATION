@@ -1,4 +1,4 @@
-package com.customer;
+package com.ssafy.runner;
 
 import com.facebook.react.ReactActivity;
 
