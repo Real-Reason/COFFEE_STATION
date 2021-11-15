@@ -141,18 +141,31 @@ const MainScreen = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-      name="MainCafeList" 
-      component={MainCafeList} 
-      options = {{
-        headerRight: () => (
-          <Button title="search" onPress={() => navigation.navigate('Search')} />
-        )
-      }}
+        name="MainCafeList" 
+        component={MainCafeList} 
+        options = {{
+          headerShown: false,
+          headerRight: () => (
+            <Button title="search" onPress={() => navigation.navigate('Search')} />
+          )
+        }}
       
       />
-      <Stack.Screen name="Maps" component={Maps} />
-      <Stack.Screen name="Cafe" component={Cafe} />
-      <Stack.Screen name="Cafemenu" component={Cafemenu} />
+      <Stack.Screen 
+        name="Maps" 
+        component={Maps} 
+        options = {{ title: '주변 카페 보기' }}
+      />
+      <Stack.Screen 
+        name="Cafe" 
+        component={Cafe} 
+        options={({ route }) => ({ title: route.params.name })}
+      />
+      <Stack.Screen 
+        name="Cafemenu" 
+        component={Cafemenu} 
+        options={({ route }) => ({ title: route.params.menuInfo.name })}
+      />
       <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
