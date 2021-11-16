@@ -198,8 +198,16 @@ const MainScreen = () => {
     <Stack.Navigator>
       <Stack.Screen name="MainCafeList" component={MainCafeList} />
       <Stack.Screen name="Maps" component={Maps} />
-      <Stack.Screen name="Cafe" component={Cafe} />
-      <Stack.Screen name="Cafemenu" component={Cafemenu} />
+      <Stack.Screen 
+        name="Cafe" 
+        component={Cafe} 
+        options={({ route }) => ({ title: route.params.name })}
+      />
+      <Stack.Screen 
+        name="Cafemenu" 
+        component={Cafemenu} 
+        options={({ route }) => ({ title: route.params.menuInfo.name })}
+      />
     </Stack.Navigator>
   );
 }
