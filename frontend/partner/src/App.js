@@ -164,6 +164,7 @@ export default function App({navigation}) {
       try {
         userToken = await AsyncStorage.getItem('userToken');
         hasRegistered = JSON.parse(await AsyncStorage.getItem('hasRegistered'));
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
         // console.log('UserToken: ', userToken);
       } catch (e) {
         console.log(e);
