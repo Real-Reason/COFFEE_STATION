@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   FlatList,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import {TabProgressContext} from '../TabProgress';
 
 const Item = ({item, onPress, backgroundColor, textColor}) => {
   return (
@@ -17,23 +18,31 @@ const Item = ({item, onPress, backgroundColor, textColor}) => {
 };
 
 const NewOrder = ({route}) => {
-  const [selectedId, setSelectedId] = useState(null);
+  const {selectedNewId, setSelectedNewId, setSelectedNewOrder} =
+    useContext(TabProgressContext);
+
+  const setNewOrder = item => {
+    setSelectedNewId(item.id);
+    console.log(item);
+    setSelectedNewOrder(item);
+  };
   // 현재 ORDERED로 들어오고 있는것, PAID로 들어오는것으로 바꿔줘야함
   const {DATA} = route.params;
 
   // 실시간 처리에 대해서 생각을 해봐야 할 듯
   useEffect(() => {
-    console.log(route.params.DATA);
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(DATA);
   }, []);
 
   const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
+    const backgroundColor = item.id === selectedNewId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.id === selectedNewId ? 'white' : 'black';
 
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => setNewOrder(item)}
         backgroundColor={{backgroundColor}}
         textColor={{color}}
       />
@@ -46,7 +55,7 @@ const NewOrder = ({route}) => {
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        extraData={setSelectedId}
+        extraData={selectedNewId}
       />
     </SafeAreaView>
   );

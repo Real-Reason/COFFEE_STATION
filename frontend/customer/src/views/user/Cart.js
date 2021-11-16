@@ -66,7 +66,7 @@ const Cart = ({ navigation }) => {
         }
         {cartListItems.map((cartmenu, index) => (
               <Pressable key={index} onPress={() => alert(index)}>
-                <Text> { cartmenu.item.name }, {cartmenu.count}개, { cartmenu.item.price * cartmenu.count }원 {cartmenu.extraIdList}</Text>
+                <Text>카페: { cartmenu.shopName }, { cartmenu.item.name }, {cartmenu.count}개, { (cartmenu.item.price + cartmenu.addPrice) * cartmenu.count }원 {cartmenu.extraIdList}</Text>
               </Pressable>
         ))}
         <Button title='주문하기' onPress={() => goOrder()}></Button>

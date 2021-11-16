@@ -33,6 +33,13 @@ public class CustomerMenuService {
     }
 
     @Transactional
+    public void unLikeMenu(Long menuId, String email) {
+
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        customerMenuRepository.unLikeMenu(customer.getId(), menuId);
+    }
+
+    @Transactional
     public LikeMenuListResponseDto getLikeMenuList(String email) {
 
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);

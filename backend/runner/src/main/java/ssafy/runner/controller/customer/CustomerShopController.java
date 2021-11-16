@@ -7,13 +7,16 @@ import org.locationtech.jts.io.ParseException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.ShopAndMenuResponseDto;
 import ssafy.runner.domain.dto.menu.MenuNSizeNExtraResponseDto;
 import ssafy.runner.domain.dto.shop.SearchShopResponseDto;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
+import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.MenuService;
 import ssafy.runner.service.ShopService;
+import ssafy.runner.util.CustomPrincipal;
 
 import java.util.List;
 
@@ -38,9 +41,10 @@ public class CustomerShopController {
 
     @GetMapping("/{shopId}")
     @ApiOperation(value = "가게 정보 및 메뉴리스트 조회")
-    public ShopAndMenuResponseDto getShopAndMenu(@PathVariable("shopId") Long shopId) {
+    public ShopAndMenuResponseDto getShopAndMenu(Authentication authentication, @PathVariable("shopId") Long shopId) {
 
-        return shopService.getShopAndMenu(shopId);
+        String email = checkPrincipalReturnEmail(authentication);
+        return shopService.getShopAndMenu(shopId, email);
     }
 
     @GetMapping("/{shopId}/menu/{menuId}")
@@ -56,5 +60,14 @@ public class CustomerShopController {
 
         List<SearchShopResponseDto> searchShopResponseDto = shopService.searchShop(searchWord);
         return searchShopResponseDto;
+    }
+
+    // 사용자 계정인지 확인 한후, 사용자가 맞으면 email 리턴
+    private String checkPrincipalReturnEmail(Authentication authentication) {
+
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.PARTNER.toString()))
+            throw new IllegalStateException("사용자만 조회가능합니다.");
+        return principal.getEmail();
     }
 }
