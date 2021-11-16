@@ -91,7 +91,7 @@ const MainCafeList = ({ navigation }) => {
 
   const getInfo = async() => {
     console.log('get카페리스트...');
-    const params = { radius: 0.01, x: 127.013625487132, y: 37.598830255568 };
+    const params = { radius: 0.05, x: 127.013625487132, y: 37.598830255568 };
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/customer/shop?x=${params.x}&y=${params.y}&radius=${params.radius}`
