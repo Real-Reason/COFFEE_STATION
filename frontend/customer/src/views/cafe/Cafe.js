@@ -207,13 +207,7 @@ const Cafe = ({ navigation, route }) => {
     )
   }
 
-<<<<<<< HEAD
-        {cafeMenus.map((cafeMenu, index) => (
-          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
-            <Text> cafe name : { cafeMenu.name } </Text>
-          </Pressable>
-        ))}
-=======
+
   function CafeIntroTab() {
     return (
       <ScrollView>
@@ -251,7 +245,6 @@ const Cafe = ({ navigation, route }) => {
       </ScrollView>
     )
   }
->>>>>>> e2f52ba53ee8f7533b4e8fc9d847b9ed371faf47
 
 
   return (
