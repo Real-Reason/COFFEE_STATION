@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Button, Pressable } from 'react-native';
+import { View, Text, Image, Button, Pressable, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -10,6 +10,9 @@ const Cafemenu = ({ route }) => {
   const [extraForOrder, setExtraForOrder] = useState([]);
   const [sizes, setSize] = useState([]);
   const [menuSizeId, setSizeForOrder] = useState('');
+
+  const [sizeIndex, setSizeIndex] = useState('');
+  const [extraIndex, setExtraIndex] = useState('');
 
   useEffect(() => {
     console.log(' cafe menu mount');
@@ -30,12 +33,18 @@ const Cafemenu = ({ route }) => {
       setSizeForOrder(response.data.menuSizeList.menuSizeList[0].menuSizeId);
       console.log(response.data.extraList.extraList);
       setExtras(response.data.extraList.extraList);
+
+      const arr1 = Array.from({length: sizes.length}, () => 0);
+      setSizeIndex(arr1);
+      const arr2 = Array.from({length: extras.length}, () => 0);
+      setExtraIndex(arr2);
+
     } catch (e) {
       console.log(e);
     }
   }
 
-  const getExtraList = (extraId) => {
+  const getExtraList = (extraId, index) => {
     console.log(`${extraId} 추가`);
     let tmplist = extraForOrder;
     const fn = tmplist.indexOf(extraId);
@@ -47,11 +56,28 @@ const Cafemenu = ({ route }) => {
       setExtraForOrder(tmplist);
     }
     console.log(extraForOrder);
+    let arr = extraIndex;
+    if (extraIndex[index]==1) {
+      arr[index] = 0;
+      setExtraIndex(arr);
+    } else {
+      arr[index] = 1;
+      setExtraIndex(arr);
+    }
   }
 
-  const getSize = (menuSizeId) => {
+  const getSize = (menuSizeId, index) => {
     console.log(`${menuSizeId} 사이즈 설정`);
     setSizeForOrder(menuSizeId);
+    let arr = Array.from({length: sizes.length}, () => 0);
+    for(var i=0; i<sizes.length; i++) {
+      if (i==index) {
+        arr[i] = 1
+      } else {
+        arr[i] = 0
+      }
+    }
+    setSizeIndex(arr);
   }
 
   const addCart = async(item) => {
@@ -108,25 +134,29 @@ const Cafemenu = ({ route }) => {
   }
 
   return (
-      <View>
-        <Image 
-          source={{uri: route.params.menuInfo.imgUrl }} 
-          style={{width:100, height:100}} 
-        />
+      <ScrollView>
+        <View style={{alignItems: 'center'}}>
+          <Image 
+            source={{uri: route.params.menuInfo.imgUrl }} 
+            style={{width:300, height:300}} 
+          />
+        </View>
 
         <Text>{ route.params.menuInfo.price }</Text>
         <Text>{ route.params.menuInfo.name }</Text>
         <Text>{ route.params.menuInfo.menuStatus }</Text>
 
         {sizes.map((size, index) => (
-          <Pressable key={index} onPress={() => getSize(size.menuSizeId)}>
-            <Text> 사이즈업 : { size.price } </Text>
+          <Pressable key={index} onPress={() => getSize(size.menuSizeId, index)}>
+            <Text style={{backgroundColor: sizeIndex[index] == 1 ? 'green':'yellow'}}> 사이즈업 : { size.price } </Text>
           </Pressable>
         ))}
 
+        <Text></Text>
+
         {extras.map((extra, index) => (
-          <Pressable key={index} onPress={() => getExtraList(extra.extraId)}>
-            <Extras extra={extra} />
+          <Pressable key={index} onPress={() => getExtraList(extra.extraId, index)}>
+            <Text style={{backgroundColor: extraIndex[index] == 1 ? 'green':'yellow'}}>{ extra.name } : { extra.price }</Text>
           </Pressable>
         ))}
 
@@ -138,25 +168,8 @@ const Cafemenu = ({ route }) => {
         <Text> </Text>
         <Button title='좋아요~' onPress={() => likeMenu()}></Button>
         
-      </View>
+      </ScrollView>
   );
-}
-
-
-const Extras = props => {
-
-  const [isSelect, setIsSelect] = useState(false);
-  const changeSelect = () => {
-    console.log(isSelect);
-    setIsSelect(!isSelect);
-  }
-
-  return (
-    <View>
-        {/* <Text>{ props.extra.extraId }</Text> */}
-        <Text>{ props.extra.name } : { props.extra.price }</Text>
-    </View>
-  )
 }
 
 
