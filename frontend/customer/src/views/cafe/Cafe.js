@@ -159,7 +159,6 @@ const Cafe = ({ navigation, route }) => {
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}`,
-      {},
       { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
       console.log(response.data);

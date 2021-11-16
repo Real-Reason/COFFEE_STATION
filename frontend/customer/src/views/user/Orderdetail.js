@@ -128,20 +128,18 @@ const Orderdetail = ({ route, navigation }) => {
       setMyDate(response.data.date.slice(0, 10));
       setMyTime(response.data.date.slice(11, 16));
       setShopId(response.data.shopId);
-      console.log(shopId);
-      // console.log("샵정보!!!!", shop)
-      // setShop({
-      //   ...shop,
-      //   ['id']: response.data.shopId
-      // });
+      setShop({
+        ...shop,
+        ['id']: response.data.shopId
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  const getShop = (shopId) => {
+  const getShop = (shop) => {
     console.log(shopId)
-    navigation.navigate('Cafe', {id: shopId});
+    navigation.navigate('Cafe', shop);
   }
 
   return (
@@ -150,7 +148,7 @@ const Orderdetail = ({ route, navigation }) => {
           <View>
         <TitleText>{ myOrderDetail.shopName }</TitleText>
         </View>
-        <StPressable onPress={() => getShop(shopId)}>
+        <StPressable onPress={() => getShop(shop)}>
           <Image source={ require('../../assets/icons/sign.png') }/>
           <View>
             <SubText style={{ marginTop: 5, marginRight:10, fontSize: 10 }}>카페 상세</SubText>
