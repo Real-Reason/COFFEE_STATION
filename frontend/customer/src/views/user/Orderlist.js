@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Orderdetail from './Orderdetail';
-
+import {View} from 'react-native';
 const Stack = createNativeStackNavigator();
 
 const TouchableOpacity = styled.TouchableOpacity`
@@ -154,6 +154,7 @@ const Orderlist = ({ navigation }) => {
             </TouchableOpacity>
           </StView>
         ))}
+        <View><Text style={{height: 10, color: '#ffffff'}}>dd</Text></View>
       </ScrollContainer>
   );
 }

@@ -182,7 +182,7 @@ const Orderdetail = ({ route, navigation }) => {
           </Row>
         ))}
         </Col2>
-
+        <View><Text style={{height: 1, color: '#ffffff'}}>dd</Text></View>
       </ScrollContainer>
   );
 }

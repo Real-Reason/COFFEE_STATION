@@ -7,12 +7,15 @@ import styled from 'styled-components/native';
 
 const SelectView = styled.View`
   flex-direction: row; 
-  justify-content:space-between;
+  justify-content:flex-start;
   margin: 5px;
+  margin-left: 5.5%;
 `
 const SelectViewExtra = styled.View`
   flex-direction: row; 
   margin: 5px;
+  margin-left: 5.5%;
+  margin-top: 0;
 `
 const SelectViewButtons = styled.View`
   flex-direction: row; 
@@ -27,7 +30,7 @@ const SelectViewContent = styled.View`
   border-width: 2px;
   margin: 5px;
 `
-const SelectPress = styled.Pressable`
+const SelectPress = styled.TouchableOpacity`
   justify-content:center;
   align-items: center; 
   margin: 5px;
@@ -41,17 +44,18 @@ const SelectPressCount = styled.Pressable`
   justify-content:center;
   align-items: center; 
   margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
+  /* padding: 5px; */
+  border-radius: 30px;
   border-width: 2px;
-  border-color: #cacaca;
-  width:10%;
+  border-color: #FF7F00;
+  width: 12%;
 `
 const StText = styled.Text`
   font-family: 'InfinitySansR';
   padding: 15px;
   color: #000000;
   margin-top: 2.5px;
+  text-align: center;
 `
 const StTextTitle = styled.Text`
   font-family: 'InfinitySansR';
@@ -60,8 +64,14 @@ const StTextTitle = styled.Text`
   font-size: 20px;
 `
 const MenuImage = styled.Image`
-  width:100;
-  height:100;
+  width:150;
+  height:150;
+`
+
+const IconImage = styled.Image`
+  align-items: center;
+  width: 40px;
+  height: 40px;
 `
 
 const Cafemenu = ({ route }) => {
@@ -222,32 +232,33 @@ const Cafemenu = ({ route }) => {
         </View>
 
         <View style={{alignItems: 'center'}}>
-          <StTextTitle>{ route.params.menuInfo.name }</StTextTitle>
-          <StTextTitle>{ route.params.menuInfo.price }</StTextTitle>
+          <StTextTitle style={{ fontFamily: 'InfinitySans-Bold'}}>{ route.params.menuInfo.name }</StTextTitle>
+          <StTextTitle style={{ fontSize: 15 }}>{ route.params.menuInfo.price }원</StTextTitle>
         </View>
-
+        <StText style={{ textAlign: 'left', paddingBottom: 5}}>사이즈</StText>
         <SelectView>
           {sizes.map((size, index) => (
             <SelectViewContent style={{ borderColor: sizeIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
               <Pressable style={{alignItems: 'center', paddingTop:10 }} onPress={() => getSize(size.menuSizeId, index)}>
-                <View style={{ height: 55, paddingBottom:0 }}>
-                  <Image 
+                <View style={{ height: 55, paddingBottom:0, paddingTop: 8, alignItems: 'center' }}>
+                  <Image
                     source={require('../../assets/icons/coffee-active.png')} 
-                    style={{width:50, height: (50 + size.price / 100) }}
+                    style={{ width:50, height: (50 + size.price / 100) }}
                   />
                 </View>
-                <StText>+ { size.price }</StText>
+                <StText>+ { size.price }원</StText>
               </Pressable>
             </SelectViewContent>
           ))}
         </SelectView>
 
+        <StText style={{ textAlign: 'left', paddingBottom: 5 }}>추가 옵션</StText>
         <SelectViewExtra>
           {extras.map((extra, index) => (
             <SelectViewContent style={{ borderColor: extraIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
               <Pressable onPress={() => getExtraList(extra.extraId, index)}>
                 <StText>{ extra.name }</StText>
-                <StText>+ { extra.price }</StText>
+                <StText>+ { extra.price }원</StText>
               </Pressable>
             </SelectViewContent>
           ))}
@@ -255,23 +266,25 @@ const Cafemenu = ({ route }) => {
 
         <SelectViewButtons>
           <SelectPressCount onPress={() => setCount(count-1)}>
-            <Text>-1</Text>
+            <Text style={{ fontSize: 30}}>-</Text>
           </SelectPressCount>
-          <StText>{ count }</StText>
+          <StText style={{ fontSize: 18}}>{ count }</StText>
           <SelectPressCount onPress={() => setCount(count+1)}>
-            <Text>+1</Text>
+            <Text style={{ fontSize: 18}}>+</Text>
           </SelectPressCount>
         </SelectViewButtons>
 
         <SelectViewButtons>
-          <SelectPress onPress={() => likeMenu()}>
-            <StText>좋아요~!</StText>
+          <SelectPress style={{ borderColor: 'white'}} onPress={() => likeMenu()}>
+            <IconImage source={require('../../assets/icons/like-active.png')}></IconImage>
+            <StText style={{ marginTop: 2, paddingTop: 0 }}>찜~!</StText>
           </SelectPress>
-          <SelectPress onPress={() => addCart(route.params.menuInfo)}>
-            <StText>장바구니 추가</StText>
+          <SelectPress style={{ borderColor: 'white'}} onPress={() => addCart(route.params.menuInfo)}>
+          <IconImage source={require('../../assets/icons/addcart.png')}></IconImage>
+            <StText style={{ marginTop: 2, paddingTop: 0 }}>장바구니 추가</StText>
           </SelectPress>
         </SelectViewButtons>
-        
+        <View><Text style={{height: 30, color: '#ffffff'}}>dd</Text></View>
       </ScrollView>
   );
 }
