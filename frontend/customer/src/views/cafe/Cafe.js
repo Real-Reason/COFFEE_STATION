@@ -53,7 +53,7 @@ const Cafe = ({ navigation, route }) => {
         <Text></Text>
 
         {cafeMenus.map((cafeMenu, index) => (
-          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu})}>
+          <Pressable key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
             <Text> cafe name : { cafeMenu.name } </Text>
           </Pressable>
         ))}
