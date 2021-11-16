@@ -6,12 +6,13 @@ const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 const NewOrder = () => {
   const showOrderList = async () => {
     try {
-      // const response = await axios.get(
-      //   'http://3.38.99.110:8080/api/partner/shop/orders/today',
-      // );
-      console.log('신규정보 받아옴');
+      const response = await axios.get(
+        'http://3.38.99.110:8080/api/partner/shop/orders/today/status/ORDERED',
+      );
+      // console.log(axios.defaults.headers.common);
+      console.log('신규정보 받아D옴', response.data);
     } catch (e) {
-      console.log('신규 정보 못받아옴', e);
+      console.log('신규 정보 z못받SD아옴', e);
     }
   };
 

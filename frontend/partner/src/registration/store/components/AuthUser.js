@@ -84,8 +84,8 @@ const AuthUser = ({navigation}) => {
       .then(json => {
         var location = json.results[0].geometry.location;
         console.log(location);
-        setX(location.lat);
-        setY(location.lng);
+        setX(location.lng);
+        setY(location.lat);
       })
       .catch(error => console.warn(error));
   };
