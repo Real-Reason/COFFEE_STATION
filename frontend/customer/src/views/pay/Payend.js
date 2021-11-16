@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
 import axios from 'axios';
+import styled from 'styled-components/native';
+
+
+const PayEndView = styled.View`
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  height: 100%;
+`;
 
 
 const Payend = ({ navigation, route }) => {
@@ -50,12 +59,18 @@ const Payend = ({ navigation, route }) => {
   }
 
   return (
-      <View>
+      <PayEndView>
+
+        <Image 
+          source={require('../../assets/icons/coffee-active.png')} 
+          style={{width:200, height: 200 }}
+        />
+
         <Text>주문이 완료되었습니다!</Text>
         <Text>{ orderTime }</Text>
-        <Text>{ pg }</Text>
+        {/* <Text>{ pg }</Text> */}
         <Button title="돌아가기" onPress={() => goMain()}></Button>
-      </View>
+      </PayEndView>
   );
 }
 

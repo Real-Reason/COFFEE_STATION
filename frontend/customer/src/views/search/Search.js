@@ -49,25 +49,38 @@ const StyledDistance = styled.View`
   height: 20px;
   border-radius: 20px;
 `;
+const SearchBar = styled.View`
+  flex-direction: row;
+  margin: 10px;
+`;
 const SearchTextInput = styled.TextInput`
   font-family: 'InfinitySansR';
   justify-content: center;
   align-items: center;
-  width: 200px;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 5px;
   border-width: 2px;
   border-color: #cacaca;
+  flex-direction: column;
+  width: 80%;
 `;
 const SearchButton = styled.Pressable`
   justify-content: center;
   align-items: center;
   background: #FF7F00;
-  width: 200px;
   height: 40px;
   border-radius: 5px;
+  flex-direction: column;
+  width: 20%;
 `;
 const SearchText = styled.Text`
+  font-family: 'InfinitySansR';
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  margin-top: 10px;
+`;
+const SearchButtonText = styled.Text`
   font-family: 'InfinitySansR';
   justify-content: center;
   align-items: center;
@@ -103,15 +116,18 @@ const Search = ({ navigation }) => {
   return (
     <ScrollView style={{backgroundColor:'#ffffff'}}>
 
-      <Text>Search Cafe</Text>
-      <SearchTextInput
-        placeholder="cafename"
-        value={cafename}
-        onChangeText={setCafename}
-      />
-      <SearchButton onPress={() => searchCafe()}>
-        <SearchText>카페 검색</SearchText>
-      </SearchButton>
+      <SearchText>Search Cafe</SearchText>
+
+      <SearchBar>
+        <SearchTextInput
+          placeholder="cafename"
+          value={cafename}
+          onChangeText={setCafename}
+        />
+        <SearchButton onPress={() => searchCafe()}>
+          <SearchButtonText>카페 검색</SearchButtonText>
+        </SearchButton>
+      </SearchBar>
 
       {cafeList.map((cafe, index) => (
         <TouchableOpacity key={index} onPress={() => goCafeDetail({id: cafe.shopId})}>
