@@ -56,14 +56,13 @@ const Cafemenu = ({ route }) => {
       setExtraForOrder(tmplist);
     }
     console.log(extraForOrder);
-    let arr = extraIndex;
+    let arr = extraIndex.slice();
     if (extraIndex[index]==1) {
       arr[index] = 0;
-      setExtraIndex(arr);
     } else {
       arr[index] = 1;
-      setExtraIndex(arr);
     }
+    setExtraIndex(arr);
   }
 
   const getSize = (menuSizeId, index) => {
@@ -146,19 +145,23 @@ const Cafemenu = ({ route }) => {
         <Text>{ route.params.menuInfo.name }</Text>
         <Text>{ route.params.menuInfo.menuStatus }</Text>
 
-        {sizes.map((size, index) => (
-          <Pressable key={index} onPress={() => getSize(size.menuSizeId, index)}>
-            <Text style={{backgroundColor: sizeIndex[index] == 1 ? 'green':'yellow'}}> 사이즈업 : { size.price } </Text>
-          </Pressable>
-        ))}
+        <View>
+          {sizes.map((size, index) => (
+            <Pressable key={index} onPress={() => getSize(size.menuSizeId, index)}>
+              <Text style={{backgroundColor: sizeIndex[index] == 1 ? 'green':'yellow'}}> 사이즈업 : { size.price } </Text>
+            </Pressable>
+          ))}
+        </View>
 
         <Text></Text>
 
-        {extras.map((extra, index) => (
-          <Pressable key={index} onPress={() => getExtraList(extra.extraId, index)}>
-            <Text style={{backgroundColor: extraIndex[index] == 1 ? 'green':'yellow'}}>{ extra.name } : { extra.price }</Text>
-          </Pressable>
-        ))}
+        <View>
+          {extras.map((extra, index) => (
+            <Pressable key={index} onPress={() => getExtraList(extra.extraId, index)}>
+              <Text style={{backgroundColor: extraIndex[index] ? 'green':'yellow'}}>{ extra.name } : { extra.price }</Text>
+            </Pressable>
+          ))}
+        </View>
 
         <Text></Text>
         <Button title="-1" onPress={() => setCount(count-1)}></Button>
