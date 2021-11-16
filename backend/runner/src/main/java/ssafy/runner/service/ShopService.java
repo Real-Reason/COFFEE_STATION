@@ -91,7 +91,8 @@ public class ShopService {
 
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
-        return ShopAndMenuResponseDto.entityToDto(shop);
+        List<String> imgUrlList = shopImageRepository.findAllByShopId(shop.getId());
+        return ShopAndMenuResponseDto.entityToDto(shop, imgUrlList);
     }
 
     private Point getPoint(double x, double y) throws ParseException {

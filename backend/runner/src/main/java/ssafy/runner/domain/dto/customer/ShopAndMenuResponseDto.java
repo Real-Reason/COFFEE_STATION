@@ -5,6 +5,9 @@ import ssafy.runner.domain.dto.menu.MenuListResponseDto;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShopAndMenuResponseDto {
@@ -23,9 +26,10 @@ public class ShopAndMenuResponseDto {
     private String close_at;
     private String intro;
     private String instagram;
+    private List<String> imgUrlList = new ArrayList<>();
 
     @Builder
-    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, double x, double y, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, double x, double y, ShopStatus status, String open_at, String close_at, String intro, String instagram, List<String> imgUrlList) {
         this.id = id;
         this.menuList = menuList;
         this.name = name;
@@ -41,9 +45,10 @@ public class ShopAndMenuResponseDto {
         this.close_at = close_at;
         this.intro = intro;
         this.instagram = instagram;
+        this.imgUrlList = imgUrlList;
     }
 
-    public static ShopAndMenuResponseDto entityToDto(Shop shop) {
+    public static ShopAndMenuResponseDto entityToDto(Shop shop, List<String> imgUrlList) {
         return ShopAndMenuResponseDto.builder()
                 .id(shop.getId())
                 .menuList(MenuListResponseDto.of(shop.getMenuList()))
@@ -60,6 +65,8 @@ public class ShopAndMenuResponseDto {
                 .close_at(shop.getClose_at())
                 .intro(shop.getIntro())
                 .instagram(shop.getInstagram())
+                .imgUrlList(imgUrlList)
                 .build();
     }
+
 }
