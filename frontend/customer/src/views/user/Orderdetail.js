@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { Pressable, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import styled from 'styled-components/native';
 
-
-const StView = styled.View`
-  padding: 30px;
-  padding-left: 50px;
-  padding-right: 50px;
-  background-color: white;
-  border: #cacaca 0.2px;
-  width: 100%;
-  margin-bottom: 5px;
-`;
-
 const ScrollContainer = styled.ScrollView`
   /* flex: 1; */
   padding-top: 20px;
-  padding-bottom: 20px;
+  /* padding-bottom: 100px; */
   background-color: #ffffff;
   /* height: 100%; */
 `;
-
 
 const Row = styled.View`
   flex-direction: row;
@@ -56,16 +45,10 @@ const Col4 = styled.View`
   flex-direction: column;
   width: 30%;
 `
-const Half = styled.View`
-  flex-direction: column;
-  width: 50%;
-`
 
 const Image = styled.Image`
-  align-items: center;
-  border-radius: 30px;
-  width: 60px;
-  height: 60px;
+  width: 20;
+  height: 20;
 `
 
 const Text = styled.Text`
@@ -81,10 +64,13 @@ text-align: right;
 
 const TitleText = styled(Text)`
   font-family: 'InfinitySans-Bold';
-  font-size: 16px;
-  align-self: center;
+  font-size: 25px;
   margin-top: 5px;
-  padding-bottom: 20px;
+  margin-left: 5%;
+  /* text-align: center; */
+  margin-right: 5px;
+  margin-bottom: 18px;
+  color: black;
 `
 const PriceText = styled(Text)`
   font-family: 'InfinitySans-Bold';
@@ -98,13 +84,32 @@ const RequestText = styled(Text)`
 const SubText = styled(Text)`
 `
 
-const Orderdetail = ({ route }) => {
+const QuantityText = styled(Text)`
+  padding-top: 13px;
+  font-size: 20px;
+  justify-content: center;
+`
+const StPressable = styled.TouchableOpacity`
+  flex-direction: row;
+  align-self: center;
+  border-radius: 5px;
+  border: solid #FF7F00 0.5px;
+  padding: 3px;
+  padding-left: 8px;
+  padding-right: 0;
+  margin-bottom: 10px;
+`
+
+const Orderdetail = ({ route, navigation }) => {
 
   const [myOrderDetail, setMyOrderDetail] = useState({});
   const [myOrderDetailMenus, setmyOrderDetailMenus] = useState([]);
   const [myDate, setMyDate] = useState('');
   const [myTime, setMyTime] = useState('');
-
+  const [shopId, setShopId] = useState('');
+  const [shop, setShop] = useState({
+    id: '',
+  });
   useEffect(() => {
     getOrderDetail();
   }, []);
@@ -119,18 +124,40 @@ const Orderdetail = ({ route }) => {
       );
       console.log(response.data);
       setMyOrderDetail(response.data);
-      setmyOrderDetailMenus(response.data.menus)
-      setMyDate(response.data.date.slice(0, 10))
-      setMyTime(response.data.date.slice(11, 16))
+      setmyOrderDetailMenus(response.data.menus);
+      setMyDate(response.data.date.slice(0, 10));
+      setMyTime(response.data.date.slice(11, 16));
+      setShopId(response.data.shopId);
+      console.log(shopId);
+      // console.log("샵정보!!!!", shop)
+      // setShop({
+      //   ...shop,
+      //   ['id']: response.data.shopId
+      // });
     } catch (e) {
       console.log(e);
     }
   }
 
+  const getShop = (shopId) => {
+    console.log(shopId)
+    navigation.navigate('Cafe', {id: shopId});
+  }
+
   return (
       <ScrollContainer>
+        <View style={{flexDirection: 'row'}}>
+          <View>
         <TitleText>{ myOrderDetail.shopName }</TitleText>
-        <Col1>
+        </View>
+        <StPressable onPress={() => getShop(shopId)}>
+          <Image source={ require('../../assets/icons/sign.png') }/>
+          <View>
+            <SubText style={{ marginTop: 5, marginRight:10, fontSize: 10 }}>카페 상세</SubText>
+          </View>
+        </StPressable>
+        </View>
+        <Col1 style={{marginBottom: 5}}>
           <DateText>{ myDate } { myTime }</DateText>
           <Text style={{ alignSelf: 'flex-start', fontFamily: 'InfinitySans-Bold'}}>요청사항</Text>
           <RequestText>{ myOrderDetail.request }</RequestText>
@@ -152,7 +179,7 @@ const Orderdetail = ({ route }) => {
               ))}
             </Col3>
             <Col4>
-              <Text> × { menu.quantity }</Text>
+              <QuantityText> × { menu.quantity }</QuantityText>
             </Col4>
           </Row>
         ))}
