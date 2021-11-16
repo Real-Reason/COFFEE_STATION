@@ -11,7 +11,7 @@ const Search = ({ navigation }) => {
     console.log('카페검색');
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/shop/search/?q=${cafename}`
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/search/?q=${cafename}`
       );
       console.log(response.data);
       setCafeList(response.data);

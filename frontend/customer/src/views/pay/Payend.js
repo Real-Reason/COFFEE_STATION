@@ -20,15 +20,26 @@ const Payend = ({ navigation, route }) => {
     const paydata = route.params.payComplete
     // console.log(paydata);
     // console.log(spl[1]);
+    let orderId = 0
     try {
       const response = await axios.post(
-        `http://3.38.99.110:8080/kakaoPay/approval?pg_token=${spl[1]}`, 
+        `${process.env.REACT_APP_BASE_URL}kakaoPay/approval?pg_token=${spl[1]}`, 
         paydata,
       );
       // console.log(response);
-      console.log(response.config.data);
-      console.log(response.headers.date);
+      console.log('전체', response.config.data);
+      let datas = JSON.parse(response.config.data);
+      console.log(typeof(datas));
+      orderId = datas.partner_order_id;
       setOrderTime(response.headers.date);
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      const response2 = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}api/customer/orders/${orderId}/paid`, 
+      );
+      console.log(response2);
     } catch (e) {
       console.log(e);
     }
