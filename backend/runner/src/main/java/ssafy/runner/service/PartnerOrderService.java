@@ -3,17 +3,12 @@ package ssafy.runner.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
 import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.dto.order.OrderUpdateRequestDto;
-import ssafy.runner.domain.entity.Customer;
-import ssafy.runner.domain.entity.Orders;
-import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.domain.entity.Shop;
+import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.OrderStatus;
-import ssafy.runner.domain.repository.CustomerRepository;
-import ssafy.runner.domain.repository.OrderRepository;
-import ssafy.runner.domain.repository.PartnerRepository;
-import ssafy.runner.domain.repository.ShopRepository;
+import ssafy.runner.domain.repository.*;
 import ssafy.runner.firebase.FirebaseCloudMessageService;
 
 import java.io.IOException;
@@ -33,14 +28,13 @@ public class PartnerOrderService {
     private final CustomerRepository customerRepository;
     private final ShopRepository shopRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final OrderMenuRepository orderMenuRepository;
 
     // 해당 샵의 전체 주문 내역 조회
     public List<OrderResponseDto> findByShop(String email) {
-
-        Partner partner = partnerRepository.findByEmailWithShop(email)
-                .orElseThrow(NoSuchElementException::new);
-        Shop shop = partner.getShop();
+        Shop shop = shopRepository.findShopByEmail(email).orElseThrow(NoSuchElementException::new);
         // 해당 샵의 주문 리스트 뽑기
+        // 3개월 이내 옵션 걸어야함
         List<Orders> orderList = orderRepository.findByShop(shop);
         // 응답할 디티오 리스트에 담기
         List<OrderResponseDto> orderDtoList = new ArrayList<>();
@@ -53,9 +47,7 @@ public class PartnerOrderService {
     // 해당 샵의 특정시간 이후 주문 내역 조회
     public List<OrderResponseDto> findByShopAndDay(String email, LocalDateTime dateTime) {
 
-        Partner partner = partnerRepository.findByEmailWithShop(email)
-                .orElseThrow(NoSuchElementException::new);
-        Shop shop = partner.getShop();
+        Shop shop = shopRepository.findShopByEmail(email).orElseThrow(NoSuchElementException::new);
         LocalDateTime todayStart = startDateTime(dateTime);
         List<Orders> orderList = orderRepository.findByShopAndDateAfter(shop, todayStart);
         List<OrderResponseDto> orderDtoList = new ArrayList<>();
@@ -66,19 +58,21 @@ public class PartnerOrderService {
     }
 
     // 해당 샵의 특정시간 이후 주문 내역 상태별 조회
-    public List<OrderResponseDto> findByShopAndDayAndStatus(String email, LocalDateTime dateTime, String status) {
+    public List<OrderDetailResDto> findByShopAndDayAndStatus(String email, LocalDateTime dateTime, String status) {
 
-        Partner partner = partnerRepository.findByEmailWithShop(email)
-                .orElseThrow(NoSuchElementException::new);
-        Shop shop = partner.getShop();
+        Shop shop = shopRepository.findShopByEmail(email).orElseThrow(NoSuchElementException::new);
         LocalDateTime todayStart = startDateTime(dateTime);
         OrderStatus orderStatus = OrderStatus.valueOf(status);
-        List<Orders> orderList = orderRepository.findByShopAndDateAfterAndStatus(shop, todayStart, orderStatus);
-        List<OrderResponseDto> orderDtoList = new ArrayList<>();
-        for (Orders order : orderList) {
-            orderDtoList.add(new OrderResponseDto(order));
+        List<Long> orderList = orderRepository.findIdByShopAndDateAfterAndStatus(shop, todayStart, orderStatus);
+        List<OrderDetailResDto> orderDetailResDtoList = new ArrayList<>();
+        if (orderList.size() > 0) {
+            for (Long orderId : orderList) {
+                List<OrderMenu> orderMenuList = orderMenuRepository.findOneFetched(orderId);
+                OrderDetailResDto orderDetailResDto = OrderDetailResDto.of(orderMenuList);
+                orderDetailResDtoList.add(orderDetailResDto);
+            }
         }
-        return orderDtoList;
+        return orderDetailResDtoList;
     }
 
     @Transactional

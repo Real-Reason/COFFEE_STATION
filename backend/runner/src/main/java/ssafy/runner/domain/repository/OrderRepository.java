@@ -36,6 +36,11 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     List<Orders> findByShopAndDateAfterAndStatus(@Param("shop") Shop shop,
                                                  @Param("date") LocalDateTime date,
                                                  @Param("status") OrderStatus status);
+    @Query("select o.id from Orders o " +
+            "where o.shop = :shop and o.date > :date and o.status = :status")
+    List<Long> findIdByShopAndDateAfterAndStatus(@Param("shop") Shop shop,
+                                                 @Param("date") LocalDateTime date,
+                                                 @Param("status") OrderStatus status);
 
     @Query("select sum(o.totalPrice) from Orders o " +
             "where o.shop = :shop and o.status = :status and " +

@@ -20,4 +20,7 @@ public interface ShopRepository extends JpaRepository<Shop, Long>, ShopRepositor
                     " join fetch s.partner" +
                     " where s.id = :shopId")
     Optional<Shop> findShopNPartnerById(@Param("shopId") Long shopId);
+
+    @Query(value = "select s from Shop s join fetch s.partner where s.partner.email = :email")
+    Optional<Shop> findShopByEmail(@Param("email") String email);
 }
