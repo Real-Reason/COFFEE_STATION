@@ -188,7 +188,7 @@ const Cafe = ({ navigation, route }) => {
         <StTab>
           {cafeMenus.map((cafeMenu, index) => (
             // === 메뉴별 Row =====
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu})}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
               <Row3>
                 {/* 메뉴 이름 및 가격 */}
                 <Col3>
