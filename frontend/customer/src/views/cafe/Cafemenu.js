@@ -34,7 +34,7 @@ const SelectPress = styled.Pressable`
   padding: 5px;
   border-radius: 5px;
   border-width: 2px;
-  border-color: orange;
+  border-color: #ff7f00;
   width:40%;
 `
 const SelectPressCount = styled.Pressable`
@@ -44,7 +44,7 @@ const SelectPressCount = styled.Pressable`
   padding: 5px;
   border-radius: 5px;
   border-width: 2px;
-  border-color: blue;
+  border-color: #cacaca;
   width:10%;
 `
 const StText = styled.Text`
@@ -146,7 +146,21 @@ const Cafemenu = ({ route }) => {
     let tmp = JSON.parse(await AsyncStorage.getItem('cartList'));
     let cartlist = {items: []};
     let isSame = true;
-    if (item.menuStatus=='SALE') { // 해당 상품이 판매가능
+    let tmpPrice = 0;
+    if (item.menuStatus=='SALE') { // 해당 상품이 판매가능 
+      for (var i=0; i < extraForOrder.length; i++) {
+        extraForOrder[i];
+        for (var j=0; j < extras.length; j++) {
+          if (extraForOrder[i] == extras[j].extraId) {
+            tmpPrice = tmpPrice + extras[j].price;
+          }
+        }
+      }
+      for (var k=0; k < sizes.length; k++) {
+        if (menuSizeId == sizes[k].menuSizeId) {
+          tmpPrice = tmpPrice + sizes[k].price;
+        }
+      }
       if (tmp) { // 담아둔게 이미 하나 이상 있는 경우
         let cartlistall = tmp.items;
         if (cartlistall[0].cafeId == route.params.id) { // 그 담아둔 것이 지금 가게랑 같다면?
@@ -165,18 +179,18 @@ const Cafemenu = ({ route }) => {
             }
           });
           if (isSame) {
-            cartlistall.push({cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId });
+            cartlistall.push({cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice });
             isSame = true;
           }
           alert(`장바구니에 ${route.params.menuInfo.name} ${count}개 더 추가`);
           cartlist = {items: cartlistall};
         } else { // 담아둔 것이 지금 가게랑 다르면? 기존거 없애고 새걸로 업데이트
           alert('현재 카페의 상품으로 초기화합니다!');
-          cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId }]}
+          cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice }]}
         }
       } else {  // 담아둔게 하나도 없다면 바로 넣기
         alert(`장바구니에 ${route.params.menuInfo.name} 추가`);
-        cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId }]}
+        cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice }]}
       }
       await AsyncStorage.setItem('cartList', JSON.stringify(cartlist));
     } else { // 해당 상품이 판매 불가능
