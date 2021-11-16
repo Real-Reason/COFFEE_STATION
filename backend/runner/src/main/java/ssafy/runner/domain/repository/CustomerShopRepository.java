@@ -15,4 +15,9 @@ public interface CustomerShopRepository extends JpaRepository<CustomerShop, Long
             "join fetch cs.shop s " +
             "where cs.customer.id = :customerId")
     List<CustomerShop> findAllByCustomerId(@Param("customerId") Long customerId);
+
+    @Query("select cs from CustomerShop cs" +
+            " where cs.customer.id = :customerId" +
+            " and cs.shop.id = :shopId")
+    Optional<CustomerShop> findLikeOrNot(@Param("customerId") Long customerId, @Param("shopId") Long shopId);
 }

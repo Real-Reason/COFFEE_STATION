@@ -13,13 +13,9 @@ import ssafy.runner.domain.dto.shop.SearchShopResponseDto;
 import ssafy.runner.domain.dto.shop.ShopBriefResponseDto;
 import ssafy.runner.domain.dto.shop.ShopReqDto;
 import ssafy.runner.domain.dto.shop.ShopResDto;
-import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.domain.entity.Shop;
-import ssafy.runner.domain.entity.ShopImage;
+import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.ShopStatus;
-import ssafy.runner.domain.repository.PartnerRepository;
-import ssafy.runner.domain.repository.ShopImageRepository;
-import ssafy.runner.domain.repository.ShopRepository;
+import ssafy.runner.domain.repository.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -32,6 +28,8 @@ public class ShopService {
     private final ShopRepository shopRepository;
     private final ShopImageRepository shopImageRepository;
     private final PartnerRepository partnerRepository;
+    private final CustomerRepository customerRepository;
+    private final CustomerShopRepository customerShopRepository;
 
     // 근처 카페 리스트 가져오기
     public List<ShopBriefResponseDto> findNearShopList(double x, double y, double distance) throws ParseException {
@@ -86,12 +84,20 @@ public class ShopService {
     }
 
     @Transactional
-    public ShopAndMenuResponseDto getShopAndMenu(Long shopId) {
+    public ShopAndMenuResponseDto getShopAndMenu(Long shopId, String email) {
 
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
         List<String> imgUrlList = shopImageRepository.findAllByShopId(shop.getId());
-        return ShopAndMenuResponseDto.entityToDto(shop, imgUrlList);
+
+        Boolean customerLikeShop = true;
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        Optional<CustomerShop> customerShop  = customerShopRepository.findLikeOrNot(customer.getId(), shopId);
+        if (customerShop.isEmpty()) {
+            customerLikeShop = false;
+        }
+
+        return ShopAndMenuResponseDto.entityToDto(shop, imgUrlList, customerLikeShop);
     }
 
     private Point getPoint(double x, double y) throws ParseException {

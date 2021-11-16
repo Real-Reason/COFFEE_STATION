@@ -91,7 +91,7 @@ public class CustomerLikeController {
     }
 
 
-    // 점주 계정인지 확인 한후, 점주가 맞으면 email 리턴
+    // 사용자 계정인지 확인 한후, 사용자가 맞으면 email 리턴
     private String checkPrincipalReturnEmail(Authentication authentication) {
 
         CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
@@ -99,5 +99,4 @@ public class CustomerLikeController {
             throw new IllegalStateException("사용자만 조회가능합니다.");
         return principal.getEmail();
     }
-
 }
