@@ -18,22 +18,16 @@ const Item = ({item, onPress, backgroundColor, textColor}) => {
 };
 
 const NewOrder = ({route}) => {
-  const {selectedNewId, setSelectedNewId, setSelectedNewOrder} =
+  const {selectedNewId, setSelectedNewId, setSelectedOrder} =
     useContext(TabProgressContext);
 
   const setNewOrder = item => {
     setSelectedNewId(item.id);
     console.log(item);
-    setSelectedNewOrder(item);
+    setSelectedOrder(item);
   };
   // 현재 ORDERED로 들어오고 있는것, PAID로 들어오는것으로 바꿔줘야함
   const {DATA} = route.params;
-
-  // 실시간 처리에 대해서 생각을 해봐야 할 듯
-  useEffect(() => {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(DATA);
-  }, []);
 
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedNewId ? '#6e3b6e' : '#f9c2ff';
