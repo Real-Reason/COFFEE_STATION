@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ssafy.runner.domain.entity.ShopImage;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ShopImageRepository extends JpaRepository<ShopImage, Long> {
@@ -17,4 +18,9 @@ public interface ShopImageRepository extends JpaRepository<ShopImage, Long> {
             " join si.shop s" +
             " where s.id = :shopId and si.idx = :index")
     Optional<String> findByShopIdAndIndex(@Param("shopId") Long shopId, @Param("index") int index);
+
+    @Query("select si.imgUrl from ShopImage si" +
+            " join si.shop s" +
+            " where s.id = :shopId")
+    List<String> findAllByShopId(@Param("shopId") Long shopId);
 }

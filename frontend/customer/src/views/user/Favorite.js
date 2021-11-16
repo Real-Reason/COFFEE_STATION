@@ -20,7 +20,7 @@ const Favorite = ({ navigation }) => {
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/favorites/menu`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
@@ -30,7 +30,7 @@ const Favorite = ({ navigation }) => {
     }
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/favorites/shop`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/shop`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       console.log(response.data);
