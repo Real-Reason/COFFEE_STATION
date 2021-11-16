@@ -150,8 +150,14 @@ const Cafemenu = ({ route }) => {
       if (tmp) { // 담아둔게 이미 하나 이상 있는 경우
         let cartlistall = tmp.items;
         if (cartlistall[0].cafeId == route.params.id) { // 그 담아둔 것이 지금 가게랑 같다면?
+          let tmpextralist1 = [];
+          let tmpextralist2 = [];
           cartlistall.forEach((val, index) => {
-            if (val.cafeId == route.params.id && val.menuId == route.params.menuInfo.menuId) { // 중복되는 물품이 있다면 합체
+            tmpextralist1 = val.extraIdList.slice();
+            tmpextralist2 = extraForOrder.slice();
+            tmpextralist1.sort();
+            tmpextralist2.sort();
+            if (val.cafeId == route.params.id && val.menuId == route.params.menuInfo.menuId && val.menuSizeId == menuSizeId && JSON.stringify(tmpextralist1) == JSON.stringify(tmpextralist2)) { // 중복되는 물품이 있다면 합체
               console.log('중복0');
               val.count = val.count + count;
               isSame = false;
