@@ -41,6 +41,7 @@ const DateText = styled(Text)`
   margin-top : 10px;
 `
 const TitleText = styled(Text)`
+  color: black;
   font-family: 'InfinitySans-Bold';
   text-align: left;
   font-size: 16px;
@@ -49,12 +50,13 @@ const TitleText = styled(Text)`
 `
 const StatusText = styled(Text)`
   font-size: 9px;
-  padding: 2px;
+  padding: 3px;
   margin-bottom: 3px;
   align-self: flex-start;
-  border-radius: 5px;
-  border: solid #cacaca 1px;
+  border-radius: 20px;
+  border: solid #cacaca 0.5px;
   color: white;
+  padding-right: 4px;
 `
 const PriceText = styled(Text)`
   margin-top : 10px;
@@ -132,9 +134,12 @@ const Orderlist = ({ navigation }) => {
                   <StatusView>
                     <StatusText 
                       value={ myOrder.status } 
-                      style={{backgroundColor: myOrder.status == 'COMPLETED'? 'green': 
-                      (myOrder.status == 'ORDERED'?'#FF7F00': 'grey') 
-                    }}
+                      style={{ backgroundColor: myOrder.status == 'COMPLETED'? '#0788FA': 
+                      (myOrder.status == 'ORDERED'?'#6C00FF': 
+                      (myOrder.status=='PAID'? '#FF7F00': 
+                      (myOrder.status=='PREPARING'? '#00AF60':
+                      (myOrder.status=='READY'? '#FF0880':'grey'))))
+                      }}
                     >
                       { myOrder.status }
                     </StatusText>
