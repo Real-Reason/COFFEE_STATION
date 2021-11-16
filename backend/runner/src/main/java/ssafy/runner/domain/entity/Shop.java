@@ -28,6 +28,9 @@ public class Shop {
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Menu> menuList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<ShopImage> shopImageList = new ArrayList<>();
+
     private String name;
     private String business_no;
     private String phone_number;

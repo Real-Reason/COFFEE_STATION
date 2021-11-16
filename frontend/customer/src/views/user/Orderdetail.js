@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -29,7 +29,7 @@ const Orderdetail = ({ route }) => {
   }
 
   return (
-      <View>
+      <ScrollView>
         <Text>Orderdetail</Text>
         <Text>{ myOrderDetail.date }</Text>
         <Text>{ myOrderDetail.request }</Text>
@@ -38,7 +38,7 @@ const Orderdetail = ({ route }) => {
         {/* <Text>{ myOrderDetail.menus[0].menuName }</Text>
         <Text>{ myOrderDetail.menus[0].menuSize }</Text>
         <Text>{ myOrderDetail.menus[0].quantity }</Text> */}
-      </View>
+      </ScrollView>
   );
 }
 
