@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -41,9 +41,9 @@ const DateText = styled(Text)`
   margin-top : 10px;
 `
 const TitleText = styled(Text)`
+  font-family: 'InfinitySans-Bold';
   text-align: left;
   font-size: 16px;
-  font-weight: bold;
   align-self: flex-start;
   margin-top: 5px;
 `
