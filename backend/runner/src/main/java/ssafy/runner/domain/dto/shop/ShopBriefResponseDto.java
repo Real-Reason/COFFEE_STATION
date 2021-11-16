@@ -31,4 +31,11 @@ public class ShopBriefResponseDto {
         this.distanceFrom = distance;
     }
 
+    public ShopBriefResponseDto(Shop shop) {
+        this.id = shop.getId();
+        this.name = shop.getName();
+        this.address = shop.getAddress();
+        this.detail_address = shop.getDetail_address();
+        this.shopImgUrl = shop.getShopImageList().get(0).getImgUrl();
+    }
 }

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface CustomerShopRepository extends JpaRepository<CustomerShop, Long> {
 
-    @Query("select cs from CustomerShop cs join fetch cs.shop s where cs.customer.id = :customerId")
+    @Query("select cs from CustomerShop cs " +
+            "join fetch cs.shop s " +
+            "where cs.customer.id = :customerId")
     List<CustomerShop> findAllByCustomerId(@Param("customerId") Long customerId);
 }

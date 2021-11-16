@@ -10,6 +10,7 @@ import ssafy.runner.domain.entity.CustomerShop;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.repository.CustomerRepository;
 import ssafy.runner.domain.repository.CustomerShopRepository;
+import ssafy.runner.domain.repository.ShopImageRepository;
 import ssafy.runner.domain.repository.ShopRepository;
 
 import java.util.List;
@@ -39,7 +40,6 @@ public class CustomerShopService {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         Long customerId = customer.getId();
         List<CustomerShop> customerLikeShopList = customerShopRepository.findAllByCustomerId(customerId);
-
         return LikeShopListResponseDto.of(customerLikeShopList);
     }
 }
