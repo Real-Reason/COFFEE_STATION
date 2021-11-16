@@ -127,6 +127,7 @@ const App = ({ navigation }) => {
 
   const saveTokenToDatabase = async (token) => {
     let userToken = await AsyncStorage.getItem('userToken');
+    console.log(process.env.REACT_APP_BASE_URL)
     console.log(userToken, "현재 로그읺한 유저 토큰임")
     if ( userToken !== null ){
       try {
