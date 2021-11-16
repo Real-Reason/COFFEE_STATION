@@ -2,6 +2,67 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Button, Pressable, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styled from 'styled-components/native';
+
+
+const SelectView = styled.View`
+  flex-direction: row; 
+  justify-content:space-between;
+  margin: 5px;
+`
+const SelectViewExtra = styled.View`
+  flex-direction: row; 
+  margin: 5px;
+`
+const SelectViewButtons = styled.View`
+  flex-direction: row; 
+  justify-content:center;
+  margin: 5px;
+`
+const SelectViewContent = styled.View`
+  flex:1;
+  max-width: 100;
+  align-items: center; 
+  border-radius: 5px;
+  border-width: 2px;
+  margin: 5px;
+`
+const SelectPress = styled.Pressable`
+  justify-content:center;
+  align-items: center; 
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: orange;
+  width:40%;
+`
+const SelectPressCount = styled.Pressable`
+  justify-content:center;
+  align-items: center; 
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: blue;
+  width:10%;
+`
+const StText = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: #000000;
+  margin-top: 2.5px;
+`
+const StTextTitle = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 5px;
+  color: #000000;
+  font-size: 20px;
+`
+const MenuImage = styled.Image`
+  width:100;
+  height:100;
+`
 
 const Cafemenu = ({ route }) => {
 
@@ -56,14 +117,13 @@ const Cafemenu = ({ route }) => {
       setExtraForOrder(tmplist);
     }
     console.log(extraForOrder);
-    let arr = extraIndex;
+    let arr = extraIndex.slice();
     if (extraIndex[index]==1) {
       arr[index] = 0;
-      setExtraIndex(arr);
     } else {
       arr[index] = 1;
-      setExtraIndex(arr);
     }
+    setExtraIndex(arr);
   }
 
   const getSize = (menuSizeId, index) => {
@@ -90,8 +150,14 @@ const Cafemenu = ({ route }) => {
       if (tmp) { // 담아둔게 이미 하나 이상 있는 경우
         let cartlistall = tmp.items;
         if (cartlistall[0].cafeId == route.params.id) { // 그 담아둔 것이 지금 가게랑 같다면?
+          let tmpextralist1 = [];
+          let tmpextralist2 = [];
           cartlistall.forEach((val, index) => {
-            if (val.cafeId == route.params.id && val.menuId == route.params.menuInfo.menuId) { // 중복되는 물품이 있다면 합체
+            tmpextralist1 = val.extraIdList.slice();
+            tmpextralist2 = extraForOrder.slice();
+            tmpextralist1.sort();
+            tmpextralist2.sort();
+            if (val.cafeId == route.params.id && val.menuId == route.params.menuInfo.menuId && val.menuSizeId == menuSizeId && JSON.stringify(tmpextralist1) == JSON.stringify(tmpextralist2)) { // 중복되는 물품이 있다면 합체
               console.log('중복0');
               val.count = val.count + count;
               isSame = false;
@@ -134,39 +200,63 @@ const Cafemenu = ({ route }) => {
   }
 
   return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#ffffff', padding:20}}>
         <View style={{alignItems: 'center'}}>
-          <Image 
+          <MenuImage 
             source={{uri: route.params.menuInfo.imgUrl }} 
-            style={{width:300, height:300}} 
           />
         </View>
 
-        <Text>{ route.params.menuInfo.price }</Text>
-        <Text>{ route.params.menuInfo.name }</Text>
-        <Text>{ route.params.menuInfo.menuStatus }</Text>
+        <View style={{alignItems: 'center'}}>
+          <StTextTitle>{ route.params.menuInfo.name }</StTextTitle>
+          <StTextTitle>{ route.params.menuInfo.price }</StTextTitle>
+        </View>
 
-        {sizes.map((size, index) => (
-          <Pressable key={index} onPress={() => getSize(size.menuSizeId, index)}>
-            <Text style={{backgroundColor: sizeIndex[index] == 1 ? 'green':'yellow'}}> 사이즈업 : { size.price } </Text>
-          </Pressable>
-        ))}
+        <SelectView>
+          {sizes.map((size, index) => (
+            <SelectViewContent style={{ borderColor: sizeIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
+              <Pressable style={{alignItems: 'center', paddingTop:10 }} onPress={() => getSize(size.menuSizeId, index)}>
+                <View style={{ height: 55, paddingBottom:0 }}>
+                  <Image 
+                    source={require('../../assets/icons/coffee-active.png')} 
+                    style={{width:50, height: (50 + size.price / 100) }}
+                  />
+                </View>
+                <StText>+ { size.price }</StText>
+              </Pressable>
+            </SelectViewContent>
+          ))}
+        </SelectView>
 
-        <Text></Text>
+        <SelectViewExtra>
+          {extras.map((extra, index) => (
+            <SelectViewContent style={{ borderColor: extraIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
+              <Pressable onPress={() => getExtraList(extra.extraId, index)}>
+                <StText>{ extra.name }</StText>
+                <StText>+ { extra.price }</StText>
+              </Pressable>
+            </SelectViewContent>
+          ))}
+        </SelectViewExtra>
 
-        {extras.map((extra, index) => (
-          <Pressable key={index} onPress={() => getExtraList(extra.extraId, index)}>
-            <Text style={{backgroundColor: extraIndex[index] == 1 ? 'green':'yellow'}}>{ extra.name } : { extra.price }</Text>
-          </Pressable>
-        ))}
+        <SelectViewButtons>
+          <SelectPressCount onPress={() => setCount(count-1)}>
+            <Text>-1</Text>
+          </SelectPressCount>
+          <StText>{ count }</StText>
+          <SelectPressCount onPress={() => setCount(count+1)}>
+            <Text>+1</Text>
+          </SelectPressCount>
+        </SelectViewButtons>
 
-        <Text></Text>
-        <Button title="-1" onPress={() => setCount(count-1)}></Button>
-        <Text>{ count }</Text>
-        <Button title="+1" onPress={() => setCount(count+1)}></Button>
-        <Button title="장바구니에 추가하기!" onPress={() => addCart(route.params.menuInfo)}></Button>
-        <Text> </Text>
-        <Button title='좋아요~' onPress={() => likeMenu()}></Button>
+        <SelectViewButtons>
+          <SelectPress onPress={() => likeMenu()}>
+            <StText>좋아요~!</StText>
+          </SelectPress>
+          <SelectPress onPress={() => addCart(route.params.menuInfo)}>
+            <StText>장바구니 추가</StText>
+          </SelectPress>
+        </SelectViewButtons>
         
       </ScrollView>
   );
