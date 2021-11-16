@@ -7,7 +7,7 @@ import ssafy.runner.domain.entity.CustomerMenu;
 
 import java.util.List;
 
-public interface CustomerMenuRepository extends JpaRepository<CustomerMenu, Long> {
+public interface CustomerMenuRepository extends JpaRepository<CustomerMenu, Long>, CustomerMenuRepositoryCustom {
 
     @Query("select cm from CustomerMenu cm join fetch cm.menu m where cm.customer.id = :customerId")
     List<CustomerMenu> findAllByCustomerId(@Param("customerId") Long customerId);

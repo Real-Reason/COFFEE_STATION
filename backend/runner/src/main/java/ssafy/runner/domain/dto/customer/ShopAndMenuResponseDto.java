@@ -27,9 +27,10 @@ public class ShopAndMenuResponseDto {
     private String intro;
     private String instagram;
     private List<String> imgUrlList = new ArrayList<>();
+    private Boolean customerLikeShop;
 
     @Builder
-    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, double x, double y, ShopStatus status, String open_at, String close_at, String intro, String instagram, List<String> imgUrlList) {
+    public ShopAndMenuResponseDto(Long id, MenuListResponseDto menuList, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, double x, double y, ShopStatus status, String open_at, String close_at, String intro, String instagram, List<String> imgUrlList, Boolean customerLikeShop) {
         this.id = id;
         this.menuList = menuList;
         this.name = name;
@@ -46,9 +47,10 @@ public class ShopAndMenuResponseDto {
         this.intro = intro;
         this.instagram = instagram;
         this.imgUrlList = imgUrlList;
+        this.customerLikeShop = customerLikeShop;
     }
 
-    public static ShopAndMenuResponseDto entityToDto(Shop shop, List<String> imgUrlList) {
+    public static ShopAndMenuResponseDto entityToDto(Shop shop, List<String> imgUrlList, Boolean customerLikeShop) {
         return ShopAndMenuResponseDto.builder()
                 .id(shop.getId())
                 .menuList(MenuListResponseDto.of(shop.getMenuList()))
@@ -66,6 +68,7 @@ public class ShopAndMenuResponseDto {
                 .intro(shop.getIntro())
                 .instagram(shop.getInstagram())
                 .imgUrlList(imgUrlList)
+                .customerLikeShop(customerLikeShop)
                 .build();
     }
 
