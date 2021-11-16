@@ -204,6 +204,7 @@ const App = ({ navigation }) => {
         let userToken;
         try {
           console.log(data)
+          console.log(process.env.REACT_APP_BASE_URL)
           const response = await axios.post(
             `${process.env.REACT_APP_BASE_URL}api/customer/login`,
             data
@@ -217,7 +218,6 @@ const App = ({ navigation }) => {
           console.log("토큰 받아오는 중")
           const token = messaging().getToken()
           .then(async token => {
-            console.log("진짜 토큰이야~~~~", token)
             let userToken = await AsyncStorage.getItem('userToken');
             if (userToken !== null ){
               console.log('유저 토큰은', userToken)
@@ -225,7 +225,6 @@ const App = ({ navigation }) => {
               saveTokenToDatabase(token)
             }
           })
-          console.log("토큰이다 !!!!!!!", token)
         } catch (e) {
           console.log(e)
         }
