@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, Pressable, ImageBackground } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
@@ -24,6 +24,7 @@ const MenuImage = styled.Image`
 const StCafeTitle = styled.View`
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
   margin-left: 15%;
   margin-bottom: 10px;
   width: 70%;
@@ -82,7 +83,7 @@ const Col1 = styled.View`
   
 const Col2 = styled.View`
   width: 100%;
-  height: 61%;
+  height: 75%;
 `
 
 const Col3 = styled.View`
@@ -249,34 +250,36 @@ const Cafe = ({ navigation, route }) => {
   return (
       <View>
         {/* 카페 이미지 */}
-        <StCafeImg source={{uri : cafeImgList[0]}}></StCafeImg>
-        {/* 가게 이름 및 전화 & 좋아요 */}
-        <StCafeTitle>
-          <StCafeTitleName>
-            { cafeDetail.name }
-          </StCafeTitleName>
-          <Row1>
-            <Row4>
-              <Image source={require('../../assets/icons/call.png')} style={{width: 24, height: 24}}></Image>
-              <StCafeTitleItem>전화</StCafeTitleItem>
-            </Row4>
-            <Row4>
-              <TouchableOpacity style={{border: 1}}>
-                <Image source={require('../../assets/icons/like-inactive.png')} style={{width: 24, height: 24}}></Image>
+        <ImageBackground resizeMode="cover" source={{uri : cafeImgList[0]}} style={{width: "100%", height: "100%"}}>
+          <StCafeTitle>
+            <StCafeTitleName>
+              { cafeDetail.name }
+            </StCafeTitleName>
+            <Row1>
+              <Row4>
+                <Image source={require('../../assets/icons/call.png')} style={{width: 24, height: 24}}></Image>
+                <StCafeTitleItem>전화</StCafeTitleItem>
+              </Row4>
+              <Row4>
+                <TouchableOpacity style={{border: 1}}>
+                  <Image source={require('../../assets/icons/like-inactive.png')} style={{width: 24, height: 24}}></Image>
+                </TouchableOpacity>
                 <StCafeTitleItem onPress={() => likeCafe()}>좋아요</StCafeTitleItem>
-              </TouchableOpacity>
-            </Row4>
-            
-          </Row1>
-        </StCafeTitle>
+              </Row4>
+            </Row1>
+          </StCafeTitle>
+        {/* <StCafeImg source={{uri : cafeImgList[0]}}></StCafeImg> */}
+        {/* 가게 이름 및 전화 & 좋아요 */}
 
-        {/* 메뉴/가게소개 Tab 및 스크롤 */}
-        <Col2>
-          <Tab.Navigator>
-            <Tab.Screen name="메뉴" component={CafeMenuTab}></Tab.Screen>
-            <Tab.Screen name="가게소개" component={CafeIntroTab}></Tab.Screen>
-          </Tab.Navigator>
-        </Col2>
+
+          {/* 메뉴/가게소개 Tab 및 스크롤 */}
+          <Col2>
+            <Tab.Navigator>
+              <Tab.Screen name="메뉴" component={CafeMenuTab}></Tab.Screen>
+              <Tab.Screen name="가게소개" component={CafeIntroTab}></Tab.Screen>
+            </Tab.Navigator>
+          </Col2>
+        </ImageBackground>
       </View>
   );
 }

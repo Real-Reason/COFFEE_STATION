@@ -36,6 +36,17 @@ public class CustomerLikeController {
         return new ResponseEntity<>("가게 좋아요 등록 성공", HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/shop/{shopId}")
+    @ApiOperation(value = "가게 즐겨찾기 등록")
+    public ResponseEntity unLikeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        System.out.println("email = " + email);
+        customerShopService.unLikeShop(shopId, email);
+
+        return new ResponseEntity<>("가게 좋아요 취소 성공", HttpStatus.CREATED);
+    }
+
     @PostMapping("/menu/{menuId}")
     @ApiOperation(value = "메뉴 즐겨찾기 등록")
     public ResponseEntity likeMenu(Authentication authentication,
@@ -46,6 +57,18 @@ public class CustomerLikeController {
 
         return new ResponseEntity<>("메뉴 좋아요 등록 성공", HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/menu/{menuId}")
+    @ApiOperation(value = "메뉴 즐겨찾기 등록")
+    public ResponseEntity unLikeMenu(Authentication authentication,
+                                   @PathVariable("menuId") Long menuId) {
+
+        String email = checkPrincipalReturnEmail(authentication);
+        customerMenuService.unLikeMenu(menuId, email);
+
+        return new ResponseEntity<>("메뉴 좋아요 취소 성공", HttpStatus.CREATED);
+    }
+
 
     @GetMapping("/shop")
     @ApiOperation(value = "좋아요한 가게 목록 조회")

@@ -26,6 +26,7 @@ public class CustomerShopService {
     private final ShopRepository shopRepository;
     private final CustomerRepository customerRepository;
 
+    @Transactional
     public void likeShop(Long shopId, String email) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(NoSuchElementException::new);
@@ -35,6 +36,13 @@ public class CustomerShopService {
         customerShopRepository.save(customerShop);
     }
 
+    @Transactional
+    public void unLikeShop(Long shopId, String email) {
+
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        customerShopRepository.unLikeShop(customer.getId(), shopId);
+    }
+
     public LikeShopListResponseDto getLikeShopList(String email) {
 
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
@@ -42,4 +50,5 @@ public class CustomerShopService {
         List<CustomerShop> customerLikeShopList = customerShopRepository.findAllByCustomerId(customerId);
         return LikeShopListResponseDto.of(customerLikeShopList);
     }
+
 }
