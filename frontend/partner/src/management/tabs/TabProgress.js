@@ -10,6 +10,14 @@ import axios from 'axios';
 const Container = styled.View`
   flex-direction: row;
   flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const DeatailContainer = styled(Container)`
+  flex-direction: column;
+`;
+const StyledBtn = styled.Button`
+  background-color: red;
 `;
 
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
@@ -27,27 +35,26 @@ const Tab = createMaterialTopTabNavigator();
 const TabProgress = ({navigation}) => {
   // Context
   const [selectedNewId, setSelectedNewId] = useState(null);
-  const [progressSelectedId, setProgressSelectedId] = useState(null);
-  const [selectedNewOrder, setSelectedNewOrder] = useState([]);
+  const [selectedPreparingId, setSelectedPreparingId] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState([]);
   const value = {
     selectedNewId,
     setSelectedNewId,
-    progressSelectedId,
-    setProgressSelectedId,
-    selectedNewOrder,
-    setSelectedNewOrder,
+    selectedPreparingId,
+    setSelectedPreparingId,
+    selectedOrder,
+    setSelectedOrder,
   };
   // PAID 받아오기
   const showPaidOrderList = async () => {
     try {
       const response = await axios.get(
-        BASE_URL + '/shop/orders/today/status/ORDERED',
+        BASE_URL + '/shop/orders/today/status/PAID',
       );
       paiedOrders = response.data;
-      console.log(paiedOrders);
       console.log('PAID ORDERS RECEIVED');
     } catch (e) {
-      console.log('신규 정보 못받아옴', e);
+      console.log('신규 오더 정보 못받아옴', e);
     }
   };
   // PREPARING 받아오기
@@ -57,10 +64,9 @@ const TabProgress = ({navigation}) => {
         BASE_URL + '/shop/orders/today/status/PREPARING',
       );
       preparingOrders = response.data;
-      console.log(preparingOrders);
       console.log('PREPARING ORDERS RECEIVED');
     } catch (e) {
-      console.log('신규 정보 못받아옴', e);
+      console.log('준비 오더 정보 못받아옴', e);
     }
   };
   // Mount 될 때 정보를 받아온다 But 이렇게하면 동시성 처리가 될까?
@@ -73,10 +79,28 @@ const TabProgress = ({navigation}) => {
   useEffect(() => {
     console.log(`selectedNewId가 변했다!! -> ${selectedNewId}`);
   }, [selectedNewId]);
-  // selectedNewOrder가 변경되면 호출되게 해보자
+  // selectedPreparingId가 변경되면 호출되게 해보자
   useEffect(() => {
-    console.log(`selectedNewOrder가 변했다!! -> ${selectedNewOrder}`);
-  }, [selectedNewOrder]);
+    console.log(`selectedPreparingId가 변했다!! -> ${selectedPreparingId}`);
+  }, [selectedPreparingId]);
+  // selectedOrder가 변경되면 호출되게 해보자
+  useEffect(() => {
+    console.log(`selectedNewOrder가 변했다!! -> ${selectedOrder}`);
+  }, [selectedOrder]);
+
+  // 접수 처리
+  const acceptOrder = async () => {
+    const data = {status: 'PREPARING'};
+    try {
+      const response = await axios.patch(
+        BASE_URL + `/shop/orders/${selectedOrder.id}/status`,
+        data,
+      );
+      console.log('접수처리', response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <TabProgressContext.Provider value={value}>
@@ -93,14 +117,20 @@ const TabProgress = ({navigation}) => {
             initialParams={{DATA: preparingOrders}}
           />
         </Tab.Navigator>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text>{selectedNewOrder.id}</Text>
-        </View>
+        <DeatailContainer>
+          <Text>주문번호 {selectedOrder.id}</Text>
+          <Text>/메뉴 ?건/</Text>
+          <Text>주문내역 들어가야함 + {selectedOrder.totalPrice}</Text>
+          <StyledBtn title="취소"></StyledBtn>
+          <StyledBtn
+            title={selectedOrder.status === 'PAID' ? '접수' : '완료 처리'}
+            onPress={() => {
+              acceptOrder();
+            }}></StyledBtn>
+          <Text>요청사항 : {selectedOrder.request}</Text>
+          <Text>주문시간 : {selectedOrder.date}</Text>
+          <Text>접수번호 : {selectedOrder.id}</Text>
+        </DeatailContainer>
       </Container>
     </TabProgressContext.Provider>
   );
