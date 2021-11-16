@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ssafy.runner.domain.dto.customer.order.detail.OrderDetailResDto;
 import ssafy.runner.domain.dto.order.OrderResponseDto;
 import ssafy.runner.domain.dto.order.OrderUpdateRequestDto;
 import ssafy.runner.domain.enums.UserType;
@@ -48,10 +49,10 @@ public class PartnerOrderController {
 
     @GetMapping("/shop/orders/today/status/{status}")
     @ApiOperation(value = "당일 상태별 주문내역 조회")
-    public ResponseEntity<List<OrderResponseDto>> todayOrderListByStatus(Authentication authentication, @PathVariable("status") String status) {
+    public ResponseEntity<List<OrderDetailResDto>> todayOrderListByStatus(Authentication authentication, @PathVariable("status") String status) {
 
         String email = checkPrincipalReturnEmail(authentication);
-        List<OrderResponseDto> orderList = partnerOrderService.findByShopAndDayAndStatus(email, LocalDateTime.now(), status);
+        List<OrderDetailResDto> orderList = partnerOrderService.findByShopAndDayAndStatus(email, LocalDateTime.now(), status);
         log.info(String.valueOf(LocalDateTime.now()));
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
