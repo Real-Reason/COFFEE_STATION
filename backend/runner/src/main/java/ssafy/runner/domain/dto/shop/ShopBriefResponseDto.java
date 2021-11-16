@@ -15,7 +15,7 @@ public class ShopBriefResponseDto {
     private String name;
     private String address;
     private String detail_address;
-    private String shopImgUrl;
+    private String shopImgUrl = "https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg";
     private double lat;
     private double lng;
     private double distanceFrom;
@@ -36,6 +36,8 @@ public class ShopBriefResponseDto {
         this.name = shop.getName();
         this.address = shop.getAddress();
         this.detail_address = shop.getDetail_address();
-        this.shopImgUrl = shop.getShopImageList().get(0).getImgUrl();
+        if (shop.getShopImageList().size() != 0){
+            this.shopImgUrl = shop.getShopImageList().get(0).getImgUrl();
+        }
     }
 }

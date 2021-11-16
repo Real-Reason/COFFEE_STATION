@@ -48,9 +48,8 @@ public class ShopService {
         } else {
             for (Shop shop: shops) {
                 double howFar = new DistanceOp(point, shop.getLocation()).distance();
-                String shopImgUrl = shopImageRepository.findByShopIdAndIndex(shop.getId(), 1).orElseThrow(NoSuchFieldError::new);
-//                String shopImgUrl = shopImage.getImgUrl();
-                ShopBriefResponseDto shopBriefResponseDto = new ShopBriefResponseDto(shop, howFar, shopImgUrl);
+                String imgUrl = shopImageRepository.findByShopIdAndIndex(shop.getId(), 1).orElse("https://coffee-station.s3.ap-northeast-2.amazonaws.com/thum_detail.jpg");
+                ShopBriefResponseDto shopBriefResponseDto = new ShopBriefResponseDto(shop, howFar, imgUrl);
                 shopList.add(shopBriefResponseDto);
             }
         }
