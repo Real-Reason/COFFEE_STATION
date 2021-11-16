@@ -7,6 +7,15 @@ import styled from 'styled-components/native';
 
 const SelectView = styled.View`
   flex-direction: row; 
+  justify-content:space-between;
+  margin: 5px;
+`
+const SelectViewExtra = styled.View`
+  flex-direction: row; 
+  margin: 5px;
+`
+const SelectViewButtons = styled.View`
+  flex-direction: row; 
   justify-content:center;
   margin: 5px;
 `
@@ -43,9 +52,17 @@ const StText = styled.Text`
   padding: 15px;
   color: #000000;
   margin-top: 2.5px;
-  margin-bottom: 2.5px;
 `
-
+const StTextTitle = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 5px;
+  color: #000000;
+  font-size: 20px;
+`
+const MenuImage = styled.Image`
+  width:100;
+  height:100;
+`
 
 const Cafemenu = ({ route }) => {
 
@@ -177,42 +194,46 @@ const Cafemenu = ({ route }) => {
   }
 
   return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#ffffff', padding:20}}>
         <View style={{alignItems: 'center'}}>
-          <Image 
+          <MenuImage 
             source={{uri: route.params.menuInfo.imgUrl }} 
-            style={{width:300, height:300}} 
           />
         </View>
 
         <View style={{alignItems: 'center'}}>
-          <StText>{ route.params.menuInfo.price }</StText>
-          {/* <StText>{ route.params.menuInfo.menuStatus }</StText> */}
+          <StTextTitle>{ route.params.menuInfo.name }</StTextTitle>
+          <StTextTitle>{ route.params.menuInfo.price }</StTextTitle>
         </View>
 
         <SelectView>
           {sizes.map((size, index) => (
-            <SelectViewContent style={{ borderColor: sizeIndex[index] ? 'green':'white' }} key={index} >
-              <Pressable style={{alignItems: 'center'}} onPress={() => getSize(size.menuSizeId, index)}>
-                <StText>사이즈업</StText>
+            <SelectViewContent style={{ borderColor: sizeIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
+              <Pressable style={{alignItems: 'center', paddingTop:10 }} onPress={() => getSize(size.menuSizeId, index)}>
+                <View style={{ height: 55, paddingBottom:0 }}>
+                  <Image 
+                    source={require('../../assets/icons/coffee-active.png')} 
+                    style={{width:50, height: (50 + size.price / 100) }}
+                  />
+                </View>
                 <StText>+ { size.price }</StText>
               </Pressable>
             </SelectViewContent>
           ))}
         </SelectView>
 
-        <SelectView>
+        <SelectViewExtra>
           {extras.map((extra, index) => (
-            <SelectViewContent style={{ borderColor: extraIndex[index] ? 'green':'white' }} key={index} >
-              <Pressable style={{alignItems: 'center'}} onPress={() => getExtraList(extra.extraId, index)}>
+            <SelectViewContent style={{ borderColor: extraIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
+              <Pressable onPress={() => getExtraList(extra.extraId, index)}>
                 <StText>{ extra.name }</StText>
                 <StText>+ { extra.price }</StText>
               </Pressable>
             </SelectViewContent>
           ))}
-        </SelectView>
+        </SelectViewExtra>
 
-        <SelectView>
+        <SelectViewButtons>
           <SelectPressCount onPress={() => setCount(count-1)}>
             <Text>-1</Text>
           </SelectPressCount>
@@ -220,16 +241,16 @@ const Cafemenu = ({ route }) => {
           <SelectPressCount onPress={() => setCount(count+1)}>
             <Text>+1</Text>
           </SelectPressCount>
-        </SelectView>
+        </SelectViewButtons>
 
-        <SelectView>
+        <SelectViewButtons>
           <SelectPress onPress={() => likeMenu()}>
             <StText>좋아요~!</StText>
           </SelectPress>
           <SelectPress onPress={() => addCart(route.params.menuInfo)}>
             <StText>장바구니 추가</StText>
           </SelectPress>
-        </SelectView>
+        </SelectViewButtons>
         
       </ScrollView>
   );
