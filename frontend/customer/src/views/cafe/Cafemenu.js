@@ -26,7 +26,7 @@ const Cafemenu = ({ route }) => {
     console.log('get Cafe Menu');
     try {
       const response = await axios.get(
-        `http://3.38.99.110:8080/api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`
       );
       console.log(response.data.menuSizeList.menuSizeList);
       setSize(response.data.menuSizeList.menuSizeList);
@@ -123,7 +123,7 @@ const Cafemenu = ({ route }) => {
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.post(
-        `http://3.38.99.110:8080/api/customer/favorites/menu/${route.params.menuInfo.menuId}`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.menuId}`, 
         {},
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );

@@ -51,7 +51,7 @@ const Signup = ({ navigation }) => {
     const data = {email, password, passwordConfirm, nickname}
     try {
       const response = await axios.post(
-        `http://3.38.99.110:8080/api/customer/join`,
+        `${process.env.REACT_APP_BASE_URL}api/customer/join`,
         data
       );
       console.log(response.data);

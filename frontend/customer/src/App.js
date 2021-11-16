@@ -51,7 +51,7 @@ const StView = styled.View`
 
 const Stack = createNativeStackNavigator();
 const AuthContext = createContext();
-const baseURL = 'http://3.38.99.110:8080/api/customer'
+const baseURL = `${process.env.REACT_APP_BASE_URL}api/customer`
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -204,7 +204,7 @@ const App = ({ navigation }) => {
         try {
           console.log(data)
           const response = await axios.post(
-            'http://3.38.99.110:8080/api/customer/login',
+            `${process.env.REACT_APP_BASE_URL}api/customer/login`,
             data
           );
           

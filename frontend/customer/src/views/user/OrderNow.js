@@ -30,7 +30,7 @@ const OrderNow = ({ navigation, route }) => {
 
     try {
       const response = await axios.post(
-        `http://3.38.99.110:8080/api/customer/shop/${orderItems[0].cafeId}/order`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${orderItems[0].cafeId}/order`, 
         data,
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
@@ -61,7 +61,7 @@ const OrderNow = ({ navigation, route }) => {
     
     try {
       const response = await axios.post(
-        `http://3.38.99.110:8080/kakaoPay/ready`, 
+        `${process.env.REACT_APP_BASE_URL}kakaoPay/ready`, 
         paydata,
       );
       console.log(response.data);
