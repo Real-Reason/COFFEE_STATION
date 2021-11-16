@@ -156,8 +156,12 @@ const Cafe = ({ navigation, route }) => {
 
   const setCafeDetail = async() => {
     console.log('get Cafe Detail');
+    let JWTToken = await AsyncStorage.getItem('userToken');
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}`);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}`,
+      {},
+      { headers: {"Authorization" : `Bearer ${JWTToken}`}}
+      );
       console.log(response.data);
       getCafeDetail(response.data);
       setCafeImgList(response.data.imgUrlList)
@@ -175,7 +179,7 @@ const Cafe = ({ navigation, route }) => {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}api/customer/favorites/shop/${route.params.id}`, 
         {},
-        { headers: {"Authorization" : `Bearer ${JWTToken}`} }
+        { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
       console.log(response.data);
     } catch (e) {
