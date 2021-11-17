@@ -2,11 +2,64 @@ import React, { useEffect, useState } from 'react';
 import {  Text, Button, ScrollView, TextInput } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styled from 'styled-components/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const Row = styled.View`
+  flex-direction: row;
+  padding: 15px;
+  padding: ${props => props.extra ? "0px" : "15px"};
+  margin-bottom: 5px;
+  background-color: white;
+`
+
+const Col1 = styled.View`
+  flex-direction: column;
+  justify-content: center;
+  width: 25%;
+
+  /* border: 1px;
+  border-color: orange; */
+`
+
+const Col2 = styled.View`
+  flex-direction: column;
+  width: 70%;
+
+  /* border: 1px; */
+`
+
+const Image = styled.Image`
+  align-items: center;
+  align-self: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+`
+
+const StText = styled.Text`
+  padding: ${props => props.pay ? "7px" : "3px"};
+  text-align: ${props => props.pay ? "center" : "left"};
+  font-size: ${props => props.title ? "15px" : props.pay? "15px" : "12px"};
+  font-family: ${props => props.title ? "InfinitySans-Bold": "InfinitySansR"};
+  color: ${props => props.extra ? "#707070" : props.pay? "white" : "black"};
+
+  /* border: 1px;
+  border-color: red; */
+`
+const StPayView = styled.View`
+  width: 90%;
+  margin-top: 20px;
+  margin-left: 5%;
+  border-radius: 20px;
+  background-color: #FF7F00;
+`
+
 
 const OrderNow = ({ navigation, route }) => {
 
   const [orderItems, setOrderItems] = useState([]);
-  const [request, onChangeText] = useState("주문 요청 사항을 입력해주세요");
+  const [request, onChangeText] = useState('');
 
   useEffect(() => {
     console.log(route.params);
@@ -76,15 +129,49 @@ const OrderNow = ({ navigation, route }) => {
 
   return (
     <ScrollView>
-      <Text> order </Text>
-      {orderItems.map((item, index) => (
-        <Text key={index}> { item.item.name } </Text>
+      {orderItems.map((items, index) => (
+        <Row key={index}>
+          <Col1>
+            <Image source={{uri : items.item.imgUrl}}></Image>
+          </Col1>
+          <Col2>
+            <StText title>
+              { items.item.name }
+            </StText>
+            <Row extra>
+              <StText extra>
+                옵션 선택 :
+              </StText>
+              {items.extraName.map((extraName, index) => (
+                <StText extra key={index}>
+                  {extraName} |
+                </StText>
+              ))}
+              <StText extra>{items.addPrice}원</StText>
+            </Row>
+            <StText>
+              수량 : { items.count }
+            </StText>
+            <StText style={{textAlign: "right", fontSize: 14}}>
+              { items.item.price + items.addPrice } 원
+            </StText>
+          </Col2>
+        </Row>
       ))}
-      <TextInput 
-        onChangeText={ onChangeText }
-        value={ request }
-      />
-      <Button title="결제하기" onPress={() => money()}></Button>
+
+      <Row>
+        <Col2>
+          <StText title>요청사항</StText>
+          <TextInput onChangeText={ onChangeText } value={ request } placeholder="주문 요청사항을 입력해주세요."/>        
+        </Col2>
+      </Row>
+      
+      <TouchableOpacity onPress={() => money()}>
+        <StPayView>
+          <StText pay>결제하기</StText>
+        </StPayView>
+      </TouchableOpacity>
+
     </ScrollView>
   )
 }
