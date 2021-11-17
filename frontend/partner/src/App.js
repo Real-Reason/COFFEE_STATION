@@ -9,11 +9,13 @@ import RegiMain from './registration/store/RegiMain';
 import ManageMain from './management/ManageMain';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
+import {TabProgressContext} from './management/tabs/TabProgress';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
 const baseURL = 'http://3.38.99.110:8080/api/partner';
 
+// SplashScreen 디자인 필요
 const SplashScreen = () => {
   return (
     <View>
@@ -69,6 +71,7 @@ export default function App({navigation}) {
       hasRegistered: false,
     },
   );
+
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       // const orderId = remoteMessage['data'].orderId;
@@ -81,7 +84,7 @@ export default function App({navigation}) {
           {
             text: '수락하기', // 버튼 제목
             onPress: () => {
-              updateOrderStatus(remoteMessage['data'].orderId, 'PREPARING');
+              // TabProgress의 신규 리스트 갱신
               console.log(remoteMessage['data'].orderId);
               Alert.alert('주문을 수락했습니다.');
             },

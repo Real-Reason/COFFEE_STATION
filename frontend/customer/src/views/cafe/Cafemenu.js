@@ -81,6 +81,7 @@ const Cafemenu = ({ route }) => {
   const [extraForOrder, setExtraForOrder] = useState([]);
   const [sizes, setSize] = useState([]);
   const [menuSizeId, setSizeForOrder] = useState('');
+  const [customerLikeMenu, setCustomerLikeMenu] = useState([])
 
   const [sizeIndex, setSizeIndex] = useState('');
   const [extraIndex, setExtraIndex] = useState('');
@@ -95,14 +96,18 @@ const Cafemenu = ({ route }) => {
 
   const setCafeMenu = async() => {
     console.log('get Cafe Menu');
+    let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`,
+        { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
       console.log(response.data.menuSizeList.menuSizeList);
+      console.log(response.data.extraList.extraList);
+
+      setCustomerLikeMenu(response.data.customerLikeMenu)
       setSize(response.data.menuSizeList.menuSizeList);
       setSizeForOrder(response.data.menuSizeList.menuSizeList[0].menuSizeId);
-      console.log(response.data.extraList.extraList);
       setExtras(response.data.extraList.extraList);
 
       const arr1 = Array.from({length: sizes.length}, () => 0);
@@ -219,6 +224,22 @@ const Cafemenu = ({ route }) => {
         {},
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
+      setCustomerLikeMenu(true);
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const unLikeMenu = async() => {
+    console.log(`${route.params.menuInfo.menuId}번 메뉴 좋아요 취소 !!`);
+    let JWTToken = await AsyncStorage.getItem('userToken');
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.menuId}`,
+        { headers: {"Authorization" : `Bearer ${JWTToken}`} }
+      );
+      setCustomerLikeMenu(false);
       console.log(response.data);
     } catch (e) {
       console.log(e);
@@ -277,8 +298,8 @@ const Cafemenu = ({ route }) => {
         </SelectViewButtons>
 
         <SelectViewButtons>
-          <SelectPress style={{ borderColor: 'white'}} onPress={() => likeMenu()}>
-            <IconImage source={require('../../assets/icons/like-active.png')}></IconImage>
+          <SelectPress style={{ borderColor: 'white'}} onPress={customerLikeMenu == false ? () => likeMenu() : () => unLikeMenu()}>
+            <IconImage source={ customerLikeMenu == false ? require('../../assets/icons/like-inactive.png') : require('../../assets/icons/like-active.png')}></IconImage>
             <StText style={{ marginTop: 2, paddingTop: 0 }}>찜~!</StText>
           </SelectPress>
           <SelectPress style={{ borderColor: 'white'}} onPress={() => addCart(route.params.menuInfo)}>

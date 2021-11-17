@@ -37,7 +37,7 @@ public class CustomerLikeController {
     }
 
     @DeleteMapping("/shop/{shopId}")
-    @ApiOperation(value = "가게 즐겨찾기 등록")
+    @ApiOperation(value = "가게 즐겨찾기 취소")
     public ResponseEntity unLikeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
 
         String email = checkPrincipalReturnEmail(authentication);
@@ -59,7 +59,7 @@ public class CustomerLikeController {
     }
 
     @DeleteMapping("/menu/{menuId}")
-    @ApiOperation(value = "메뉴 즐겨찾기 등록")
+    @ApiOperation(value = "메뉴 즐겨찾기 취소")
     public ResponseEntity unLikeMenu(Authentication authentication,
                                    @PathVariable("menuId") Long menuId) {
 

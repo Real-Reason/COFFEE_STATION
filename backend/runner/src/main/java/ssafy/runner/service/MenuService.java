@@ -7,26 +7,24 @@ import ssafy.runner.domain.dto.menu.MenuListResponseDto;
 import ssafy.runner.domain.dto.menu.MenuNSizeNExtraResponseDto;
 import ssafy.runner.domain.dto.menu.MenuResponseDto;
 import ssafy.runner.domain.dto.ResultResponseDto;
-import ssafy.runner.domain.entity.Category;
-import ssafy.runner.domain.entity.Menu;
-import ssafy.runner.domain.entity.Partner;
-import ssafy.runner.domain.entity.Shop;
+import ssafy.runner.domain.entity.*;
 import ssafy.runner.domain.enums.MenuStatus;
-import ssafy.runner.domain.repository.CategoryRepository;
-import ssafy.runner.domain.repository.MenuRepository;
-import ssafy.runner.domain.repository.PartnerRepository;
+import ssafy.runner.domain.repository.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MenuService {
 
+    private final CustomerRepository customerRepository;
     private final PartnerRepository partnerRepository;
     private final CategoryRepository categoryRepository;
     private final MenuRepository menuRepository;
+    private final CustomerMenuRepository customerMenuRepository;
 
     private Shop findPartnerShop(String email) {
         Partner partner = partnerRepository.findByEmailWithShop(email).orElseThrow(NoSuchElementException::new);
@@ -92,9 +90,16 @@ public class MenuService {
     }
 
     @Transactional
-    public MenuNSizeNExtraResponseDto getMenuDetail(Long shopId, Long menuId) {
+    public MenuNSizeNExtraResponseDto getMenuDetail(Long shopId, Long menuId, String email) {
 
         Menu menu = menuRepository.findByShopIdAndMenuId(shopId, menuId).orElseThrow(NoSuchElementException::new);
-        return MenuNSizeNExtraResponseDto.entityToDto(menu);
+
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        boolean customerLikeMenu = true;
+        Optional<CustomerMenu> likeOrNot = customerMenuRepository.findLikeOrNot(menuId, customer.getId());
+        if (likeOrNot.isEmpty()) {
+            customerLikeMenu = false;
+        }
+        return MenuNSizeNExtraResponseDto.entityToDto(menu, customerLikeMenu);
     }
 }
