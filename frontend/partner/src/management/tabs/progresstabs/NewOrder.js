@@ -12,26 +12,24 @@ import {TabProgressContext} from '../TabProgress';
 const Item = ({item, onPress, backgroundColor, textColor}) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.id}</Text>
+      <Text style={[styles.title, textColor]}>{item.orderId}</Text>
     </TouchableOpacity>
   );
 };
 
-const NewOrder = ({route}) => {
-  const {selectedNewId, setSelectedNewId, setSelectedOrder} =
+const NewOrder = ({}) => {
+  const {selectedNewId, setSelectedNewId, setSelectedOrder, paiedOrders} =
     useContext(TabProgressContext);
 
   const setNewOrder = item => {
-    setSelectedNewId(item.id);
-    console.log(item);
+    setSelectedNewId(item.orderId);
     setSelectedOrder(item);
   };
-  // 현재 ORDERED로 들어오고 있는것, PAID로 들어오는것으로 바꿔줘야함
-  const {DATA} = route.params;
 
   const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedNewId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedNewId ? 'white' : 'black';
+    const backgroundColor =
+      item.orderId === selectedNewId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.orderId === selectedNewId ? 'white' : 'black';
 
     return (
       <Item
@@ -46,9 +44,9 @@ const NewOrder = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={paiedOrders}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.orderId}
         extraData={selectedNewId}
       />
     </SafeAreaView>

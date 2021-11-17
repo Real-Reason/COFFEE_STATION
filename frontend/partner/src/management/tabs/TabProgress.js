@@ -23,8 +23,8 @@ const StyledBtn = styled.Button`
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
 // 신규, 진행중 받아올 변수
-let paiedOrders = [];
-let preparingOrders = [];
+// let paiedOrders = [];
+// let preparingOrders = [];
 
 //TP Context 생성
 const TabProgressContext = createContext();
@@ -34,6 +34,8 @@ const Tab = createMaterialTopTabNavigator();
 
 const TabProgress = ({navigation}) => {
   // Context
+  const [paiedOrders, setPaiedOrders] = useState([]);
+  const [preparingOrders, setPreparingOrders] = useState([]);
   const [selectedNewId, setSelectedNewId] = useState(null);
   const [selectedPreparingId, setSelectedPreparingId] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState([]);
@@ -44,6 +46,10 @@ const TabProgress = ({navigation}) => {
     setSelectedPreparingId,
     selectedOrder,
     setSelectedOrder,
+    paiedOrders,
+    setPaiedOrders,
+    preparingOrders,
+    setPreparingOrders,
   };
   // PAID 받아오기
   const showPaidOrderList = async () => {
@@ -51,7 +57,8 @@ const TabProgress = ({navigation}) => {
       const response = await axios.get(
         BASE_URL + '/shop/orders/today/status/PAID',
       );
-      paiedOrders = response.data;
+      // paiedOrders = response.data;
+      setPaiedOrders(response.data);
       console.log('PAID ORDERS RECEIVED');
     } catch (e) {
       console.log('신규 오더 정보 못받아옴', e);
@@ -63,7 +70,8 @@ const TabProgress = ({navigation}) => {
       const response = await axios.get(
         BASE_URL + '/shop/orders/today/status/PREPARING',
       );
-      preparingOrders = response.data;
+      // preparingOrders = response.data;
+      setPreparingOrders(response.data);
       console.log('PREPARING ORDERS RECEIVED');
     } catch (e) {
       console.log('준비 오더 정보 못받아옴', e);
@@ -92,11 +100,39 @@ const TabProgress = ({navigation}) => {
   const acceptOrder = async () => {
     const data = {status: 'PREPARING'};
     try {
-      const response = await axios.patch(
-        BASE_URL + `/shop/orders/${selectedOrder.id}/status`,
+      await axios.patch(
+        BASE_URL + `/shop/orders/${selectedOrder.orderId}/status`,
         data,
       );
-      console.log('접수처리', response.data);
+      showPaidOrderList();
+      showPreparingOrderList();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  // 완료 처리
+  const completeOrder = async () => {
+    const data = {status: 'COMPLETED'};
+    try {
+      await axios.patch(
+        BASE_URL + `/shop/orders/${selectedOrder.orderId}/status`,
+        data,
+      );
+      showPaidOrderList();
+      showPreparingOrderList();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  // 취소 처리
+  const rejectOrder = async () => {
+    const data = {status: 'REJECT'};
+    try {
+      await axios.patch(
+        BASE_URL + `/shop/orders/${selectedOrder.orderId}/status`,
+        data,
+      );
+      showPaidOrderList();
     } catch (e) {
       console.log(e);
     }
@@ -106,26 +142,18 @@ const TabProgress = ({navigation}) => {
     <TabProgressContext.Provider value={value}>
       <Container>
         <Tab.Navigator style={{flex: 0.5}} initialRouteName="Home">
-          <Tab.Screen
-            name="신규"
-            component={NewOrder}
-            initialParams={{DATA: paiedOrders}}
-          />
-          <Tab.Screen
-            name="진행중"
-            component={OnGoingOrder}
-            initialParams={{DATA: preparingOrders}}
-          />
+          <Tab.Screen name="신규" component={NewOrder} />
+          <Tab.Screen name="진행중" component={OnGoingOrder} />
         </Tab.Navigator>
         <DeatailContainer>
-          <Text>주문번호 {selectedOrder.id}</Text>
-          <Text>/메뉴 ?건/</Text>
-          <Text>주문내역 들어가야함 + {selectedOrder.totalPrice}</Text>
-          <StyledBtn title="취소"></StyledBtn>
+          <Text>주문번호 {selectedOrder.orderId}</Text>
+          <Text>/주문내역 {JSON.stringify(selectedOrder.menus)}/</Text>
+          <Text>총 {selectedOrder.totalPrice}원</Text>
+          <StyledBtn title="취소" onPress={() => rejectOrder()}></StyledBtn>
           <StyledBtn
             title={selectedOrder.status === 'PAID' ? '접수' : '완료 처리'}
             onPress={() => {
-              acceptOrder();
+              selectedOrder.status === 'PAID' ? acceptOrder() : completeOrder();
             }}></StyledBtn>
           <Text>요청사항 : {selectedOrder.request}</Text>
           <Text>주문시간 : {selectedOrder.date}</Text>
