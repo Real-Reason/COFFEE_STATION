@@ -9,7 +9,7 @@ import ssafy.runner.domain.entity.MenuSize;
 @Getter @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class MenuSizeResponseDto {
-    private Long MenuuSizeId;
+    private Long MenuSizeId;
     private String menuSizeName;
     private Long menuId;
     private Long sizeId;
