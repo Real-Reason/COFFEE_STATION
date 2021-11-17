@@ -17,7 +17,6 @@ const Container = styled.View`
   background-color: white;
   border-radius: 5px;
   height: 100%;
-  
 `
 const StTextInput = styled.TextInput`
   font-family: 'InfinitySansR';
@@ -35,7 +34,6 @@ const StPressable = styled.Pressable`
   width: 49.2%;
   align-items: center;
 `
-
 const StText = styled.Text`
   font-family: 'InfinitySansR';
   padding: 15px;
@@ -43,7 +41,6 @@ const StText = styled.Text`
   margin-top: 2.5px;
   margin-bottom: 2.5px;
 `
-
 const StView = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -238,7 +235,11 @@ const App = ({ navigation }) => {
   return (
   <AuthContext.Provider value={authContext}>
     <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={({route}) => ({ 
+            headerShown: false
+          })}
+        >
           {state.userToken == null ? (
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
           ) : (
@@ -264,4 +265,5 @@ const App = ({ navigation }) => {
   );
 }
 
+export {AuthContext};
 export default App;

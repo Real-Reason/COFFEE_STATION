@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Button, Text, Image } from 'react-native';
+import { Button, Text, Image, Pressable, View } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainScreen from './cafe/MainScreen'
@@ -7,7 +7,48 @@ import Favorite from './user/Favorite'
 import CartAndOrder from './user/Cart'
 import Order from './user/Orderlist'
 import Search from './search/Search';
-import { AuthContext } from '../App'
+import Mypage from './user/Mypage';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import styled from 'styled-components/native';
+import { AuthContext } from '../App';
+
+
+const StPressable = styled.Pressable`
+  background: white;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  width: 49.2%;
+  align-items: center;
+`
+
+const StText = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: #000000;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+`
+const StTextWhite = styled.Text`
+  font-family: 'InfinitySansR';
+  font-size: 20px;
+  padding: 15px;
+  color: #ffffff;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+`
+const DrawerView = styled.View`
+  background-color: white;
+  align-items: center;
+  justyfy-contents: center;
+`
+const SignOutButton = styled.Pressable`
+  background-color: #FF7F00;
+  align-items: center;
+  margin-top: 100px;
+  width: 80%;
+  border-radius: 5px;  
+`
+
 
 const Tab = createBottomTabNavigator();
 const TabBarIcon = (focused, name) => {
@@ -26,7 +67,7 @@ const TabBarIcon = (focused, name) => {
     iconImagePathActive = require('../assets/icons/orderlist-active.png')
     iconImagePathInActive = require('../assets/icons/orderlist-inactive.png')  
   } 
-  else if (name === 'Search') {
+  else if (name === 'Mypage') {
     iconImagePathActive = require('../assets/icons/search-active.png')
     iconImagePathInActive = require('../assets/icons/search-inactive.png')  
   }
@@ -39,11 +80,14 @@ const TabBarIcon = (focused, name) => {
     />
   )
 }
-const Main = () => {
+
+const MainTab = ({navigation}) => {
 
   useEffect(() => {
     console.log('.');
   }, []);
+  navigation.openDrawer();
+  navigation.closeDrawer();
 
   return (
     <Tab.Navigator
@@ -76,18 +120,79 @@ const Main = () => {
       />
       <Tab.Screen 
         name="CartAndOrder" component={CartAndOrder} 
-        options={{ tabBarLabel: '카트' }}   
+        options={{ tabBarLabel: '카트' }}
       />
       <Tab.Screen 
         name="Order" component={Order} 
         options={{ tabBarLabel: '주문내역' }} 
       />
       <Tab.Screen 
-        name="Search" component={Search} 
-        options={{ tabBarLabel: '검색' }} 
+        name="Mypage" component={Mypage} 
+        options={{ 
+          tabBarLabel: 'Mypage',
+          tabBarButton: (props) => (
+            <CustomTabBarButton onPress={() => navigation.toggleDrawer()} />
+          )
+        }} 
       />
     </Tab.Navigator>
   );
+}
+
+const CustomTabBarButton = ({ children, onPress }) => {
+  return(
+  <Pressable onPress={onPress}>
+    <View style={{ alignItems: 'center', marginRight:18, marginLeft:10 }}>
+      <Image 
+        source={require('../assets/icons/search-inactive.png')}
+        style={{
+          width:23,
+          height:23
+        }}
+      />
+      <Text>myPage</Text>
+    </View>
+  </Pressable>
+  )
+}
+
+const Drawer = createDrawerNavigator();
+
+const Main = ({navigation}) => {
+
+  const { signOut } = useContext(AuthContext);
+
+  return (
+    <Drawer.Navigator initialRouteName="Home" drawerContent={props => {
+      return (
+        <DrawerView>
+          <SignOutButton onPress={() => signOut()}>
+            <StTextWhite>SIGN OUT</StTextWhite>
+          </SignOutButton>
+        </DrawerView>
+      )
+    }}>
+      <Drawer.Screen 
+        name="MainTab" 
+        component={MainTab} 
+        options = {{
+          headerTitle: () => <StText>Cafe Station</StText>,
+          headerRight: () => (
+            <StPressable onPress={() => navigation.navigate('Search')}>
+              <Image 
+                source={require('../assets/icons/search-inactive.png')}
+                style={{
+                  width:30,
+                  height:30
+                }}
+              />
+            </StPressable> 
+          )
+        }}
+      />
+      <Drawer.Screen name="Mypage" component={Mypage} />
+    </Drawer.Navigator>
+  )
 }
 
 export default Main;
