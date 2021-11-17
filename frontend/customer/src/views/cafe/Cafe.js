@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { SliderBox } from 'react-native-image-slider-box';
 // import CafeMenuTab from './CafeMenuTab';
 // import CafeIntroTab from './CafeIntroTab'
 
@@ -147,25 +148,29 @@ const Cafe = ({ navigation, route }) => {
   useEffect(() => {
     console.log(' cafe detail mount');
     setCafeDetail();
-    return () => console.log(' cafe detail Unmount');
+    return () => console.log('cafe detail Unmount');
   }, []);
 
   const [cafeDetail, getCafeDetail] = useState({});
+  const [customerLikeShop, setCustomerLikeShop] = useState({});
   const [cafeMenus, getCafeMenus] = useState([]);
-  const [cafeImgList, setCafeImgList] = useState([]);
+  const [cafeImgList, setCafeImgList] = useState({});
 
   const setCafeDetail = async() => {
     console.log('get Cafe Detail');
     let JWTToken = await AsyncStorage.getItem('userToken');
+    console.log(JWTToken);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}`,
       { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
       console.log(response.data);
       getCafeDetail(response.data);
-      setCafeImgList(response.data.imgUrlList)
-      console.log(response.data.menuList.menuList);
+      setCustomerLikeShop(response.data.customerLikeShop);
+      const imgListTemp = response.data.imgUrlList.slice();
+      setCafeImgList(imgListTemp)
       getCafeMenus(response.data.menuList.menuList);
+
     } catch (e) {
       console.log(e);
     }
@@ -180,6 +185,23 @@ const Cafe = ({ navigation, route }) => {
         {},
         { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
+      setCustomerLikeShop(true);
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const unlikeCafe = async() => {
+    console.log(`${route.params.id}번 카페 좋아요 취소`);
+    let JWTToken = await AsyncStorage.getItem('userToken');
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/shop/${route.params.id}`,
+        { headers: {"Authorization" : `Bearer ${JWTToken}`}}
+      );
+      
+      setCustomerLikeShop(false);
       console.log(response.data);
     } catch (e) {
       console.log(e);
@@ -218,7 +240,10 @@ const Cafe = ({ navigation, route }) => {
         <StTab>
           <StIntroView>
             <StIntro title>가게 소개</StIntro>
-            <StIntro>{ cafeDetail.intro }</StIntro>
+            <StIntro style={{marginBottom: 5}}>{ cafeDetail.intro }</StIntro>
+            <View style={{height: 150, marginRight: 50}}>
+              <SliderBox sliderBoxHeight={150} sliderBoxWidth={50} images={cafeImgList}></SliderBox>
+            </View>
           </StIntroView>
           <StIntroView>
             <StIntro title>가게 위치</StIntro>
@@ -255,6 +280,7 @@ const Cafe = ({ navigation, route }) => {
       <View>
         {/* 카페 이미지 */}
         <ImageBackground resizeMode="cover" source={{uri : cafeImgList[0]}} style={{width: "100%", height: "100%"}}>
+          {/* 가게 이름 및 전화 & 좋아요 */}
           <StCafeTitle>
             <StCafeTitleName>
               { cafeDetail.name }
@@ -265,17 +291,18 @@ const Cafe = ({ navigation, route }) => {
                 <StCafeTitleItem>전화</StCafeTitleItem>
               </Row4>
               <Row4>
-                <TouchableOpacity style={{border: 1}}>
-                  <Image source={require('../../assets/icons/like-inactive.png')} style={{width: 24, height: 24}}></Image>
+                <TouchableOpacity onPress={customerLikeShop ? () => unlikeCafe() : () => likeCafe()}>
+                  <Image source={customerLikeShop ? require('../../assets/icons/like-active.png') : require('../../assets/icons/like-inactive.png')}
+                   style={{width: 24, height: 24}}
+                   >
+                  </Image>
                 </TouchableOpacity>
-                <StCafeTitleItem onPress={() => likeCafe()}>좋아요</StCafeTitleItem>
+                
+                <StCafeTitleItem >좋아요</StCafeTitleItem>
               </Row4>
             </Row1>
           </StCafeTitle>
-        {/* <StCafeImg source={{uri : cafeImgList[0]}}></StCafeImg> */}
-        {/* 가게 이름 및 전화 & 좋아요 */}
-
-
+        
           {/* 메뉴/가게소개 Tab 및 스크롤 */}
           <Col2>
             <Tab.Navigator>

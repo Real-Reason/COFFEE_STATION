@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderNow from './OrderNow';
 import Paystart from '../pay/Paystart';
+import Paying from '../pay/Paying';
 import Payend from '../pay/Payend';
 
 
@@ -94,6 +95,11 @@ const CartAndOrder = () => {
         name="Paystart" 
         component={Paystart} 
         options = {{ title: '결제 중..' }}
+      />
+      <Stack.Screen 
+        name="Paying" 
+        component={Paying} 
+        options = {{ title: '결제 중....' }}
       />
       <Stack.Screen 
         name="Payend" 
