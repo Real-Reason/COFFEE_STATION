@@ -54,7 +54,7 @@ const Cart = ({ navigation }) => {
       const clist = JSON.parse(await AsyncStorage.getItem('cartList'));
       setCartList(clist);
       setCartListItems(clist.items);
-      console.log('카트리스트',cartList);
+      // console.log('카트리스트',cartList);
       setIsCart(true);
       setShopName(cartListItems[0].shopName);
     } catch (e) {

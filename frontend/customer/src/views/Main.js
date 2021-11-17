@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Text, Image, Pressable, View } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,6 +11,7 @@ import Mypage from './user/Mypage';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import styled from 'styled-components/native';
 import { AuthContext } from '../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const StPressable = styled.Pressable`
@@ -23,7 +24,7 @@ const StPressable = styled.Pressable`
 
 const StText = styled.Text`
   font-family: 'InfinitySansR';
-  padding: 15px;
+  padding: 10px;
   color: #000000;
   margin-top: 2.5px;
   margin-bottom: 2.5px;
@@ -44,7 +45,7 @@ const DrawerView = styled.View`
 const SignOutButton = styled.Pressable`
   background-color: #FF7F00;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 20px;
   width: 80%;
   border-radius: 5px;  
 `
@@ -82,12 +83,6 @@ const TabBarIcon = (focused, name) => {
 }
 
 const MainTab = ({navigation}) => {
-
-  useEffect(() => {
-    console.log('.');
-  }, []);
-  navigation.openDrawer();
-  navigation.closeDrawer();
 
   return (
     <Tab.Navigator
@@ -161,11 +156,23 @@ const Drawer = createDrawerNavigator();
 const Main = ({navigation}) => {
 
   const { signOut } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    getemail();
+  }, []);
+
+  const getemail = async() => {
+    let useremail = await AsyncStorage.getItem('email');
+    setEmail(useremail);
+  }
 
   return (
     <Drawer.Navigator initialRouteName="Home" drawerContent={props => {
       return (
         <DrawerView>
+          <StText style={{ marginTop:50, fontSize:20 }}>어서요세요!</StText>
+          <StText style={{ fontSize:20}}>{ email } 님!</StText>
           <SignOutButton onPress={() => signOut()}>
             <StTextWhite>SIGN OUT</StTextWhite>
           </SignOutButton>
