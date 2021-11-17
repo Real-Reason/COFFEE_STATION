@@ -12,15 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ExtraListResponseDto {
 
-    List<ExtraResponseDto> extraList = new ArrayList<>();
+    List<ExtraSimpleResponseDto> extraList = new ArrayList<>();
 
     public static ExtraListResponseDto of(List<Extra> extraList) {
         ExtraListResponseDto extraListResponseDto = new ExtraListResponseDto();
         extraList.forEach(m -> {
-            extraListResponseDto.getExtraList().add(ExtraResponseDto.entityToDto(m));
+            extraListResponseDto.getExtraList().add(ExtraSimpleResponseDto.entityToDto(m));
         });
         return extraListResponseDto;
     }
-
-
 }

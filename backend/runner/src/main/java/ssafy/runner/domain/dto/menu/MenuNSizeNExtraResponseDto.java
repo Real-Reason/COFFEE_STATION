@@ -22,10 +22,11 @@ public class MenuNSizeNExtraResponseDto {
     private int price;
     private boolean isSignature;
     private MenuStatus menuStatus;
+    private boolean customerLikeMenu;
 
     @Builder
     public MenuNSizeNExtraResponseDto(Long id, ShopSimpleResponseDto shop, ExtraListResponseDto extraList, MenuSizeListResponseDto menuSizeList,
-                                      String name, String imgUrl, int price, boolean isSignature, MenuStatus menuStatus) {
+                                      String name, String imgUrl, int price, boolean isSignature, MenuStatus menuStatus, boolean customerLikeMenu) {
         this.id = id;
         this.shop = shop;
         this.extraList = extraList;
@@ -35,9 +36,10 @@ public class MenuNSizeNExtraResponseDto {
         this.price = price;
         this.isSignature = isSignature;
         this.menuStatus = menuStatus;
+        this.customerLikeMenu = customerLikeMenu;
     }
 
-    public static MenuNSizeNExtraResponseDto entityToDto(Menu menu) {
+    public static MenuNSizeNExtraResponseDto entityToDto(Menu menu, boolean customerLikeMenu) {
         return MenuNSizeNExtraResponseDto.builder()
                 .id(menu.getId())
 //                .shop(ShopResDto.entityToDto(menu.getShop()))
@@ -49,6 +51,7 @@ public class MenuNSizeNExtraResponseDto {
                 .price(menu.getPrice())
                 .isSignature(menu.isSignature())
                 .menuStatus(menu.getMenuStatus())
+                .customerLikeMenu(customerLikeMenu)
                 .build();
     }
 

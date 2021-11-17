@@ -8,7 +8,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Row = styled.View`
   flex-direction: row;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 5px;
   background-color: white;
 `
@@ -17,25 +17,27 @@ const Col1 = styled.View`
   flex-direction: column;
   justify-content: center;
   width: 30%;
-
+/* 
   border: 1px;
-  border-color: orange;
+  border-color: orange; */
 `
 
 const Col2 = styled.View`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  width: 50%;
+  width: ${props => props.shop ? "60%" : "50%"};
 
-  border: 1px;
-  border-color: red;
+  /* border: 1px;
+  border-color: red; */
 `
 
 const Col3 = styled.View`
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 20%;
-  border: 1px;
+  /* border: 1px; */
 `
 
 const Image = styled.Image`
@@ -46,14 +48,14 @@ const Image = styled.Image`
   border-radius: 35px;
   /* border: 1px; */
   /* border-color: #cacaca; */
-`
+  `
 
 const StyledCafeItem = styled.Text`
   padding: 5px;
   font-size: ${props => props.title ? "16px" : "13px"};
   font-family: ${props => props.title ? "InfinitySans-Bold": "InfinitySansR"};
   color: ${props => props.distance ? "white" : "black"};
-`;
+  `;
 
 const StLengthText = styled.Text`
   padding: 10px;
@@ -61,6 +63,21 @@ const StLengthText = styled.Text`
   font-family: "InfinitySansR";
   color: black;
 `
+const StMenuStatusText = styled.Text`
+  text-align: center;
+  font-size: 12px;
+  font-family: "InfinitySansR";
+  color: white;
+  `
+
+const StMenuStatus = styled.View`
+  padding: 5px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: orange;
+`
+
+
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -126,12 +143,12 @@ const Favorite = ({ navigation }) => {
         }>
         <StLengthText>총 {likeShopList.length}개</StLengthText>
         {likeShopList.map((likeShop, index) => (
-          <Row>
+          <Row key={index}>
             <Col1>
               <Image source={{uri : likeShop.shop.shopImgUrl}}></Image>
             </Col1>
-            <Col2>
-              <Pressable key={index} onPress={() => goFavoriteCafeDetail(likeShop)}>
+            <Col2 shop>
+              <Pressable  onPress={() => goFavoriteCafeDetail(likeShop)}>
                 <StyledCafeItem title>{ likeShop.shop.name }</StyledCafeItem>
                 <StyledCafeItem>{ likeShop.shop.address }</StyledCafeItem>
               </Pressable>
@@ -146,11 +163,11 @@ const Favorite = ({ navigation }) => {
   function LikeMenu() {
     return (
       <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={getFavorite} 
-        />
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={getFavorite} 
+          />
       }>
         <StLengthText>총 {likeMenuList.length}개</StLengthText>
         {likeMenuList.map((likeMenu, index) => (
@@ -161,14 +178,18 @@ const Favorite = ({ navigation }) => {
             <Col2>
               <Pressable key={index} onPress={() => goFavoriteDrink(likeMenu)}>
                 <StyledCafeItem title>{ likeMenu.menu.name }</StyledCafeItem>
-                <StyledCafeItem>가게 이름 넣기...</StyledCafeItem>
-                <StyledCafeItem>{ likeMenu.menu.price }</StyledCafeItem>
+                <StyledCafeItem>{ likeMenu.menu.shopName }</StyledCafeItem>
+                <StyledCafeItem>{ likeMenu.menu.price }원</StyledCafeItem>
               </Pressable>
             </Col2>
             <Col3>
-              <StyledCafeItem>
-                { likeMenu.menu.menuStatus }
-              </StyledCafeItem>
+              <StMenuStatus
+              style={{ backgroundColor: likeMenu.menu.menuStatus == "SALE" ? '#00AF60' : 
+                      (likeMenu.menu.menuStatus == "SOLD_OUT" ? '#f0c26e' : '#f08a6e')}}>
+                <StMenuStatusText>
+                  { likeMenu.menu.menuStatus }
+                </StMenuStatusText>
+              </StMenuStatus>
             </Col3>
           </Row>
         ))}

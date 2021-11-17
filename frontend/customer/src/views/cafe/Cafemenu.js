@@ -95,9 +95,11 @@ const Cafemenu = ({ route }) => {
 
   const setCafeMenu = async() => {
     console.log('get Cafe Menu');
+    let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`,
+        { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
       console.log(response.data.menuSizeList.menuSizeList);
       setSize(response.data.menuSizeList.menuSizeList);
