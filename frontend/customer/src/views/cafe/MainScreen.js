@@ -208,7 +208,13 @@ const MainScreen = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="MainCafeList" component={MainCafeList} />
+      <Stack.Screen 
+        name="MainCafeList" 
+        component={MainCafeList} 
+        options={{
+          headerShown: false
+        }}
+      />
       <Stack.Screen name="Maps" component={Maps} />
       <Stack.Screen 
         name="Cafe" 

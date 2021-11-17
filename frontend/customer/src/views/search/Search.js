@@ -130,7 +130,7 @@ const Search = ({ navigation }) => {
       </SearchBar>
 
       {cafeList.map((cafe, index) => (
-        <TouchableOpacity key={index} onPress={() => goCafeDetail({id: cafe.shopId})}>
+        <TouchableOpacity key={index} onPress={() => goCafeDetail({id: cafe.shopId, name: cafe.name})}>
           <StyledCafeList>
             <Row>
               <Col1>
