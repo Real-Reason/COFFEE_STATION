@@ -11,6 +11,9 @@ import styled from 'styled-components/native';
 
 const Row = styled.View`
   flex-direction: row;
+  padding: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 `
 
 const Col1 = styled.View`
@@ -33,11 +36,15 @@ const Col3 = styled.View`
 `
 
 const Image = styled.Image`
-  align-items: center;
+  /* align-items: center;
   margin: 5px;
   width: 80px;
   height: 60px;
-  border-radius: 5px;
+  border-radius: 5px; */
+  align-items: center;
+  border-radius: 40px;
+  width: 80px;
+  height: 80px;
 `
 
 const StyledCafeList = styled.View`
@@ -49,9 +56,11 @@ const StyledCafeList = styled.View`
 
 const StyledCafeItem = styled.Text`
   font-size: ${props => props.title ? "16px" : "13px"};
-  font-weight : ${props => props.title ? "bold" : "normal"};
+  /* font-weight : ${props => props.title ? "bold" : "normal"}; */
   color: ${props => props.distance ? "white" : "black"};
-`;
+  font-family: ${props => props.title ? "InfinitySans-Bold" : "InfinitySansR"};
+  /* 'InfinitySansR'; */
+`
 
 const StyledDistance = styled.View`
   justify-content: center;
@@ -65,7 +74,7 @@ const StyledDistance = styled.View`
 const StyledMapView = styled.View`
   /* align-items: flex-end; */
   width: 100%;
-  height: 100px;
+  height: 120px;
 `;
 
 const StyledMapBtn = styled.Pressable`
