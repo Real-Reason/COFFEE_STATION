@@ -194,7 +194,6 @@ export default function App({navigation}) {
         await axios
           .post(baseURL + '/login', data)
           .then(function (response) {
-            console.log('data를 이렇게 받아옴', response.data);
             userToken = response.data.token;
             // axios default header 설정
             axios.defaults.headers.common[
