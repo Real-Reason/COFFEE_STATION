@@ -97,12 +97,11 @@ const App = ({ navigation }) => {
   //firebase  관련
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // const orderId = remoteMessage['data'].orderId;
-      // console.log(orderId);
-      Alert.alert(                    // 말그대로 Alert를 띄운다
+      Alert.alert(   
         "주문 현황!!",        // 첫번째 text: 타이틀 제목
-        JSON.stringify(remoteMessage['notification'].body),
+          JSON.stringify(remoteMessage['notification'].body),
       );
+      
     });
     return unsubscribe;
   }, []);
