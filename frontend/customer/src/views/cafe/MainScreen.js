@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Maps from '../map/Maps';
 import Cafe from './Cafe';
 import Cafemenu from './Cafemenu';
+import Search from '../search/Search';
 import styled from 'styled-components/native';
 
 const Row = styled.View`
@@ -217,6 +218,7 @@ const MainScreen = () => {
         component={Cafemenu} 
         options={({ route }) => ({ title: route.params.menuInfo.name })}
       />
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
 }
