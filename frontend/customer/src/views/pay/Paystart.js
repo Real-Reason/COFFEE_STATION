@@ -25,7 +25,7 @@ const Paystart = ({ navigation, route }) => {
       partner_order_id: route.params.partner_order_id,
       partner_user_id: route.params.partner_user_id,
     }
-    navigation.navigate('Payend', { payComplete, payMessage });
+    navigation.navigate('Paying', { payComplete, payMessage });
   }
 
   return (
