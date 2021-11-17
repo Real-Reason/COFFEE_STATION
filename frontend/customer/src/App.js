@@ -101,7 +101,7 @@ const App = ({ navigation }) => {
       // console.log(orderId);
       Alert.alert(                    // 말그대로 Alert를 띄운다
         "주문 현황!!",        // 첫번째 text: 타이틀 제목
-        JSON.stringify(remoteMessage['notification']),
+        JSON.stringify(remoteMessage['notification'].body),
       );
     });
     return unsubscribe;
