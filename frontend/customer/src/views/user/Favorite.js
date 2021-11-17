@@ -171,12 +171,12 @@ const Favorite = ({ navigation }) => {
       }>
         <StLengthText>총 {likeMenuList.length}개</StLengthText>
         {likeMenuList.map((likeMenu, index) => (
-          <Row>
+          <Row key={index}>
             <Col1>
               <Image source={{uri : likeMenu.menu.imgUrl}}></Image>
             </Col1>
             <Col2>
-              <Pressable key={index} onPress={() => goFavoriteDrink(likeMenu)}>
+              <Pressable onPress={() => goFavoriteDrink(likeMenu)}>
                 <StyledCafeItem title>{ likeMenu.menu.name }</StyledCafeItem>
                 <StyledCafeItem>{ likeMenu.menu.shopName }</StyledCafeItem>
                 <StyledCafeItem>{ likeMenu.menu.price }원</StyledCafeItem>

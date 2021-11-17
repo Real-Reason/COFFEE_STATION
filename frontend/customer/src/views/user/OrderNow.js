@@ -39,7 +39,6 @@ const OrderNow = ({ navigation, route }) => {
         cafeId: orderItems[0].cafeId, 
         orderItem: orderItems[0].item.name, 
         orderItemCount: orderItems.length}
-      // navigation.navigate('Paystart', orderCheck);
     } catch (e) {
       console.log(e);
     }
