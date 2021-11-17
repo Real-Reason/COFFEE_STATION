@@ -20,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetailResDto {
+    private Long orderId;
     // 가게정보
     private Long shopId;
     private String shopName;
@@ -40,6 +41,6 @@ public class OrderDetailResDto {
         orderMenuList.forEach(om -> {
             orderMenusDto.add(OrderMenuDto.of(om));
         });
-        return new OrderDetailResDto(shop.getId(), shop.getName(), order.getDate(), order.getStatus(), order.getTotalPrice(), order.getRequest(), orderMenusDto);
+        return new OrderDetailResDto(order.getId(), shop.getId(), shop.getName(), order.getDate(), order.getStatus(), order.getTotalPrice(), order.getRequest(), orderMenusDto);
     }
 }

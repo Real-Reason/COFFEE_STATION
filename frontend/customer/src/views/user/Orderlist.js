@@ -95,10 +95,11 @@ const Image = styled.Image`
 const Orderlist = ({ navigation }) => {
 
   const [myOrderList, setMyOrderList] = useState([]);
+  
   useEffect(() => {
     getOrder();
   }, []);
-
+  
   const getOrder = async() => {
     console.log('주문 목록 가져오기');
     let JWTToken = await AsyncStorage.getItem('userToken');

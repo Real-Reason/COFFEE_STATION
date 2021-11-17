@@ -16,10 +16,7 @@ import ssafy.runner.firebase.FirebaseCloudMessageService;
 import javax.persistence.criteria.Order;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -52,6 +49,7 @@ public class CustomerOrderService {
 //            String shopImgUrl = shopImage.getImgUrl();
             dtoList.add(CustomerOrderResponseDto.of(o, shopImgUrl));
         });
+        Collections.reverse(dtoList);
         return dtoList;
     }
 
