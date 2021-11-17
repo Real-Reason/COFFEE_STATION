@@ -26,7 +26,7 @@ const Col2 = styled.View`
   justify-content: space-evenly;
   align-items: flex-start;
   width: 50%;
-  padding-right: 10;
+  padding-right: 10px;
 `
 
 const Col3 = styled.View`
