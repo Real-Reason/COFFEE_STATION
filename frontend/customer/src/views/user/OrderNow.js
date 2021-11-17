@@ -17,24 +17,23 @@ const OrderNow = ({ navigation, route }) => {
     console.log('오더용으로 다시 구조 만들어');
     let orderMenuList = [];
     let tmp = {};
+    let cafeidtmp = 0;
     orderItems.forEach((item, index) => {
-      // console.log(item);
       tmp = { menuId: item.menuId, extraIdList: item.extraIdList, menuSizeId: item.menuSizeId, quantity: item.count };
       orderMenuList.push(tmp);
+      cafeidtmp = item.cafeId;
     })
     const data = {orderMenuList, request};
-    // console.log(orderItems[0].cafeId);
 
     let JWTToken = await AsyncStorage.getItem('userToken');
-    let orderCheck
+    let orderCheck = {};
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${orderItems[0].cafeId}/order`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/shop/${cafeidtmp}/order`, 
         data,
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
-      console.log(response.data);
       orderCheck = {
         orderInfo: response.data, 
         cafeId: orderItems[0].cafeId, 

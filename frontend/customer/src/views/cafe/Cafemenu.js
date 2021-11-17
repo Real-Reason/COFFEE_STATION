@@ -102,8 +102,10 @@ const Cafemenu = ({ route }) => {
         `${process.env.REACT_APP_BASE_URL}api/customer/shop/${route.params.id}/menu/${route.params.menuInfo.menuId}`,
         { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
-      console.log(response.data.menuSizeList.menuSizeList);
-      console.log(response.data.extraList.extraList);
+      
+      console.log(' data ', response.data);
+      console.log('menuSizeList?: ', response.data.menuSizeList.menuSizeList);
+      console.log('menuExtraList?: ', response.data.extraList.extraList);
 
       setCustomerLikeMenu(response.data.customerLikeMenu)
       setSize(response.data.menuSizeList.menuSizeList);
@@ -196,18 +198,47 @@ const Cafemenu = ({ route }) => {
             }
           });
           if (isSame) {
-            cartlistall.push({cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice, extraName });
+            cartlistall.push({
+              cafeId: route.params.id, 
+              item, 
+              count, 
+              menuId: route.params.menuInfo.menuId, 
+              extraIdList: extraForOrder, 
+              menuSizeId:menuSizeId, 
+              shopName: route.params.shopName, 
+              addPrice:tmpPrice, extraName 
+            });
             isSame = true;
           }
           alert(`장바구니에 ${route.params.menuInfo.name} ${count}개 더 추가`);
           cartlist = {items: cartlistall};
         } else { // 담아둔 것이 지금 가게랑 다르면? 기존거 없애고 새걸로 업데이트
           alert('현재 카페의 상품으로 초기화합니다!');
-          cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice, extraName }]}
+          cartlist = {items: [{
+            cafeId: route.params.id, 
+            item, 
+            count, 
+            menuId: route.params.menuInfo.menuId, 
+            extraIdList: extraForOrder, 
+            menuSizeId:menuSizeId, 
+            shopName: route.params.shopName, 
+            addPrice:tmpPrice, 
+            extraName 
+          }]}
         }
       } else {  // 담아둔게 하나도 없다면 바로 넣기
         alert(`장바구니에 ${route.params.menuInfo.name} 추가`);
-        cartlist = {items: [{cafeId: route.params.id, item, count, menuId: route.params.menuInfo.menuId, extraIdList: extraForOrder, menuSizeId, shopName: route.params.shopName, addPrice:tmpPrice, extraName }]}
+        cartlist = {items: [{
+          cafeId: route.params.id, 
+          item, 
+          count, 
+          menuId: route.params.menuInfo.menuId, 
+          extraIdList: extraForOrder, 
+          menuSizeId: menuSizeId, 
+          shopName: route.params.shopName, 
+          addPrice: tmpPrice, 
+          extraName 
+        }]}
       }
       await AsyncStorage.setItem('cartList', JSON.stringify(cartlist));
     } else { // 해당 상품이 판매 불가능
