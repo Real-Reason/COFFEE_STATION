@@ -26,6 +26,7 @@ const Col2 = styled.View`
   justify-content: space-evenly;
   align-items: flex-start;
   width: 50%;
+  padding-right: 10;
 `
 
 const Col3 = styled.View`
@@ -36,12 +37,6 @@ const Col3 = styled.View`
 `
 
 const Image = styled.Image`
-  /* align-items: center;
-  margin: 5px;
-  width: 80px;
-  height: 60px;
-  border-radius: 5px; */
-  align-items: center;
   border-radius: 40px;
   width: 80px;
   height: 80px;
@@ -50,8 +45,7 @@ const Image = styled.Image`
 const StyledCafeList = styled.View`
   padding: 5px;
   margin-bottom: 5px;
-  border: 1px #dcdcdc;
-  border-radius: 5px;
+  border: 0.5px #dcdcdc;
 `;
 
 const StyledCafeItem = styled.Text`
@@ -77,21 +71,27 @@ const StyledMapView = styled.View`
   height: 120px;
 `;
 
-const StyledMapBtn = styled.Pressable`
+const StyledMapBtn = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  margin: 5px;
-  width: 65px;
-  height: 30px;
+  width:100%;
+  height: 100%;
   border-radius: 5px;
-  background-color: #FF7F00;
+  /* background-color: #FF7F00; */
+  background-color: 'rgba(52, 52, 52, 0.5)';
 `
 const ScrollContainer = styled.ScrollView`
-  height: 80%;
+  /* height: 80%; */
   background-color: #ffffff;
 `;
 
-const mapImgUrl = {uri : "https://blog.kakaocdn.net/dn/cVaDdC/btqKEz4LyEY/EyMCIu2K3zbzwaPAO4RN71/img.png"};
+const BtnImage = styled.Image`
+  width: 50px;
+  height: 50px;
+`
+
+// const mapImgUrl = {uri : "https://blog.kakaocdn.net/dn/cVaDdC/btqKEz4LyEY/EyMCIu2K3zbzwaPAO4RN71/img.png"};
+const mapImgUrl = require('../../assets/icons/map-ill.jpg')
 const Stack = createNativeStackNavigator();
 
 const MainCafeList = ({ navigation }) => {
@@ -160,9 +160,10 @@ const MainCafeList = ({ navigation }) => {
       >
 
       <StyledMapView>
-        <ImageBackground source={mapImgUrl} resizeMode="cover" style={{flex: 1}}>
+        <ImageBackground source={mapImgUrl} resizeMode="cover" style={{ flex: 1 }}>
           <StyledMapBtn title="maps" onPress={() => goMaps()}>
-            <Text style={{color: "white"}}>maps</Text>
+            <BtnImage source={require('../../assets/icons/map.png')}></BtnImage>
+            <Text style={{ color: "white", fontFamily: 'InfinitySans-Bold', marginTop: 3 }}>지도에서 찾기</Text>
           </StyledMapBtn>
         </ImageBackground>
       </StyledMapView>
@@ -185,8 +186,8 @@ const MainCafeList = ({ navigation }) => {
                 </Col2>
                 <Col3>
                   <StyledDistance>
-                    <StyledCafeItem distance>
-                      {(cafe.distanceFrom * 100).toFixed(3)} m
+                    <StyledCafeItem distance style={{ fontSize: 12}}>
+                      {(cafe.distanceFrom * 100).toFixed(2)} km
                     </StyledCafeItem>
                   </StyledDistance>
                 </Col3>
@@ -194,6 +195,7 @@ const MainCafeList = ({ navigation }) => {
             </StyledCafeList>
           </TouchableOpacity>
         ))}
+      <View><Text style={{height: 120, color: '#ffffff'}}>blank</Text></View>
       </ScrollContainer>
     </View>
   );
