@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Image, Button, Pressable, ScrollView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
+import { MenuToCartContext } from '../Main';
 
 
 const SelectView = styled.View`
@@ -85,6 +86,8 @@ const Cafemenu = ({ route }) => {
 
   const [sizeIndex, setSizeIndex] = useState('');
   const [extraIndex, setExtraIndex] = useState('');
+
+  const {cartListItems, setCartListItems, setShopName} = useContext(MenuToCartContext);
 
   useEffect(() => {
     console.log(' cafe menu mount');
@@ -241,6 +244,8 @@ const Cafemenu = ({ route }) => {
         }]}
       }
       await AsyncStorage.setItem('cartList', JSON.stringify(cartlist));
+      setCartListItems(cartlist.items);
+      setShopName(route.params.shopName);
     } else { // 해당 상품이 판매 불가능
       alert('현재 판매 불가능한 상품입니다!');
     }

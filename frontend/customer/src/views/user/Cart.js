@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Text,  RefreshControl, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,6 +7,9 @@ import Paystart from '../pay/Paystart';
 import Paying from '../pay/Paying';
 import Payend from '../pay/Payend';
 import styled from 'styled-components/native';
+import { MenuToCartContext } from '../Main';
+
+
 const themeColor = '#ff7f00'
 const StButton = styled.TouchableOpacity`
   border: ${themeColor};
@@ -38,11 +41,19 @@ const Stack = createNativeStackNavigator();
 
 const Cart = ({ navigation }) => {
 
-  const [cartList, setCartList] = useState({'items': []});
-  const [cartListItems, setCartListItems] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [isCart, setIsCart] = useState(false);
-  const [shopName, setShopName] = useState('');
+  // const [cartList, setCartList] = useState({'items': []});
+  // const [cartListItems, setCartListItems] = useState([]);
+  // const [refreshing, setRefreshing] = useState(false);
+  // const [isCart, setIsCart] = useState(false);
+  // const [shopName, setShopName] = useState('');
+
+  const {
+    cartListItems,
+    setCartListItems,
+    isCart,
+    setIsCart,
+    shopName,
+    setShopName} = useContext(MenuToCartContext);
 
   useEffect(() => {
     getCartList();
@@ -51,24 +62,23 @@ const Cart = ({ navigation }) => {
   const getCartList = async() => {
     console.log('장바구니가져와');
     try {
-      const clist = JSON.parse(await AsyncStorage.getItem('cartList'));
-      setCartList(clist);
-      setCartListItems(clist.items);
+      // const clist = JSON.parse(await AsyncStorage.getItem('cartList'));
+      // setCartList(clist);
+      // setCartListItems(clist.items);
       // console.log('카트리스트',cartList);
-      setIsCart(true);
-      setShopName(cartListItems[0].shopName);
+      // setIsCart(true);
+      // setShopName(cartListItems[0].shopName);
     } catch (e) {
       console.log(e);
     }
   }
 
   const clearCartList = async() => {
-    try{
-      await AsyncStorage.removeItem('cartList');
-    } catch (e) {
-      console.log(e);
-    }
-    setCartList({'items': []});
+    // try{
+    //   await AsyncStorage.removeItem('cartList');
+    // } catch (e) {
+    //   console.log(e);
+    // }
     setIsCart(false);
     setCartListItems([]);
     setShopName('');
@@ -79,14 +89,7 @@ const Cart = ({ navigation }) => {
   }
 
   return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={getCartList} 
-          />
-        }
-      >
+      <ScrollView>
         <Text>고른 메뉴</Text>
         <Text>{ shopName }</Text>
         {/* <Text>{ cartListItems[0].shopName }</Text> */}
