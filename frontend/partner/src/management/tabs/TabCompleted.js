@@ -25,7 +25,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const TabCompleted = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
   const value = {
     selectedId,
@@ -58,7 +58,10 @@ const TabCompleted = ({navigation}) => {
           <Tab.Screen name="완료" component={CompletedOrder} />
         </Tab.Navigator>
         <DeatailContainer>
-          <Text>hi</Text>
+          <Text>주문번호 {selectedOrder.id}</Text>
+          <Text>총 {selectedOrder.totalPrice}원</Text>
+          <Text>요청사항 : {selectedOrder.request}</Text>
+          <Text>주문시간 : {selectedOrder.date}</Text>
         </DeatailContainer>
       </Container>
     </TabCompletedContext.Provider>
