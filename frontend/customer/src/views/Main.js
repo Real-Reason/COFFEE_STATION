@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, createContext } from 'react';
 import { Button, Text, Image, Pressable, View } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -82,55 +82,72 @@ const TabBarIcon = (focused, name) => {
   )
 }
 
+const MenuToCartContext = createContext();
+
 const MainTab = ({navigation}) => {
 
+  const [cartListItems, setCartListItems] = useState([]);
+  const [isCart, setIsCart] = useState(false);
+  const [shopName, setShopName] = useState('');
+
+  const value = {
+    cartListItems,
+    setCartListItems,
+    isCart,
+    setIsCart,
+    shopName,
+    setShopName
+  }
+
   return (
-    <Tab.Navigator
-      screenOptions={({route}) => ({ //각 탭에 그림 삽입 및 선택 효과
-        headerShown: false,
-        tabBarStyle: {
-          height: 60,
-          backgroundColor: 'white',
-          padding: 10
-        },
-        tabBarLabelStyle: {
-          paddingBottom: 7,
-          fontSize: 13,
-          fontFamily: 'InfinitySansR'
-        },
-        tabBarLabel: route.name,
-        tabBarIcon: ({focused})=> (
-          TabBarIcon(focused, route.name) // 함수 호출
-        ),
-        tabBarActiveTintColor: '#FF7F00',
-      })}
-    >
-      <Tab.Screen 
-        name="MainScreen" component={MainScreen} 
-        options={{ tabBarLabel: 'Home' }} 
-      />
-      <Tab.Screen 
-        name="Favorite" component={Favorite} 
-        options={{ tabBarLabel: '즐겨찾기' }} 
-      />
-      <Tab.Screen 
-        name="CartAndOrder" component={CartAndOrder} 
-        options={{ tabBarLabel: '카트' }}
-      />
-      <Tab.Screen 
-        name="Order" component={Order} 
-        options={{ tabBarLabel: '주문내역' }} 
-      />
-      <Tab.Screen 
-        name="Mypage" component={Mypage} 
-        options={{ 
-          tabBarLabel: 'Mypage',
-          tabBarButton: (props) => (
-            <CustomTabBarButton onPress={() => navigation.toggleDrawer()} />
-          )
-        }} 
-      />
-    </Tab.Navigator>
+    <MenuToCartContext.Provider value={value}>
+      <Tab.Navigator
+        screenOptions={({route}) => ({ //각 탭에 그림 삽입 및 선택 효과
+          headerShown: false,
+          tabBarStyle: {
+            height: 60,
+            backgroundColor: 'white',
+            padding: 10
+          },
+          tabBarLabelStyle: {
+            paddingBottom: 7,
+            fontSize: 13,
+            fontFamily: 'InfinitySansR'
+          },
+          tabBarLabel: route.name,
+          tabBarIcon: ({focused})=> (
+            TabBarIcon(focused, route.name) // 함수 호출
+          ),
+          tabBarActiveTintColor: '#FF7F00',
+        })}
+      >
+        <Tab.Screen 
+          name="MainScreen" component={MainScreen} 
+          options={{ tabBarLabel: 'Home' }} 
+        />
+        <Tab.Screen 
+          name="Favorite" component={Favorite} 
+          options={{ tabBarLabel: '즐겨찾기' }} 
+        />
+        <Tab.Screen 
+          name="CartAndOrder" component={CartAndOrder} 
+          options={{ tabBarLabel: '카트' }}
+        />
+        <Tab.Screen 
+          name="Order" component={Order} 
+          options={{ tabBarLabel: '주문내역' }} 
+        />
+        <Tab.Screen 
+          name="Mypage" component={Mypage} 
+          options={{ 
+            tabBarLabel: 'Mypage',
+            tabBarButton: (props) => (
+              <CustomTabBarButton onPress={() => navigation.toggleDrawer()} />
+            )
+          }} 
+        />
+      </Tab.Navigator>
+    </MenuToCartContext.Provider>
   );
 }
 
@@ -202,4 +219,5 @@ const Main = ({navigation}) => {
   )
 }
 
+export {MenuToCartContext}
 export default Main;
