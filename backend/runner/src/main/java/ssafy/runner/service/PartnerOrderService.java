@@ -90,17 +90,19 @@ public class PartnerOrderService {
         if (enumStatus == OrderStatus.PREPARING){
             System.out.println("메뉴 수락했습니다.=========================================");
             System.out.println("firebaseToken ====================================== " + firebaseToken);
-            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "주문을 수락했습니다.\n메뉴를 준비중입니다.", orderId);
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "주문을 수락했습니다." +
+                    "메뉴를 준비중입니다.", orderId);
         } else if (enumStatus == OrderStatus.REJECT) {
             System.out.println("메뉴 거절했습니다.");
             firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "매장의 사정으로 주문이 거절되었습니다.", orderId);
         } else if (enumStatus == OrderStatus.ORDERED) {
             System.out.println("메뉴 준비완료 했습니다.");
-            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴 준비가 완료되었어요!\n픽업 부탁드려요", orderId);
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "메뉴 준비가 완료되었어요!" +
+                    "픽업 부탁드려요", orderId);
         } else if (enumStatus == OrderStatus.COMPLETED) {
             System.out.println("메뉴 픽업 완료했습니다. ====================================");
             System.out.println("firebaseToken ====================================== " + firebaseToken);
-            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "이용해 주셔서 감사합니다.\n다음에 또 이용해주세요.", orderId);
+            firebaseCloudMessageService.sendMessageTo(firebaseToken, "COFFEE_STATION", "이용해 주셔서 감사합니다. 다음에 또 이용해주세요.", orderId);
         }
 //        firebaseCloudMessageService.sendMessageTo(Token, Title, body, orderId);
 
