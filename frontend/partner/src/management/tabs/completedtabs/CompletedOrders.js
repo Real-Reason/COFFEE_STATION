@@ -27,23 +27,24 @@ const DATA = [
 const Item = ({item, onPress, backgroundColor, textColor}) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.id}</Text>
+      <Text style={[styles.title, textColor]}>{item.orderId}</Text>
     </TouchableOpacity>
   );
 };
 
 const CompletedOrder = ({}) => {
   // const [selectedId, setSelectedId] = useState(null);
-  const {selectedId, setSelectedId, setSelectedOrder, completedOrders} =
+  const {selectedId, setSelectedId, setSelectedOrder, setSelectedOrderMenus, completedOrders} =
     useContext(TabCompletedContext);
 
   const setCompleted = item => {
-    setSelectedId(item.id);
+    setSelectedId(item.orderId);
     setSelectedOrder(item);
+    setSelectedOrderMenus(item.menus);
   };
   const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
+    const backgroundColor = item.orderId === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.orderId === selectedId ? 'white' : 'black';
 
     return (
       <Item
