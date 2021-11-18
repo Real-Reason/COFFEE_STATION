@@ -17,7 +17,9 @@ import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
 import {TabProgressContext} from './management/tabs/TabProgress';
 import SplashScreen from './registration/sign/SplashScreen';
+import {LogBox} from 'react-native';
 
+LogBox.ignoreAllLogs();
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
