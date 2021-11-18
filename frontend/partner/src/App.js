@@ -167,7 +167,7 @@ export default function App({navigation}) {
       try {
         userToken = await AsyncStorage.getItem('userToken');
         hasRegistered = JSON.parse(await AsyncStorage.getItem('hasRegistered'));
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
         // console.log('UserToken: ', userToken);
       } catch (e) {
         console.log(e);
@@ -225,6 +225,7 @@ export default function App({navigation}) {
         try {
           await AsyncStorage.removeItem('userToken');
           await AsyncStorage.removeItem('hasRegistered');
+          axios.defaults.headers.common['Authorization'] = undefined;
           dispatch({type: 'SIGN_OUT'});
         } catch {
           console.warn('SIGN OUT FAIL!');
