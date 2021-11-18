@@ -26,7 +26,10 @@ const Stack = createNativeStackNavigator();
 const TabMenu = ({navigation}) => {
   return (
     <Container>
-      <Stack.Navigator style={{flex: 1}} initialRouteName={ManageMenu}>
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        style={{flex: 1}}
+        initialRouteName={ManageMenu}>
         <Stack.Screen name="ManageMenu" component={ManageMenu} />
         <Stack.Screen name="CreateMenu" component={CreateMenu} />
       </Stack.Navigator>
