@@ -20,11 +20,11 @@ const ManageMain = () => {
   return (
     <>
       <Drawer.Navigator initialRouteName="TabInfo">
-        <Drawer.Screen name="TabInfo" component={TabInfo} />
-        <Drawer.Screen name="TabProgress" component={TabProgress} />
-        <Drawer.Screen name="TabCompleted" component={TabCompleted} />
-        <Drawer.Screen name="TabMenu" component={TabMenu} />
-        <Drawer.Screen name="TabRevenue" component={TabRevenue} />
+        <Drawer.Screen name="TabInfo" component={TabInfo} options = {{headerTitle: () => <Text></Text>}} />
+        <Drawer.Screen name="TabProgress" component={TabProgress} options = {{headerTitle: () => <Text></Text>}} />
+        <Drawer.Screen name="TabCompleted" component={TabCompleted} options = {{headerTitle: () => <Text></Text>}} />
+        <Drawer.Screen name="TabMenu" component={TabMenu} options = {{headerTitle: () => <Text></Text>}} />
+        <Drawer.Screen name="TabRevenue" component={TabRevenue} options = {{headerTitle: () => <Text></Text>}} />
       </Drawer.Navigator>
       <Button title="singout" onPress={() => signOut()}></Button>
     </>
