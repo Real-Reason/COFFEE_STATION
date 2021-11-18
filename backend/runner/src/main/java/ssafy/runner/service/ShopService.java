@@ -97,7 +97,7 @@ public class ShopService {
             customerLikeShop = false;
         }
 
-        return ShopAndMenuResponseDto.entityToDto(shop, imgUrlList, customerLikeShop);
+        return ShopAndMenuResponseDto.entityToDtoCanSale(shop, imgUrlList, customerLikeShop);
     }
 
     private Point getPoint(double x, double y) throws ParseException {
