@@ -13,15 +13,19 @@ const CreateMenuView = styled.View`
   background-color: #ffffff;
 `
 const InputLabel = styled.Text`
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
   font-family: 'InfinitySans-Bold';
+  font-size: 20px;
 `
 const InputLabelSub = styled.Text`
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 30px;
-  font-family: 'InfinitySans-Bold';
+  font-family: 'InfinitySansR';
+`
+const SubText = styled.Text`
+  font-family: 'InfinitySansR';
 `
 const InputInfo = styled.TextInput`
 margin: 10px;
@@ -75,14 +79,28 @@ const Col = styled.View`
   margin-right: 40px;
 `
 const StButton = styled.Pressable`
+  margin: 20px;
+  margin-bottom: 50px;
+  padding: 10px;
+  border-radius: 20px;
   border: #ff7f00;
-  margin-top: 50px;
   margin-bottom: 5px;
-  border-radius: 10px;
-  width: 80%;
-  height: 30px;
   align-items: center;
   justify-content: center;
+  width: 98%;
+  height: 45px;
+  `
+const StButtonExtra = styled.Pressable`
+  margin: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  border: #ff7f00;
+  margin-bottom: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 98%;
+  height: 45px;
 `
 const SizeButton = styled.Pressable`
   justify-content: center;
@@ -288,14 +306,14 @@ const CreateMenu = ({navigation}) => {
                 style={{height: 180, width: 180}}
                 source={{uri: imgUrl}}
               />
-              <Text>클릭 시 이미지 업로드</Text>
+              <SubText>클릭 시 이미지 업로드</SubText>
             </Pressable>
             <InputLabel>메뉴 카테고리 등록</InputLabel>
             <RowCategory>
               {categoryIdName.map((cName, index) => (
                 <ColCategory key={index} style={{ borderColor: index+1 == categoryId ? '#ff7f00':'#cacaca' }}>
                   <CategoryButton onPress={() => setCategoryId(index+1)}>
-                    <Text>{ cName }</Text>
+                    <SubText>{ cName }</SubText>
                   </CategoryButton>
                 </ColCategory>
               ))}
@@ -306,21 +324,16 @@ const CreateMenu = ({navigation}) => {
                 <CategoryButton onPress={() => setSigniture(!signiture)}>
                   {
                     signiture
-                    ? (<Text>Yes!!</Text>)
-                    : (<Text>No!</Text>)
+                    ? (<SubText>Yes!!</SubText>)
+                    : (<SubText>No!</SubText>)
                   }
                 </CategoryButton>
               </ColCategory>
             </RowCategory>
             <View style={{ alignItems: 'center' }}>
               <StButton onPress={() => addMenu()}>
-                <Text>메뉴 등록</Text>
+                <SubText style={{ color:'#ff7f00'}}>메뉴 등록</SubText>
               </StButton>
-              {
-                isResist
-                ? (<Text>등록 완료! 이어서 사이즈와 추가사항을 넣어주세요!</Text>)
-                : (<Text>메뉴 등록 먼저!</Text>)
-              }
             </View>
           </Col>
 
@@ -330,7 +343,7 @@ const CreateMenu = ({navigation}) => {
               {menuSizeName.map((sName, index) => (
                 <ColSize key={index} style={{ borderColor: isMenuResist[index] ? '#ff7f00':'#cacaca' }}>
                   <SizeButton onPress={() => resistSize(index+1, menuSizePrice[index])}>
-                    <Text>{sName}</Text>
+                    <SubText>{sName}</SubText>
                   </SizeButton>
                 </ColSize>
               ))}
@@ -349,9 +362,9 @@ const CreateMenu = ({navigation}) => {
               style={{ borderColor:'black', borderWidth:1 }}
             />
             <View style={{ alignItems: 'center' }}>
-              <StButton onPress={() => resistExtra()}>
-                <Text>추가사항 등록</Text>
-              </StButton>
+              <StButtonExtra onPress={() => resistExtra()}>
+                <SubText style={{ color:'#ff7f00'}}>추가사항 등록</SubText>
+              </StButtonExtra>
               {extraList.map((extrainfo, index) => (
                 <Text style={{margin:10}} key={index}>추가사항 : {extrainfo.name}, 가격 : {extrainfo.price}</Text>
               ))}
