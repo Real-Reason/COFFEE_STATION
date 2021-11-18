@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Pressable, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { MenuToCartContext } from '../Main';
 // import TabBarTop from '@react-navigation/material-top-tabs/lib/typescript/src/views/MaterialTopTabBar';
 
 const Row = styled.View`
@@ -83,9 +84,11 @@ const Tab = createMaterialTopTabNavigator();
 
 const Favorite = ({ navigation }) => {
 
-  const [likeShopList, setLikeShopList] = useState([]);
-  const [likeMenuList, setLikeMenuList] = useState([]);
+  // const [likeShopList, setLikeShopList] = useState([]);
+  // const [likeMenuList, setLikeMenuList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  const {likeShopList, setLikeShopList, likeMenuList, setLikeMenuList} = useContext(MenuToCartContext);
 
   useEffect(() => {
     console.log(' favorite mount');
@@ -101,7 +104,7 @@ const Favorite = ({ navigation }) => {
         `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
-      console.log(response.data.likeMenuList);
+      console.log('찜메뉴 ======= ', response.data.likeMenuList);
       setLikeMenuList(response.data.likeMenuList);
 
     } catch (e) {
@@ -112,7 +115,7 @@ const Favorite = ({ navigation }) => {
         `${process.env.REACT_APP_BASE_URL}api/customer/favorites/shop`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
-      console.log(response.data.likeShopList);
+      console.log('찜가게 ======= ',response.data.likeShopList);
       setLikeShopList(response.data.likeShopList);
 
     } catch (e) {
