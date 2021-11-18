@@ -6,6 +6,8 @@ import ssafy.runner.domain.dto.partner.PartnerDto;
 import ssafy.runner.domain.entity.Shop;
 import ssafy.runner.domain.enums.ShopStatus;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
@@ -26,9 +28,11 @@ public class ShopResDto {
     private String close_at;
     private String intro;
     private String instagram;
+    private List<String> imgUrlList;
+
 
     @Builder
-    public ShopResDto(Long id, PartnerDto partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram) {
+    public ShopResDto(Long id, PartnerDto partner, String name, String business_no, String phone_number, String address, String detail_address, String zip_code, Point location, ShopStatus status, String open_at, String close_at, String intro, String instagram, List<String> imgUrlList) {
         this.id = id;
         this.partner = partner;
         this.name = name;
@@ -43,9 +47,10 @@ public class ShopResDto {
         this.close_at = close_at;
         this.intro = intro;
         this.instagram = instagram;
+        this.imgUrlList = imgUrlList;
     }
 
-    public static ShopResDto entityToDto(Shop shop) {
+    public static ShopResDto entityToDto(Shop shop, List<String> imgUrlList) {
         return ShopResDto.builder()
                 .id(shop.getId())
                 .partner(PartnerDto.entityToDto(shop.getPartner()))
@@ -61,6 +66,7 @@ public class ShopResDto {
                 .close_at(shop.getClose_at())
                 .intro(shop.getIntro())
                 .instagram(shop.getInstagram())
+                .imgUrlList(imgUrlList)
                 .build();
     }
 }
