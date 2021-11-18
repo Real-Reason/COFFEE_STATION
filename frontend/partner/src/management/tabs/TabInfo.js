@@ -74,13 +74,11 @@ const TabInfo = ({navigation}) => {
       const response = await axios.get(BASE_URL + '/shop');
       setShopInfo(response.data);
       setShopImageList(response.data.imgUrlList);
-      console.log(shopInfo);
+      console.log('요가역여ㅣ기', shopInfo);
     } catch (e) {
       console.log(e);
     }
   };
-  // 샵 이미지 추가하기
-  const [shopImage, setShopImage] = useState();
   // 카메라로 찍어서 올리기
   // const addImage = () => {
   //   launchCamera({}, response => {
@@ -97,7 +95,6 @@ const TabInfo = ({navigation}) => {
   const formData = new FormData();
   const setImage = () => {
     launchImageLibrary({}, response => {
-      setShopImage(response.assets[0].uri);
       const file = {
         uri: response.assets[0].uri,
         type: response.assets[0].type,
@@ -120,8 +117,10 @@ const TabInfo = ({navigation}) => {
             'Content-Type': 'multipart/form-data',
           },
         },
+        console.log(response),
       );
-      console.log(response.data);
+      getShopInfo();
+      // console.log(response.data);
     } catch (e) {
       console.log(e);
     }
@@ -133,15 +132,11 @@ const TabInfo = ({navigation}) => {
   return (
     <Container>
       <ImageContianer>
-        {shopImage ? (
+        {shopImageList.length === 0 ? (
           <TouchableOpacity
-            style={{height: 200, width: 200, backgroundColor: 'red'}}
+            style={{height: 200, width: 200}}
             onPress={() => setImage()}>
-            <Image
-              source={{
-                uri: shopImage,
-              }}
-            />
+            <Image source={require('../../assets/icons/add-image.png')} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => setImage()}>
