@@ -1,4 +1,10 @@
-import React, {createContext, useContext, useEffect, useMemo} from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {View, Text, Button, TextInput} from 'react-native';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,7 +19,7 @@ import {TabProgressContext} from './management/tabs/TabProgress';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
-const baseURL = 'http://3.38.99.110:8080/api/partner';
+const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
 // SplashScreen 디자인 필요
 const SplashScreen = () => {
@@ -78,15 +84,16 @@ export default function App({navigation}) {
       // console.log(orderId);
       Alert.alert(
         // 말그대로 Alert를 띄운다
-        '주문을 수락하시겠습니까?', // 첫번째 text: 타이틀 제목
+        '주문이 들어왔습니다', // 첫번째 text: 타이틀 제목
         JSON.stringify(remoteMessage['notification']),
         [
           {
-            text: '수락하기', // 버튼 제목
+            text: '확인', // 버튼 제목
             onPress: () => {
               // TabProgress의 신규 리스트 갱신
               console.log(remoteMessage['data'].orderId);
-              Alert.alert('주문을 수락했습니다.');
+              // PaidOrderList 갱신
+              Alert.alert('주문을 확인해주세요.');
             },
           },
           {
@@ -118,13 +125,13 @@ export default function App({navigation}) {
       saveTokenToDatabase({firebaseToken});
     });
   }, []);
-  // const baseURL = 'http://10.0.2.2:8080/api/partner'
+  // const BASE_URL = 'http://10.0.2.2:8080/api/partner'
   const saveTokenToDatabase = async data => {
     let userToken = await AsyncStorage.getItem('userToken');
     console.log('====usertoken========' + userToken);
     if (userToken !== null) {
       await axios
-        .patch(baseURL + '/firebase-token', data, {
+        .patch(BASE_URL + '/firebase-token', data, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           },
@@ -143,7 +150,7 @@ export default function App({navigation}) {
     console.log('====usertoken========' + userToken);
     await axios
       .patch(
-        baseURL + `/shop/orders/${orderId}/status`,
+        BASE_URL + `/shop/orders/${orderId}/status`,
         {status: status},
         {
           headers: {
@@ -168,7 +175,7 @@ export default function App({navigation}) {
         userToken = await AsyncStorage.getItem('userToken');
         hasRegistered = JSON.parse(await AsyncStorage.getItem('hasRegistered'));
         axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
-        // console.log('UserToken: ', userToken);
+        // 여기서도 P`aidOrderList를 재생시켜줘야 하는데
       } catch (e) {
         console.log(e);
         // Restoring token failed
@@ -192,7 +199,7 @@ export default function App({navigation}) {
         let hasRegistered;
 
         await axios
-          .post(baseURL + '/login', data)
+          .post(BASE_URL + '/login', data)
           .then(function (response) {
             userToken = response.data.token;
             // axios default header 설정
@@ -203,6 +210,7 @@ export default function App({navigation}) {
             hasRegistered = JSON.stringify(response.data.registerShop);
             AsyncStorage.setItem('userToken', userToken);
             AsyncStorage.setItem('hasRegistered', hasRegistered);
+            // 로그인을 하면 해당 가게에 대한 PAID ORDER를 받아와야 한다.
             dispatch({type: 'SIGN_IN', token: userToken, regi: hasRegistered});
 
             // firebase 토큰 받아오기
@@ -210,12 +218,8 @@ export default function App({navigation}) {
             const firebaseToken = messaging()
               .getToken()
               .then(async firebaseToken => {
-                console.log('진짜 ㅍㅏ이어베이스토큰이야~~~~', firebaseToken);
-                console.log('유저 토큰은', userToken);
-                console.log('로그인한 상태니까 저장도 해줄게.');
                 saveTokenToDatabase({firebaseToken});
               });
-            console.log('토큰이다 !!!!!!!', token);
           })
           .catch(function (error) {
             console.log(error);
@@ -233,7 +237,7 @@ export default function App({navigation}) {
       },
       signUp: async data => {
         await axios
-          .post(baseURL + '/join', data)
+          .post(BASE_URL + '/join', data)
           .then(function (response) {
             console.log('Sign Up!', response.data);
             alert('회원가입 성공');
@@ -246,7 +250,7 @@ export default function App({navigation}) {
       registerShop: async data => {
         try {
           console.log(data);
-          const response = await axios.post(baseURL + '/shop', data);
+          const response = await axios.post(BASE_URL + '/shop', data);
           console.log(response.data);
           // dispatch 필요
           dispatch({type: 'REGI_SHOP'});

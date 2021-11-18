@@ -30,7 +30,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const TabProgress = ({navigation}) => {
   // Context
-  const [paiedOrders, setPaiedOrders] = useState([]);
+  const [paidOrders, setPaidOrders] = useState([]);
   const [preparingOrders, setPreparingOrders] = useState([]);
   const [selectedNewId, setSelectedNewId] = useState(null);
   const [selectedPreparingId, setSelectedPreparingId] = useState(null);
@@ -42,19 +42,19 @@ const TabProgress = ({navigation}) => {
     setSelectedPreparingId,
     selectedOrder,
     setSelectedOrder,
-    paiedOrders,
-    setPaiedOrders,
+    paidOrders,
+    setPaidOrders,
     preparingOrders,
     setPreparingOrders,
   };
-  // PAID 받아오기
+  // // PAID 받아오기 & 갱신
   const showPaidOrderList = async () => {
     try {
       const response = await axios.get(
         BASE_URL + '/shop/orders/today/status/PAID',
       );
       console.log(response.data);
-      setPaiedOrders(response.data);
+      setPaidOrders(response.data);
       console.log('PAID ORDERS RECEIVED');
     } catch (e) {
       console.log('신규 오더 정보 못받아옴', e);
