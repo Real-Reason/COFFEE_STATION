@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {useContext, useState, createContext} from 'react';
 import {Text, Pressable, View, Button} from 'react-native';
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem} from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
 import {AuthContext} from '../App';
 import axios from 'axios';
 
@@ -20,36 +25,36 @@ const ManageMain = () => {
   return (
     <>
       <Drawer.Navigator
-      
         screenOptions={{
           drawerType: 'slide',
           drawerStyle: {
             width: '35%',
           },
-          drawerLabelStyle:{
-            fontSize: 30
+          drawerLabelStyle: {
+            fontSize: 30,
           },
           drawerActiveBackgroundColor: '#FFB871',
-          drawerActiveTintColor: 'black'
+          drawerActiveTintColor: 'black',
         }}
-        initialRouteName="TabInfo"  drawerContent={props => {
+        initialRouteName="TabInfo"
+        drawerContent={props => {
           return (
             <DrawerContentScrollView {...props}>
               <DrawerItemList {...props} />
-              <DrawerItem 
-                style={{ paddingTop: '80%' }} 
-                labelStyle={{ fontSize: 30, marginLeft: 10 }} 
-                label="↩️ 로그아웃" onPress={() => signOut()} 
+              <DrawerItem
+                style={{paddingTop: '97%'}}
+                labelStyle={{fontSize: 30, marginLeft: 10}}
+                label="↩️ 로그아웃"
+                onPress={() => signOut()}
               />
             </DrawerContentScrollView>
-          )
-        }}
-        >
+          );
+        }}>
         <Drawer.Screen name=" 가게 정보 " component={TabInfo} />
         <Drawer.Screen name=" 진행 중인 주문 " component={TabProgress} />
         <Drawer.Screen name=" 완료된 주문 " component={TabCompleted} />
         <Drawer.Screen name=" 메뉴 관리 " component={TabMenu} />
-        <Drawer.Screen name=" 매출 관리 " component={TabRevenue} />
+        {/* <Drawer.Screen name=" 매출 관리 " component={TabRevenue} /> */}
       </Drawer.Navigator>
     </>
   );
