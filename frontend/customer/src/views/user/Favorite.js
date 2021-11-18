@@ -200,8 +200,8 @@ const Favorite = ({ navigation }) => {
   return (
     <View style={{height: "100%"}}>
       <Tab.Navigator>
-        <Tab.Screen name="가게" component={LikeShop}></Tab.Screen>
-        <Tab.Screen name="메뉴" component={LikeMenu}></Tab.Screen>
+        <Tab.Screen name="cafe" component={LikeShop}></Tab.Screen>
+        <Tab.Screen name="menu" component={LikeMenu}></Tab.Screen>
       </Tab.Navigator>
     </View>
 
