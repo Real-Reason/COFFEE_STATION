@@ -264,7 +264,7 @@ const CreateMenu = ({navigation}) => {
   return (
     <ScrollView>
       <CreateMenuView>
-        <Text> ----- </Text>
+        {/* <Text> ----- </Text> */}
         <Row>
           <Col> 
             <InputLabel>메뉴이름</InputLabel>
