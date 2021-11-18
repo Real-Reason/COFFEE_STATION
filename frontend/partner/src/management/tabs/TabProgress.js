@@ -53,7 +53,7 @@ const TabProgress = ({navigation}) => {
       const response = await axios.get(
         BASE_URL + '/shop/orders/today/status/PAID',
       );
-      // paiedOrders = response.data;
+      console.log(response.data);
       setPaiedOrders(response.data);
       console.log('PAID ORDERS RECEIVED');
     } catch (e) {
