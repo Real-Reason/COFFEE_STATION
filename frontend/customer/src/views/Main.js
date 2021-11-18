@@ -234,7 +234,7 @@ const Main = ({navigation}) => {
         name="MainTab" 
         component={MainTab} 
         options = {{
-          headerTitle: () => <StText>Cafe Station</StText>,
+          headerTitle: () => <StText></StText>,
           headerRight: () => (
             <StPressable onPress={() => navigation.navigate('Search')}>
               <Image 
