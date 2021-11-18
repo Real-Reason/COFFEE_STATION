@@ -71,22 +71,28 @@ const OrderNow = ({ navigation, route }) => {
     let orderMenuList = [];
     let tmp = {};
     let cafeidtmp = 0;
-    orderItems.forEach((item, index) => {
-      tmp = { menuId: item.menuId, extraIdList: item.extraIdList, menuSizeId: item.menuSizeId, quantity: item.count };
+    console.log('오더 아이템즈=',orderItems);
+    orderItems.forEach((ele, index) => {
+      tmp = { menuId: ele.item.id, extraIdList: ele.extraIdList, menuSizeId: ele.menuSizeId, quantity: ele.count };
+      console.log('id', ele.item.id);
       orderMenuList.push(tmp);
-      cafeidtmp = item.cafeId;
+      cafeidtmp = ele.cafeId;
     })
     const data = {orderMenuList, request};
-
+    console.log('데이타임!=====', data);
     let JWTToken = await AsyncStorage.getItem('userToken');
     let orderCheck = {};
-
+    console.log('카페아이디 템프',cafeidtmp);
+    console.log('오더 메뉴 리스트',orderMenuList);
+    console.log('파람즈',route.params);
     try {
+      console.log('try 시작')
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}api/customer/shop/${cafeidtmp}/order`, 
         data,
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
+      console.log('오더인포 ',response.data);
       orderCheck = {
         orderInfo: response.data, 
         cafeId: orderItems[0].cafeId, 
@@ -95,7 +101,7 @@ const OrderNow = ({ navigation, route }) => {
     } catch (e) {
       console.log(e);
     }
-
+    
     console.log('kakaopay READY');
     const paydata = {
       "cid" : "TC0ONETIME",
