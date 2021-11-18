@@ -18,19 +18,57 @@ const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 const Container = styled.View`
   flex-direction: row;
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  background-color: #ffffff;
 `;
-const TopContainer = styled(Container)`
-  flex: 0.2;
-  align-items: flex-start;
+const TopContainer = styled.View`
+  flex-direction: row;
+  margin: 20px;
+  justify-content: space-between;
 `;
-const ColumnContainer = styled(Container)`
+const ColumnContainer = styled.View`
   flex-direction: column;
   flex: 1;
+  padding: 50px;
+`;
+const HeadButtonBox = styled.View`
+  flex-direction: row;
+`;
+const HeadButton = styled.Pressable`
+  margin: 10px;
+  border-radius: 10px;
+  width: 80px;
+  height: 50px;
+  border-width: 2px;
   justify-content: center;
   align-items: center;
-`;
+`
+const HeadButtonText = styled.Text`
+  font-family: 'InfinitySans-Bold';
+  font-size: 20px;
+`
+const TitleText = styled.Text`
+  font-family: 'InfinitySans-Bold';
+  font-size: 30px;
+`
+const SubText = styled.Text`
+  font-family: 'InfinitySans-Bold';
+  font-size: 15px;
+  margin-left: 10px;
+`
+const InfoBox = styled.View`
+  margin-left: 20px;
+`
+const Row = styled.View`
+  flex-direction: row;
+`
+const ColSize = styled.View`
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  padding:10px;
+`
+
+
 
 const Item = ({item, onPress, backgroundColor, textColor}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
@@ -53,7 +91,7 @@ const ManageMenu = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const backgroundColor = item.id === selectedId ? '#ff7f00' : '#cacaca';
     const color = item.id === selectedId ? 'white' : 'black';
 
     return (
@@ -112,37 +150,53 @@ const ManageMenu = ({navigation}) => {
       </SafeAreaView>
       <ColumnContainer>
         <TopContainer>
-          <Text>메뉴정보</Text>
-          <Button title="삭제" onPress={() => deleteMenu()} />
-          <Button title="추가" onPress={() => goCreateMenu()} />
+          <View style={{justifyContent: 'center'}}>
+            <TitleText style={{margin:10}}>메뉴정보</TitleText>
+          </View>
+          <HeadButtonBox>
+            <HeadButton style={{borderColor: 'red'}} onPress={() => deleteMenu()}>
+              <HeadButtonText>삭제</HeadButtonText>
+            </HeadButton>
+            <HeadButton style={{borderColor: '#ff7f00'}} onPress={() => goCreateMenu()}>
+              <HeadButtonText>추가</HeadButtonText>
+            </HeadButton>
+          </HeadButtonBox>
         </TopContainer>
-        <Text>메뉴정보</Text>
-        <Image
-          style={{height: 200, width: 200}}
-          source={{uri: selectedMenu.imgUrl}}
-        />
-        <Text>{selectedMenu.name}</Text>
-        <Text>{selectedMenu.price}원</Text>
-        {sizeList.length !== 0 ? (
-          <>
-            {sizeList.map((size, index) => (
-              <View key={index}>
-                <Text>사이즈정보</Text>
-                <Text>{size.menuSizeName}</Text>
-                <Text>{size.price}원</Text>
-              </View>
-            ))}
-            {extraList.map((extra, index) => (
-              <View key={index}>
-                <Text>엑스트라 정보</Text>
-                <Text>{extra.name}</Text>
-                <Text>{extra.price}원</Text>
-              </View>
-            ))}
-          </>
-        ) : (
-          <Text>메뉴 정보가 없습니다.</Text>
-        )}
+        <InfoBox>
+          <View style={{alignItems:'center'}}>
+            <Image
+              style={{height: 200, width: 200}}
+              source={{uri: selectedMenu.imgUrl}}
+            />
+            <HeadButtonText>{selectedMenu.name}</HeadButtonText>
+            <HeadButtonText>{selectedMenu.price}원</HeadButtonText>
+          </View>
+
+          {sizeList.length !== 0 ? (
+            <>
+              <SubText> - 사이즈정보</SubText>
+              <Row>
+                {sizeList.map((size, index) => (
+                  <ColSize key={index}>
+                    <Text>{size.menuSizeName}</Text>
+                    <Text>{size.price}원</Text>
+                  </ColSize>
+                ))}
+              </Row>
+              <SubText> - 엑스트라 정보</SubText>
+              <Row>
+              {extraList.map((extra, index) => (
+                <ColSize key={index}>
+                  <Text>{extra.name}</Text>
+                  <Text>{extra.price}원</Text>
+                </ColSize>
+              ))}
+              </Row>
+            </>
+          ) : (
+            <Text>메뉴 정보가 없습니다.</Text>
+          )}
+        </InfoBox>
       </ColumnContainer>
     </Container>
   );
@@ -157,6 +211,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderRadius: 10,
   },
   title: {
     fontSize: 32,
