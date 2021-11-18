@@ -67,13 +67,22 @@ const ColSize = styled.View`
   margin: 20px;
   padding:10px;
 `
+const StTouchable = styled.TouchableOpacity`
+  margin: 2px;
+`
+const StText = styled.Text`
+  padding: 10px;
+  font-size: 20px;
+  font-family: "InfinitySans-Bold";
+`
+
 
 
 
 const Item = ({item, onPress, backgroundColor, textColor, borderColor}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
-    <Text style={[styles.title, textColor]}>{item.name}</Text>
-  </TouchableOpacity>
+  <StTouchable onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
+    <StText style={[styles.title, textColor]}>{item.name}</StText>
+  </StTouchable>
 );
 
 const ManageMenu = ({navigation}) => {
@@ -213,11 +222,11 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
-    borderRadius: 10,
-    borderWidth: 1,
+    // borderRadius: 10,
+    borderWidth: 0.5,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
     fontFamily: 'InfinitySansR'
   },
 });
