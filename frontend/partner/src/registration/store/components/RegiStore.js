@@ -1,5 +1,5 @@
 import React, {useState, useRef, useContext} from 'react';
-import {View, Text, Button, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, Button, Platform, TouchableOpacity, Pressable, Image } from 'react-native';
 import styled from 'styled-components/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
@@ -172,10 +172,6 @@ const RegiStore = ({route, navigation}) => {
     <MainContainer>
       {/* <Text>가게등록</Text> */}
       <Container>
-        <Col1>
-          <StyledText>로고 사진등록</StyledText>
-          <StyledText>이미지 인풋자리</StyledText>
-        </Col1>
         <Col1>
           <StyledText>가게명</StyledText>
           <StyledInput value={shopName} editable={false} />
