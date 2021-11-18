@@ -17,7 +17,7 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
             "where om.menu = :menu and om.order.status = :status")
     Integer findRevenueByMenu(@Param("menu") Menu menu, @Param("status") OrderStatus status);
 
-    @Query("select om from OrderMenu om"+
+    @Query("select distinct om  from OrderMenu om"+
             " join fetch om.order"+
             " join fetch om.menu"+
             " join fetch om.menuSize"+

@@ -34,13 +34,24 @@ public class OrderDetailResDto {
     // 참고 : 메뉴 자체에 대한 가격과, 엑스트라에 대한 가격을 모두 넣는다
 
     public static OrderDetailResDto of(List<OrderMenu> orderMenuList) {
+        System.out.println("orderMenuList========" + orderMenuList.get(0));
         Orders order = orderMenuList.get(0).getOrder();
+        System.out.println("order~~~~~~~~~" + order.toString());
         Shop shop = order.getShop();
 
         List<OrderMenuDto> orderMenusDto = new ArrayList<>();
         orderMenuList.forEach(om -> {
             orderMenusDto.add(OrderMenuDto.of(om));
         });
-        return new OrderDetailResDto(order.getId(), shop.getId(), shop.getName(), order.getDate(), order.getStatus(), order.getTotalPrice(), order.getRequest(), orderMenusDto);
+        return new OrderDetailResDto(
+                order.getId(),
+                shop.getId(),
+                shop.getName(),
+                order.getDate(),
+                order.getStatus(),
+                order.getTotalPrice(),
+                order.getRequest(),
+                orderMenusDto
+        );
     }
 }
