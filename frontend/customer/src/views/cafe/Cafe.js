@@ -179,7 +179,7 @@ const Cafe = ({ navigation, route }) => {
       const imgListTemp = response.data.imgUrlList.slice();
       setCafeImgList(imgListTemp)
       getCafeMenus(response.data.menuList.menuList);
-
+      // console.log("카페 메뉴 리스트",cafeMenus[0].menuStatus);
     } catch (e) {
       console.log(e);
     }
@@ -223,7 +223,10 @@ const Cafe = ({ navigation, route }) => {
         <StTab>
           {cafeMenus.map((cafeMenu, index) => (
             // === 메뉴별 Row =====
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
+            <TouchableOpacity 
+            // style={{ height: cafeMenu.menuStatus === 'NOT_SALE'? '0' : true }}
+            key={index} 
+            onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
               <Row3>
                 {/* 메뉴 이름 및 가격 */}
                 <Col3>
