@@ -58,7 +58,7 @@ const Text = styled.Text`
 
 const TitleText = styled(Text)`
   font-family: 'InfinitySans-Bold';
-  font-size: 25px;
+  font-size: 22px;
   margin-top: 5px;
   margin-left: 5%;
   margin-right: 5px;
@@ -168,7 +168,7 @@ const Cart = ({ navigation }) => {
       <ScrollContainer>
         {
           cartListItems.length > 0
-          ?(<View style={{flexDirection: 'row', height: 50}}>
+          ?(<View style={{flexDirection: 'row', height: 60 }}>
               <View>
                 <TitleText>{ shopName }</TitleText>
               </View>
