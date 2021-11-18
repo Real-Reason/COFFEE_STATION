@@ -95,7 +95,7 @@ const BtnImage = styled.Image`
 const mapImgUrl = require('../../assets/icons/map-ill.jpg')
 const Stack = createNativeStackNavigator();
 
-const MainCafeList = ({ navigation }) => {
+const MainCafeList = ({ navigation, route  }) => {
 
   const [cafeList, setCafeList] = useState([]);
 

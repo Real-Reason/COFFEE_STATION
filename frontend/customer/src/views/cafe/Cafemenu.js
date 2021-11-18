@@ -82,6 +82,7 @@ const Cafemenu = ({ route }) => {
   const [extraForOrder, setExtraForOrder] = useState([]);
   const [sizes, setSize] = useState([]);
   const [menuSizeId, setSizeForOrder] = useState('');
+  const [menuSizeName, setmenuSizeName] = useState('');
   const [customerLikeMenu, setCustomerLikeMenu] = useState([])
 
   const [sizeIndex, setSizeIndex] = useState('');
@@ -114,7 +115,7 @@ const Cafemenu = ({ route }) => {
       setSize(response.data.menuSizeList.menuSizeList);
       setSizeForOrder(response.data.menuSizeList.menuSizeList[0].menuSizeId);
       setExtras(response.data.extraList.extraList);
-
+      setmenuSizeName(response.data.menuSizeList.menuSizeList[0].menuSizeName)
       const arr1 = Array.from({length: sizes.length}, () => 0);
       setSizeIndex(arr1);
       const arr2 = Array.from({length: extras.length}, () => 0);
@@ -146,9 +147,10 @@ const Cafemenu = ({ route }) => {
     setExtraIndex(arr);
   }
 
-  const getSize = (menuSizeId, index) => {
+  const getSize = (menuSizeId, menuSizeName, index) => {
     console.log(`${menuSizeId} 사이즈 설정`);
     setSizeForOrder(menuSizeId);
+    setmenuSizeName(menuSizeName);
     let arr = Array.from({length: sizes.length}, () => 0);
     for(var i=0; i<sizes.length; i++) {
       if (i==index) {
@@ -207,7 +209,8 @@ const Cafemenu = ({ route }) => {
               count, 
               menuId: route.params.menuInfo.menuId, 
               extraIdList: extraForOrder, 
-              menuSizeId:menuSizeId, 
+              menuSizeId:menuSizeId,
+              menuSizeName: menuSizeName,
               shopName: route.params.shopName, 
               addPrice:tmpPrice, extraName 
             });
@@ -223,7 +226,8 @@ const Cafemenu = ({ route }) => {
             count, 
             menuId: route.params.menuInfo.menuId, 
             extraIdList: extraForOrder, 
-            menuSizeId:menuSizeId, 
+            menuSizeId:menuSizeId,
+            menuSizeName: menuSizeName,
             shopName: route.params.shopName, 
             addPrice:tmpPrice, 
             extraName 
@@ -298,7 +302,7 @@ const Cafemenu = ({ route }) => {
         <SelectView>
           {sizes.map((size, index) => (
             <SelectViewContent style={{ borderColor: sizeIndex[index] ? '#ff7f00':'#cacaca' }} key={index} >
-              <Pressable style={{alignItems: 'center', paddingTop:10 }} onPress={() => getSize(size.menuSizeId, index)}>
+              <Pressable style={{alignItems: 'center', paddingTop:10 }} onPress={() => getSize(size.menuSizeId, size.menuSizeName, index)}>
                 <View style={{ height: 55, paddingBottom:0, paddingTop: 8, alignItems: 'center' }}>
                   <Image
                     source={require('../../assets/icons/coffee-active.png')} 
