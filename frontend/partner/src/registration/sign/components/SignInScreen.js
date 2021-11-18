@@ -15,7 +15,7 @@ const StyledButton = styled.TouchableOpacity`
   font-size: 20px;
   padding: 10px;
   margin: 10px 0;
-  border: 1px #FF7F00;
+  border: 1px #ff7f00;
   border-radius: 10px;
 `;
 
@@ -29,15 +29,15 @@ const StyledImage = styled.Image`
 const Text = styled.Text`
   font-size: 30;
   align-self: center;
-  color: #FF7F00;
-`
-const View =styled.View`
+  color: #ff7f00;
+`;
+const View = styled.View`
   padding: 30px;
   width: 70%;
   align-self: center;
   background-color: white;
   height: 100%;
-`
+`;
 
 const SignInScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -55,13 +55,9 @@ const SignInScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{ width: "100%"}}>
+    <View style={{width: '100%'}}>
       <View>
-        <StyledImage
-          source={
-            require('../../../assets/logo/logo1.png')
-          }
-          />
+        <StyledImage source={require('../../../assets/logo/logo1.png')} />
         <StyledInput
           value={email}
           onChangeText={setEmail}
@@ -69,7 +65,7 @@ const SignInScreen = ({navigation}) => {
           ref={refEmail}
           returnKeyType="next"
           onSubmitEditing={() => refPassword.current.focus()}
-          />
+        />
         <StyledInput
           value={password}
           onChangeText={setPassword}
@@ -77,11 +73,10 @@ const SignInScreen = ({navigation}) => {
           ref={refPassword}
           returnKeyType="done"
           secureTextEntry
-          />
+        />
         <StyledButton
           title="Sign Up"
-          onPress={() => navigation.navigate('SignUp')}
-          >
+          onPress={() => navigation.navigate('SignUp')}>
           <Text>회원가입</Text>
         </StyledButton>
         <StyledButton title="Sign in" onPress={() => signIn({email, password})}>
