@@ -22,6 +22,7 @@ const MenuImage = styled.Image`
   width: 70px;
   height: 70px;
   border-radius: 40px;
+  align-self: flex-start;
 `
 
 const StCafeTitle = styled.View`
@@ -62,7 +63,7 @@ const Row3 = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 5px;
-  width: 90%;
+  width: 100%;
   background-color: white;
   padding:10px;
   align-items: center;
@@ -97,8 +98,8 @@ const Col3 = styled.View`
   align-items: ${props => props.img ? "flex-end" : "flex-start"};
   margin-left: 5px;
   margin-right: 5px;
-  width: ${props => props.img ? "30%" : "50%"};
-  padding-left: 50px;
+  width: ${props => props.img ? "40%" : "60%"};
+  padding-left: ${props => props.img ? "0px" : "50px"};
   /* border: 1px;
   border-color: red; */
 `
@@ -248,6 +249,10 @@ const Cafe = ({ navigation, route }) => {
             )}
             >
               <Row3>
+              <MenuImage 
+                  style={{ position: 'absolute', left: '5%', top: '0%', marginTop:0, opacity: cafeMenu.menuStatus === 'SOLD_OUT'? 1 : 0 ,
+                  alignSelf:'center', borderRadius: 0, width: 60, height: 60,  }} 
+                  source={require('../../assets/icons/out-of-stock1.png')}/>
                 {/* 메뉴 이름 및 가격 */}
                 <Col3>
                   <StIntro title>{cafeMenu.name}</StIntro>
@@ -255,6 +260,7 @@ const Cafe = ({ navigation, route }) => {
                 </Col3>
                 {/* 메뉴 이미지 */}
                 <Col3 img>
+                  
                   <MenuImage source={{uri : cafeMenu.imgUrl}}></MenuImage>
                 </Col3>
               </Row3>
