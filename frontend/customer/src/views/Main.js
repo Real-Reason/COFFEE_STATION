@@ -30,26 +30,34 @@ const StText = styled.Text`
   margin-bottom: 2.5px;
 `
 const StTextWhite = styled.Text`
+  position: absolute;
+  bottom: 0;
   font-family: 'InfinitySansR';
   font-size: 20px;
   padding: 15px;
-  color: #ffffff;
+  color:  #FF7F00;
   margin-top: 2.5px;
   margin-bottom: 2.5px;
 `
 const DrawerView = styled.View`
+  position: relative;
   background-color: white;
   align-items: center;
-  justyfy-contents: center;
+  justify-content: center;
 `
 const SignOutButton = styled.Pressable`
-  background-color: #FF7F00;
+  border: #FF7F00;
   align-items: center;
   margin-top: 20px;
   width: 80%;
-  border-radius: 5px;  
+  border-radius: 15px;  
 `
 
+const LogoImg = styled.Image`
+margin-top: 20px;
+width: 60%;
+height: 13%;
+`
 
 const Tab = createBottomTabNavigator();
 const TabBarIcon = (focused, name) => {
@@ -68,9 +76,9 @@ const TabBarIcon = (focused, name) => {
     iconImagePathActive = require('../assets/icons/orderlist-active.png')
     iconImagePathInActive = require('../assets/icons/orderlist-inactive.png')  
   } 
-  else if (name === 'Mypage') {
-    iconImagePathActive = require('../assets/icons/search-active.png')
-    iconImagePathInActive = require('../assets/icons/search-inactive.png')  
+  else if (name === 'More') {
+    iconImagePathActive = require('../assets/icons/menu-dots.png')
+    iconImagePathInActive = require('../assets/icons/menu-dots.png')  
   }
 
   return (
@@ -138,9 +146,9 @@ const MainTab = ({navigation}) => {
           options={{ tabBarLabel: '주문내역' }} 
         />
         <Tab.Screen 
-          name="Mypage" component={Mypage} 
+          name="More" component={Mypage} 
           options={{ 
-            tabBarLabel: 'Mypage',
+            tabBarLabel: '더보기',
             tabBarButton: (props) => (
               <CustomTabBarButton onPress={() => navigation.toggleDrawer()} />
             )
@@ -156,13 +164,13 @@ const CustomTabBarButton = ({ children, onPress }) => {
   <Pressable onPress={onPress}>
     <View style={{ alignItems: 'center', marginRight:18, marginLeft:10 }}>
       <Image 
-        source={require('../assets/icons/search-inactive.png')}
+        source={require('../assets/icons/menu-dots.png')}
         style={{
           width:23,
           height:23
         }}
       />
-      <Text>myPage</Text>
+      <Text>더보기</Text>
     </View>
   </Pressable>
   )
@@ -181,15 +189,23 @@ const Main = ({navigation}) => {
 
   const getemail = async() => {
     let useremail = await AsyncStorage.getItem('email');
-    setEmail(useremail);
+    let idIdx = useremail.indexOf('@', 0);
+    setEmail(useremail.slice(0, idIdx));
   }
 
   return (
-    <Drawer.Navigator initialRouteName="Home" drawerContent={props => {
+    <Drawer.Navigator   screenOptions={{
+      drawerStyle: {
+        backgroundColor: '#c6cbef',
+        width: 240,
+      },
+    }} initialRouteName="Home" drawerContent={props => {
       return (
         <DrawerView>
-          <StText style={{ marginTop:50, fontSize:20 }}>어서요세요!</StText>
+          <LogoImg source={require('../assets/icons/logo1.png')}></LogoImg>
+          <StText style={{ marginTop:50, fontSize:20 }}>안녕하세요,</StText>
           <StText style={{ fontSize:20}}>{ email } 님!</StText>
+          
           <SignOutButton onPress={() => signOut()}>
             <StTextWhite>SIGN OUT</StTextWhite>
           </SignOutButton>
