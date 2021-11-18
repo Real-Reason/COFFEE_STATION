@@ -43,20 +43,22 @@ const DrawerView = styled.View`
   position: relative;
   background-color: white;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100%;
 `
 const SignOutButton = styled.Pressable`
   border: #FF7F00;
   align-items: center;
-  margin-top: 20px;
+  justify-content: flex-end;
+  margin-top: 100%;
   width: 80%;
   border-radius: 15px;  
 `
 
 const LogoImg = styled.Image`
 margin-top: 20px;
-width: 60%;
-height: 13%;
+width: 100%;
+height: 8%;
 `
 
 const Tab = createBottomTabNavigator();
@@ -182,6 +184,7 @@ const Main = ({navigation}) => {
 
   const { signOut } = useContext(AuthContext);
   const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
 
   useEffect(() => {
     getemail();
@@ -193,21 +196,27 @@ const Main = ({navigation}) => {
     setEmail(useremail.slice(0, idIdx));
   }
 
+  const getNickname = async() => {
+    let userNickname = await AsyncStorage.getItem('nickname');
+    setNickname(userNickname);
+  }
+
   return (
     <Drawer.Navigator   screenOptions={{
       drawerStyle: {
-        backgroundColor: '#c6cbef',
-        width: 240,
+        // width: 240,
+        padding: 30
       },
     }} initialRouteName="Home" drawerContent={props => {
       return (
         <DrawerView>
           <LogoImg source={require('../assets/icons/logo1.png')}></LogoImg>
-          <StText style={{ marginTop:50, fontSize:20 }}>안녕하세요,</StText>
-          <StText style={{ fontSize:20}}>{ email } 님!</StText>
-          
+          <StText style={{ marginTop:50, fontSize:15 }}>안녕하세요, { nickname } 님!</StText>
           <SignOutButton onPress={() => signOut()}>
-            <StTextWhite>SIGN OUT</StTextWhite>
+            <StTextWhite>닉네임 변경</StTextWhite>
+          </SignOutButton>
+          <SignOutButton onPress={() => signOut()}>
+            <StTextWhite>로그아웃</StTextWhite>
           </SignOutButton>
         </DrawerView>
       )

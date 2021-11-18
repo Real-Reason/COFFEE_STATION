@@ -40,7 +40,8 @@ public class CustomerController {
     @ApiOperation(value = "유저 로그인")
     public LoginCustomerResponseDto login(@RequestBody LoginRequestDto requestDto) {
         String token = jwtUtil.createToken(requestDto.getEmail(), requestDto.getPassword(), UserType.CUSTOMER);
-        return new LoginCustomerResponseDto(token);
+        String nickname = customerService.findNickname(requestDto.getEmail());
+        return new LoginCustomerResponseDto(nickname, token);
     }
 
     // token 접근 테스트 용도

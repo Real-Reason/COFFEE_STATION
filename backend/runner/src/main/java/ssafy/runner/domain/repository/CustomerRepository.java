@@ -11,4 +11,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     boolean existsByEmailAndPassword(String email, String password);
     Optional<Customer> findByEmail(String email);
+
+    @Query(value = "select c.nickname from Customer c where c.email = :email")
+    String findNicknameByEmail(@Param("email") String email);
 }

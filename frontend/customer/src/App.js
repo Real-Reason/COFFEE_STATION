@@ -210,6 +210,7 @@ const App = ({ navigation }) => {
           userToken = response.data.token
           await AsyncStorage.setItem('userToken', userToken);
           await AsyncStorage.setItem('email', data.email);
+          await AsyncStorage.setItem('nickname', data.nickname);
           dispatch({ type: 'SIGN_IN', token: userToken });
           // firebase 토큰 받아오기
           console.log("토큰 받아오는 중")
