@@ -70,8 +70,8 @@ const ColSize = styled.View`
 
 
 
-const Item = ({item, onPress, backgroundColor, textColor}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+const Item = ({item, onPress, backgroundColor, textColor, borderColor}) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
     <Text style={[styles.title, textColor]}>{item.name}</Text>
   </TouchableOpacity>
 );
@@ -91,8 +91,9 @@ const ManageMenu = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#ff7f00' : '#cacaca';
+    const backgroundColor = item.id === selectedId ? '#ff7f00' : 'white';
     const color = item.id === selectedId ? 'white' : 'black';
+    const borderColor = item.id === selectedId ? 'white' : '#ff7f00';
 
     return (
       <Item
@@ -100,6 +101,7 @@ const ManageMenu = ({navigation}) => {
         onPress={() => selecteMenu(item)}
         backgroundColor={{backgroundColor}}
         textColor={{color}}
+        borderColor={{borderColor}}
       />
     );
   };
@@ -212,6 +214,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 10,
+    borderWidth: 1,
   },
   title: {
     fontSize: 32,

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Button,  TouchableOpacity} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styled from 'styled-components/native';
 import axios from 'axios';
@@ -9,20 +9,57 @@ const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 const Container = styled.View`
   flex-direction: row;
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
+
+  /* border: 1px;
+  border-color: orange; */
 `;
+
 const ImageContianer = styled(Container)`
   flex-direction: column;
   flex: 0.5;
   justify-content: center;
   align-items: center;
+
+  /* border: 1px; */
 `;
+
 const TextContainer = styled(Container)`
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
+  /* border: 1px ;
+  border-color: red; */
 `;
+
+const Col1 = styled.View`
+  width: 100%;
+  padding: 10px;
+  margin: 7px;
+  
+  border-radius: 5px;
+  background-color: white;
+`
+
+const Row = styled.View`
+  flex-direction: row;
+  width: 100%;
+  justify-content: ${props => props.instagram ? "center" : "space-between"};
+  align-items: center;
+`
+
+const Image = styled.Image`
+  width: ${props => props.instagram ? "30px" : "250px"};
+  height: ${props => props.instagram ? "30px" : "250px"};
+  border-radius: ${props => props.instagram ? "0px" : "125px"};
+`
+
+const StText = styled.Text`
+  padding: 7px;
+  font-size: ${props => props.title ? "25px" : "20px"};
+  font-family: ${props => props.title ? "InfinitySans-Bold": props.price ? "InfinitySans-Bold" : "InfinitySansR"};
+  color: black;
+`
+
 
 const TabInfo = ({navigation}) => {
   const [shopInfo, setShopInfo] = useState([]);
@@ -96,7 +133,6 @@ const TabInfo = ({navigation}) => {
             style={{height: 200, width: 200, backgroundColor: 'red'}}
             onPress={() => setImage()}>
             <Image
-              style={{height: 200, width: 200}}
               source={{
                 uri: shopImage,
               }}
@@ -104,28 +140,52 @@ const TabInfo = ({navigation}) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={{height: 200, width: 200}}
             onPress={() => setImage()}>
             <Image
-              style={{height: 200, width: 200}}
               source={{
                 uri: 'https://reactnative.dev/img/tiny_logo.png',
               }}
             />
           </TouchableOpacity>
         )}
-        <Text>{shopInfo.name}</Text>
-        <Text>{shopInfo.instagram}</Text>
+        <StText title>가게명 : {shopInfo.name}</StText>
+        <Row instagram>
+          <Image instagram source={require('../../assets/carousel/instagram.png')}></Image>
+          <StText title>Instagram : {shopInfo.instagram}</StText>
+        </Row>
       </ImageContianer>
+
       <TextContainer>
-        <Text>가게전화번호</Text>
-        <Text>대표번호</Text>
-        <Text>{shopInfo.phone_number}</Text>
-        <Text>가게소개</Text>
-        <Text>{shopInfo.intro}</Text>
-        <Text>영업시간</Text>
-        <Text>OPEN {shopInfo.open_at}</Text>
-        <Text>CLOSE {shopInfo.close_at}</Text>
+        <Col1>
+          <Row>
+            <StText title>가게전화번호</StText>
+            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+          </Row>
+          <StText>대표번호</StText>
+          <StText>{shopInfo.phone_number}</StText>
+        </Col1>
+        <Col1>
+          <Row>
+            <StText title>가게소개</StText>
+            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+          </Row>
+          <StText>{shopInfo.intro}</StText>
+        </Col1>
+        <Col1>
+          <Row>
+            <StText title>영업시간</StText>
+            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+          </Row>
+          <StText>OPEN {shopInfo.open_at}</StText>
+          <StText>CLOSE {shopInfo.close_at}</StText>
+        </Col1>
+        <Col1 style={{backgroundColor: "#D7DBE2"}}>
+          <StText>👀👂🏻</StText>
+          <StText title>우리 가게의 이런 모습을 소개해보세요.</StText>
+          <StText>1. 위치, 인테리어 등 매장에 대한 정보</StText>
+          <StText>2. 신메뉴, 재료, 조리과정 등 메뉴에 대한 정보</StText>
+          <StText>3. 진행하고 있는 이벤트</StText>
+        </Col1>
       </TextContainer>
     </Container>
   );
