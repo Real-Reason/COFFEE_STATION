@@ -29,6 +29,7 @@ public class OrderDetailResDto {
     private OrderStatus status;
     private int totalPrice;
     private String request;
+
     // 주문 메뉴 정보
     List<OrderMenuDto> menus = new ArrayList<>();
     // 참고 : 메뉴 자체에 대한 가격과, 엑스트라에 대한 가격을 모두 넣는다
@@ -36,8 +37,8 @@ public class OrderDetailResDto {
     public static OrderDetailResDto of(List<OrderMenu> orderMenuList) {
         Orders order = orderMenuList.get(0).getOrder();
         Shop shop = order.getShop();
-
         List<OrderMenuDto> orderMenusDto = new ArrayList<>();
+
         orderMenuList.forEach(om -> {
             orderMenusDto.add(OrderMenuDto.of(om));
         });
