@@ -12,7 +12,7 @@ const Main = () => {
     <Stack.Navigator
       initialRouteName="Intro"
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
       }}>
       <Stack.Screen name="Intro" component={Intro} />
       <Stack.Screen name="AuthUser" component={AuthUser} />
