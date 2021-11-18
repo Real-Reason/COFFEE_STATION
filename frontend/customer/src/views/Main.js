@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, createContext } from 'react';
-import { Button, Text, Image, Pressable, View } from 'react-native';
+import { Button, Text, Image, Pressable, View} from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainScreen from './cafe/MainScreen'
@@ -29,16 +29,6 @@ const StText = styled.Text`
   margin-top: 2.5px;
   margin-bottom: 2.5px;
 `
-const StTextWhite = styled.Text`
-  position: absolute;
-  bottom: 0;
-  font-family: 'InfinitySansR';
-  font-size: 20px;
-  padding: 15px;
-  color:  #FF7F00;
-  margin-top: 2.5px;
-  margin-bottom: 2.5px;
-`
 const DrawerView = styled.View`
   position: relative;
   background-color: white;
@@ -46,13 +36,29 @@ const DrawerView = styled.View`
   justify-content: flex-start;
   height: 100%;
 `
+
+const BtnView = styled.View`
+  justify-content: space-evenly;
+`
+
+const themeColor = '#ff7f00'
+
 const SignOutButton = styled.Pressable`
-  border: #FF7F00;
+  border: ${themeColor};
+  border-radius: 15px;
+  margin: 5px;
+  margin-bottom: 10px;
+  width: 200;
+  height: 60;
   align-items: center;
-  justify-content: flex-end;
-  margin-top: 100%;
-  width: 80%;
-  border-radius: 15px;  
+`
+
+const StTextWhite = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: ${themeColor};
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
 `
 
 const LogoImg = styled.Image`
@@ -99,7 +105,7 @@ const MainTab = ({navigation}) => {
   const [cartListItems, setCartListItems] = useState([]);
   const [isCart, setIsCart] = useState(false);
   const [shopName, setShopName] = useState('');
-
+  
   const value = {
     cartListItems,
     setCartListItems,
@@ -188,6 +194,7 @@ const Main = ({navigation}) => {
 
   useEffect(() => {
     getemail();
+    getNickname();
   }, []);
 
   const getemail = async() => {
@@ -211,13 +218,15 @@ const Main = ({navigation}) => {
       return (
         <DrawerView>
           <LogoImg source={require('../assets/icons/logo1.png')}></LogoImg>
-          <StText style={{ marginTop:50, fontSize:15 }}>안녕하세요, { nickname } 님!</StText>
-          <SignOutButton onPress={() => signOut()}>
-            <StTextWhite>닉네임 변경</StTextWhite>
-          </SignOutButton>
-          <SignOutButton onPress={() => signOut()}>
-            <StTextWhite>로그아웃</StTextWhite>
-          </SignOutButton>
+          <StText style={{ marginTop: 50, fontSize: 15 }}>안녕하세요, { nickname } 님!</StText>
+          <BtnView>
+            <SignOutButton onPress={() => signOut()}>
+              <StTextWhite>닉네임 변경</StTextWhite>
+            </SignOutButton>
+            <SignOutButton onPress={() => signOut()}>
+              <StTextWhite>로그아웃</StTextWhite>
+            </SignOutButton>
+          </BtnView>
         </DrawerView>
       )
     }}>
