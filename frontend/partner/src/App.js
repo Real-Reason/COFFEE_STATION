@@ -16,19 +16,11 @@ import ManageMain from './management/ManageMain';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
 import {TabProgressContext} from './management/tabs/TabProgress';
+import SplashScreen from './registration/sign/SplashScreen';
 
 const AuthContext = createContext();
 const Stack = createNativeStackNavigator();
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
-
-// SplashScreen 디자인 필요
-const SplashScreen = () => {
-  return (
-    <View>
-      <Text>Loading...</Text>
-    </View>
-  );
-};
 
 export default function App({navigation}) {
   let firebaseToken;

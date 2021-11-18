@@ -30,7 +30,8 @@ const SubText = styled.Text`
 const InputInfo = styled.TextInput`
 margin: 10px;
 padding: 10px;
-border-radius: 20px;
+border-radius: 8px;
+border: 0.5px #cacaca;
 `
 const Row = styled.View`
   flex-direction: row;
@@ -82,8 +83,8 @@ const StButton = styled.Pressable`
   margin: 20px;
   margin-bottom: 50px;
   padding: 10px;
-  border-radius: 20px;
-  border: #ff7f00;
+  border-radius: 8px;
+  border: 0.5px #ff7f00;
   margin-bottom: 5px;
   align-items: center;
   justify-content: center;
@@ -94,8 +95,8 @@ const StButtonExtra = styled.Pressable`
   margin: 20px;
   margin-bottom: 20px;
   padding: 10px;
-  border-radius: 20px;
-  border: #ff7f00;
+  border-radius: 8px;
+  border: 0.5px #ff7f00;
   margin-bottom: 5px;
   align-items: center;
   justify-content: center;
@@ -289,13 +290,11 @@ const CreateMenu = ({navigation}) => {
             <InputInfo 
               value={name}
               onChangeText={setName}
-              style={{ borderColor:'black', borderWidth:1 }}
             />
             <InputLabel>메뉴가격</InputLabel>
             <InputInfo 
               value={price}
               onChangeText={setPrice}
-              style={{ borderColor:'black', borderWidth:1 }}
             />
             <InputLabel>메뉴 이미지 등록</InputLabel>
             <Pressable
@@ -353,13 +352,11 @@ const CreateMenu = ({navigation}) => {
             <InputInfo 
               value={extraName}
               onChangeText={setExtraName}
-              style={{ borderColor:'black', borderWidth:1 }}
             />
             <InputLabelSub> - 추가사항 가격</InputLabelSub>
             <InputInfo 
               value={extraPrice}
               onChangeText={setExtraPrice}
-              style={{ borderColor:'black', borderWidth:1 }}
             />
             <View style={{ alignItems: 'center' }}>
               <StButtonExtra onPress={() => resistExtra()}>
