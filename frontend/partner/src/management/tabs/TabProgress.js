@@ -234,17 +234,28 @@ const TabProgress = ({navigation}) => {
                 <Text>요청사항 : {selectedOrder.request}</Text>              
               </Col3>
             </Col2>
-            <Col2>
-              <Text>/주문내역 {JSON.stringify(selectedOrder.menus)}/</Text>
-              <Text>{JSON.stringify(selectedOrderMenus)}</Text>
+            <Col2 style={{height: "96%", margin: 10, backgroundColor: "white"}}>
+              <StText title>주문내역</StText>
 
-              {selectedOrderMenus.map((menu, index) => {
-                <Col1 key={index}>
-                  {/* 여기가 안돼 ㅠㅠㅠㅠㅠ */}
-                </Col1>
-              })}
+              <ScrollView style={{padding : 5}}>
+                {selectedOrderMenus.map((menu, index) => (
+                  <Col1 key={index} menu>
+                    <StText style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
+                    <StText>사이즈 : {menu.menuSize}</StText>
+                    <Row>
+                      <StText>수량 : {menu.quantity}</StText>
+                      <StText>{menu.price * menu.quantity}원</StText>
+                    </Row>
+                    {menu.extras.map((extra, exIndex) => {
+                      <Row key={exIndex}>
+                        <Text>{extra.name} {extra.price}</Text>
+                      </Row>
+                    })}
+                  </Col1>
+                ))}
+              </ScrollView>
 
-              <Text>총 {selectedOrder.totalPrice}원</Text>
+              <StText price>총 {selectedOrder.totalPrice}원</StText>
             </Col2>
           </DeatailContainer>
         </Col1>
