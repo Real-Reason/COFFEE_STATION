@@ -36,9 +36,9 @@ const StText = styled.Text`
 `
 
 
-const Item = ({item, onPress, backgroundColor, textColor}) => {
+const Item = ({item, onPress, backgroundColor, textColor, borderColor }) => {
   return (
-    <StTouchable onPress={onPress} style={[styles.item, backgroundColor]}>
+    <StTouchable onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
       <StText style={[styles.title, textColor]}>{item.orderId}</StText>
     </StTouchable>
   );
@@ -55,8 +55,9 @@ const CompletedOrder = ({}) => {
     setSelectedOrderMenus(item.menus);
   };
   const renderItem = ({item}) => {
-    const backgroundColor = item.orderId === selectedId ? '#4A4A4A' : '#666666';
+    const backgroundColor = item.orderId === selectedId ? '#ff7f00' : 'white';
     const color = item.orderId === selectedId ? 'white' : 'black';
+    const borderColor = item.id === selectedId ? 'white' : '#ff7f00';
 
     return (
       <Item
@@ -64,6 +65,7 @@ const CompletedOrder = ({}) => {
         onPress={() => setCompleted(item)}
         backgroundColor={{backgroundColor}}
         textColor={{color}}
+        borderColor={{borderColor}}
       />
     );
   };
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderWidth: 0.5,
   },
   title: {
     fontSize: 25,
