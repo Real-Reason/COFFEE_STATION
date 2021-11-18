@@ -9,12 +9,23 @@ import {
 } from 'react-native';
 import {TabProgressContext} from '../TabProgress';
 import {AuthContext} from '../../../App';
+import styled from 'styled-components/native';
 
-const Item = ({item, onPress, backgroundColor, textColor}) => {
+const StTouchable = styled.TouchableOpacity`
+  margin: 2px;
+`
+
+const StText = styled.Text`
+  padding: 10px;
+  /* font-size: 10px; */
+  font-family: "InfinitySans-Bold";
+`
+
+const Item = ({item, onPress, backgroundColor, textColor, borderColor}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.orderId}</Text>
-    </TouchableOpacity>
+    <StTouchable onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
+      <StText style={[styles.title, textColor]}>{item.orderId}</StText>
+    </StTouchable>
   );
 };
 
@@ -38,8 +49,10 @@ const NewOrder = ({}) => {
 
   const renderItem = ({item}) => {
     const backgroundColor =
-      item.orderId === selectedNewId ? '#6e3b6e' : '#f9c2ff';
+      item.orderId === selectedNewId ? '#ff7f00' : 'white';
     const color = item.orderId === selectedNewId ? 'white' : 'black';
+    const borderColor = item.orderId === selectedNewId ? 'white' : '#ff7f00';
+
 
     return (
       <Item
@@ -47,6 +60,7 @@ const NewOrder = ({}) => {
         onPress={() => setNewOrder(item)}
         backgroundColor={{backgroundColor}}
         textColor={{color}}
+        borderColor={{borderColor}}
       />
     );
   };
@@ -72,6 +86,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderWidth: 0.5,
   },
   title: {
     fontSize: 32,

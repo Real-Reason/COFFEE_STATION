@@ -48,7 +48,7 @@ const Row = styled.View`
 const StText = styled.Text`
   padding: ${props => props.btn ? "10px": "5px"};
 
-  text-align: ${props => props.title ? "left" : "center"};
+  text-align: ${props => props.title ? "left" : props.menu ? "left" : props.price ? "right" : "center"};
   font-size: ${props => props.title ? "20px" : props.btn ? "20px" : "17px"};
   font-family: ${props => props.title ? "InfinitySans-Bold": props.btn ? "InfinitySans-Bold" : "InfinitySansR"};
   color: ${props => props.btn ? "white": "black"};
@@ -65,14 +65,14 @@ const Col1 = styled.View`
   border: ${props => props.menu ? "0.5px" : "0px"};
   border-color: ${props => props.menu ? "#cacaca" : "opacity"};
 
-  border: 1px;
-  border-color: red;
+  /* border: 1px;
+  border-color: red; */
 `
 
 const Col2 = styled(Col1)`
   width: 50%;
 
-  border: 1px;
+  /* border: 1px; */
 `
 const Col3 = styled(Col1)`
   margin: 10px;
@@ -227,11 +227,13 @@ const TabProgress = ({navigation}) => {
           <DeatailContainer>
             <Col2>
               <Col3>
-                <Text>주문시간 : {selectedOrder.date}</Text>
-                <Text>접수번호 : {selectedOrder.orderId}</Text>
+                <StText title>접수 정보</StText>
+                <StText menu>주문시간 : {selectedOrder.date}</StText>
+                <StText menu>접수번호 : {selectedOrder.orderId}</StText>
               </Col3>
               <Col3>
-                <Text>요청사항 : {selectedOrder.request}</Text>              
+                <StText title>요청사항</StText>
+                <StText menu>{selectedOrder.request}</StText>
               </Col3>
             </Col2>
             <Col2 style={{height: "96%", margin: 10, backgroundColor: "white"}}>
@@ -240,8 +242,8 @@ const TabProgress = ({navigation}) => {
               <ScrollView style={{padding : 5}}>
                 {selectedOrderMenus.map((menu, index) => (
                   <Col1 key={index} menu>
-                    <StText style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
-                    <StText>사이즈 : {menu.menuSize}</StText>
+                    <StText menu style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
+                    <StText menu>사이즈 : {menu.menuSize}</StText>
                     <Row>
                       <StText>수량 : {menu.quantity}</StText>
                       <StText>{menu.price * menu.quantity}원</StText>
