@@ -235,12 +235,21 @@ const TabProgress = ({navigation}) => {
               </Col3>
             </Col2>
             <Col2>
-              <Text>/주문내역 {JSON.stringify(selectedOrder.menus)}/</Text>
               <Text>{JSON.stringify(selectedOrderMenus)}</Text>
 
               {selectedOrderMenus.map((menu, index) => {
-                <Col1 key={index}>
-                  {/* 여기가 안돼 ㅠㅠㅠㅠㅠ */}
+                <Col1 key={index} menu>
+                  <StText style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
+                  <StText>사이즈 : {menu.menuSize}</StText>
+                  <Row>
+                    <StText>수량 : {menu.quantity}</StText>
+                    <StText>{menu.price * menu.quantity}원</StText>
+                  </Row>
+                  {menu.extras.map((extra, exIndex) => {
+                    <Row key={exIndex}>
+                      <Text>{extra.name} {extra.price}</Text>
+                    </Row>
+                  })}
                 </Col1>
               })}
 
