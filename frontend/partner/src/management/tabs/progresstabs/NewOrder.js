@@ -19,13 +19,15 @@ const Item = ({item, onPress, backgroundColor, textColor}) => {
 };
 
 const NewOrder = ({}) => {
-  const {selectedNewId, setSelectedNewId, setSelectedOrder, paidOrders} =
+  const {selectedNewId, setSelectedNewId, setSelectedOrder, paidOrders, setSelectedOrderMenus, selectedOrderMenus} =
     useContext(TabProgressContext);
   // const {paidOrders} = useContext(AuthContext);
 
   const setNewOrder = item => {
     setSelectedNewId(item.orderId);
     setSelectedOrder(item);
+    setSelectedOrderMenus(item.menus)
+    console.log("================================", selectedOrderMenus)
   };
   useEffect(() => {
     if (paidOrders.length !== 0) {
