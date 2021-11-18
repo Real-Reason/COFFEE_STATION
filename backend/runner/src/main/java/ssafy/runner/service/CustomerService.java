@@ -39,6 +39,12 @@ public class CustomerService {
         return true;
     }
 
+    public String findNickname(String email) {
+        String nickname = "닉네임이 없습니다.";
+        nickname = customerRepository.findNicknameByEmail(email);
+        return nickname;
+    }
+
     private void validateDuplicate(String email){
         customerRepository.findByEmail(email)
             .ifPresent(c -> {

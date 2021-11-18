@@ -11,5 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LoginCustomerResponseDto {
 
+    private String nickname;
     private String token;
 }
