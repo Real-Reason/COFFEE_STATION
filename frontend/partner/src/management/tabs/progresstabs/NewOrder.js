@@ -8,6 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {TabProgressContext} from '../TabProgress';
+import {AuthContext} from '../../../App';
 
 const Item = ({item, onPress, backgroundColor, textColor}) => {
   return (
@@ -18,13 +19,20 @@ const Item = ({item, onPress, backgroundColor, textColor}) => {
 };
 
 const NewOrder = ({}) => {
-  const {selectedNewId, setSelectedNewId, setSelectedOrder, paiedOrders} =
+  const {selectedNewId, setSelectedNewId, setSelectedOrder, paidOrders} =
     useContext(TabProgressContext);
+  // const {paidOrders} = useContext(AuthContext);
 
   const setNewOrder = item => {
     setSelectedNewId(item.orderId);
     setSelectedOrder(item);
   };
+  useEffect(() => {
+    if (paidOrders.length !== 0) {
+      setSelectedNewId(paidOrders[0].orderId);
+      setSelectedOrder(paidOrders[0]);
+    }
+  }, []);
 
   const renderItem = ({item}) => {
     const backgroundColor =
@@ -44,7 +52,7 @@ const NewOrder = ({}) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={paiedOrders}
+        data={paidOrders}
         renderItem={renderItem}
         keyExtractor={item => item.orderId}
         extraData={selectedNewId}
