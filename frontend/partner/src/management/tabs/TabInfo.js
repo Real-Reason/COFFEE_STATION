@@ -133,13 +133,11 @@ const TabInfo = ({navigation}) => {
     <Container>
       <ImageContianer>
         {shopImageList.length === 0 ? (
-          <TouchableOpacity
-            style={{height: 200, width: 200}}
-            onPress={() => setImage()}>
+          <TouchableOpacity style={{margin: 30}} onPress={() => setImage()}>
             <Image source={require('../../assets/icons/add-image.png')} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => setImage()}>
+          <TouchableOpacity style={{margin: 30}} onPress={() => setImage()}>
             <Image
               source={{
                 uri: shopImageList[shopImageList.length - 1],
