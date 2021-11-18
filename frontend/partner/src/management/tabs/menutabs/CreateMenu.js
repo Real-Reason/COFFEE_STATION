@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, Button, TextInput, Pressable, Image } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styled from 'styled-components/native';
@@ -22,10 +22,20 @@ const Row = styled.View`
   width: 100%;
   margin-bottom: 5px;
 `
-const Col = styled.View`
+const ColCategory = styled.View`
   justify-content: center;
   flex-direction: column;
   width: 20%;
+`
+const ColSize = styled.View`
+  justify-content: center;
+  flex-direction: column;
+  width: 10%;
+`
+const Col = styled.View`
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
 `
 
 
@@ -37,8 +47,16 @@ const CreateMenu = ({navigation}) => {
   const [imgUrl, setImgUrl] = useState('https://reactnative.dev/img/tiny_logo.png');
   const [signiture, setSigniture] = useState(false);
   const [menuImage, setMenuImage] = useState();
-
+  const [isResist, setIsResist] = useState(false);
   const [menuId, setMenuId] = useState(0);
+  const [isMenuResist, setIsMenuResist] = useState([false, false, false, false, false, false, false]);
+  const [extraName, setExtraName] = useState('');
+  const [extraPrice, setExtraPrice] = useState('');
+  const [extraList, setExtraList] = useState([]);
+
+  const categoryIdName = ['Coffee', 'Non-Coffee', 'Dessert', 'Bakery', 'ETC'];
+  const menuSizePrice = [0, 300, 500, 800, 1000, 1200, 1500];
+  const menuSizeName = ['one size', 'Small', 'Medium', 'Large', 'Tall', 'Grande', 'Venti'];
   
   const formData = new FormData();
 
@@ -91,6 +109,73 @@ const CreateMenu = ({navigation}) => {
       );
       console.log(response.data);
       setMenuId(response.data.menuId);
+      setIsResist(true);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const resistSize = async(sizeId, price) => {
+    let userToken = await AsyncStorage.getItem('userToken');
+    let resist = isMenuResist.slice();
+    if (resist[sizeId-1]) {
+      console.log('메뉴 사이즈 삭제');
+      try {
+        const response = await axios.delete(
+          BASE_URL + `/menu/${menuId}/size/${sizeId}`,
+          {menuId, sizeId},
+          {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+            },
+          },
+        );
+        console.log(response.data);
+        resist[sizeId-1] = false;
+      } catch (e) {
+        console.log(e);
+      }
+      resist[sizeId-1] = false;
+    } else {
+      console.log('메뉴 사이즈 등록');
+      try {
+        const response = await axios.post(
+          BASE_URL + `/menu/${menuId}/size`,
+          {price, sizeId},
+          {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+            },
+          },
+        );
+        console.log(response.data);
+        resist[sizeId-1] = true;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    setIsMenuResist(resist);
+  }
+
+  const resistExtra = async() => {
+    console.log('메뉴 추가사항 등록');
+    let userToken = await AsyncStorage.getItem('userToken');
+    let extratmp = extraList.slice();
+    try {
+      const response = await axios.post(
+        BASE_URL + `/menu/${menuId}/extra`,
+        {name:extraName, price:extraPrice},
+        {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          },
+        },
+      );
+      console.log(response.data);
+      extratmp.push({name:extraName, price:extraPrice});
+      setExtraList(extratmp);
+      setExtraName('');
+      setExtraPrice('');
     } catch (e) {
       console.log(e);
     }
@@ -98,68 +183,87 @@ const CreateMenu = ({navigation}) => {
 
   return (
     <CreateMenuView>
-      <Text>CreateMenu</Text>
-
-      <Text>메뉴이름</Text>
-      <TextInput 
-        value={name}
-        onChangeText={setName}
-        style={{ borderColor:'black', borderWidth:2 }}
-      />
-      <Text>{name}</Text>
-
-      <Text>메뉴가격</Text>
-      <TextInput 
-        value={price}
-        onChangeText={setPrice}
-        style={{ borderColor:'black', borderWidth:2 }}
-      />
-      <Text>{price}</Text>
-      
-      <Pressable
-        style={{height: 200, width: 200, backgroundColor: 'red'}}
-        onPress={() => setImage()}
-      >
-        <Image 
-          style={{height: 100, width: 100}}
-          source={{uri: imgUrl}}
-        />
-        <Text>이미지올리기</Text>
-      </Pressable>
-
       <Row>
-        <Col>
-          <Pressable onPress={() => setCategoryId(1)}>
-            <Text>Coffee</Text>
+        <Col> 
+          <Text>CreateMenu</Text>
+            <Text>메뉴이름</Text>
+            <TextInput 
+              value={name}
+              onChangeText={setName}
+              style={{ borderColor:'black', borderWidth:2 }}
+            />
+            <Text>{name}</Text>
+            <Text>메뉴가격</Text>
+            <TextInput 
+              value={price}
+              onChangeText={setPrice}
+              style={{ borderColor:'black', borderWidth:2 }}
+            />
+            <Text>{price}</Text>
+            <Pressable
+              style={{height: 200, width: 200, backgroundColor: '#ffffff', alignItems: 'center'}}
+              onPress={() => setImage()}
+            >
+              <Image 
+                style={{height: 180, width: 180}}
+                source={{uri: imgUrl}}
+              />
+              <Text>메뉴 이미지 업로드</Text>
+            </Pressable>
+          <Row>
+            {categoryIdName.map((cName, index) => (
+              <ColCategory key={index} style={{ backgroundColor: index+1 == categoryId ? '#ff7f00':'#cacaca' }}>
+                <Pressable onPress={() => setCategoryId(index+1)}>
+                  <Text>{ cName }</Text>
+                </Pressable>
+              </ColCategory>
+            ))}
+          </Row>
+          <Pressable onPress={() => setSigniture(!signiture)}>
+            <Text>is Signiture?</Text>
           </Pressable>
+          <Button title="메뉴등록" onPress={() => addMenu()} />
+          {
+            isResist
+            ? (<Text>등록 완료! 이어서 사이즈와 추가사항을 넣어주세요!</Text>)
+            : (<Text>메뉴 등록 먼저!</Text>)
+          }
         </Col>
+
         <Col>
-          <Pressable onPress={() => setCategoryId(2)}>
-            <Text>Non - Coffee</Text>
-          </Pressable>
+          <Text>사이즈랑 엑스트라 올 곳</Text>
+          <Text>사이즈 등록</Text>
+          <Row>
+            {menuSizeName.map((sName, index) => (
+              <ColSize key={index} style={{ backgroundColor: isMenuResist[index] ? '#ff7f00':'#cacaca' }}>
+                <Pressable onPress={() => resistSize(index+1, menuSizePrice[index])}>
+                  <Text>{sName}</Text>
+                </Pressable>
+              </ColSize>
+            ))}
+          </Row>
+          <Text>메뉴 추가 사항 등록</Text>
+          <Text>추가사항 명</Text>
+          <TextInput 
+            value={extraName}
+            onChangeText={setExtraName}
+            style={{ borderColor:'black', borderWidth:2 }}
+          />
+          <Text>{extraName}</Text>
+          <Text>추가사항 가격</Text>
+          <TextInput 
+            value={extraPrice}
+            onChangeText={setExtraPrice}
+            style={{ borderColor:'black', borderWidth:2 }}
+          />
+          <Text>{extraPrice}</Text>
+          <Button title="추가사항등록" onPress={() => resistExtra()} />
+          {extraList.map((extrainfo, index) => (
+            <Text key={index}>{extrainfo.name} : {extrainfo.price}</Text>
+          ))}
         </Col>
-        <Col>
-          <Pressable onPress={() => setCategoryId(3)}>
-            <Text>Dessert</Text>
-          </Pressable>
-        </Col>
-        <Col>
-          <Pressable onPress={() => setCategoryId(4)}>
-            <Text>Bakery</Text>
-          </Pressable>
-        </Col>
-        <Col>
-          <Pressable onPress={() => setCategoryId(5)}>
-            <Text>ETC</Text>
-          </Pressable>
-        </Col>
+
       </Row>
-
-      <Pressable onPress={() => setSigniture(!signiture)}>
-        <Text>is Signiture?</Text>
-      </Pressable>
-
-      <Button title="메뉴등록" onPress={() => addMenu()} />
       
       {/* <Button
         onPress={() => navigation.navigate('TabDone')}
