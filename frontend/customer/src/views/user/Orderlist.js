@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Orderdetail from './Orderdetail';
-import {View} from 'react-native';
+import { View, RefreshControl } from 'react-native';
 const Stack = createNativeStackNavigator();
 
 const TouchableOpacity = styled.TouchableOpacity`
@@ -119,8 +119,16 @@ const Orderlist = ({ navigation }) => {
     navigation.navigate('Orderdetail', orderId);
   }
 
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
-      <ScrollContainer>
+      <ScrollContainer
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={getOrder}
+          />
+        }>
         {myOrderList.map((myOrder, index) => (
           <StView key={ index }>
             <TouchableOpacity
