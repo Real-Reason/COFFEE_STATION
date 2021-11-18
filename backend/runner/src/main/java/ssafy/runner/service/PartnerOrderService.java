@@ -31,17 +31,22 @@ public class PartnerOrderService {
     private final OrderMenuRepository orderMenuRepository;
 
     // 해당 샵의 전체 주문 내역 조회
-    public List<OrderResponseDto> findByShop(String email) {
+    public List<OrderDetailResDto> findByShop(String email) {
         Shop shop = shopRepository.findShopByEmail(email).orElseThrow(NoSuchElementException::new);
         // 해당 샵의 주문 리스트 뽑기
         // 3개월 이내 옵션 걸어야함
         List<Orders> orderList = orderRepository.findByShop(shop);
+
         // 응답할 디티오 리스트에 담기
-        List<OrderResponseDto> orderDtoList = new ArrayList<>();
+//        List<OrderResponseDto> orderDtoList = new ArrayList<>();
+        List<OrderDetailResDto> orderDetailResDtoList = new ArrayList<>();
         for (Orders order : orderList) {
-            orderDtoList.add(new OrderResponseDto(order));
+//            orderDtoList.add(new OrderResponseDto(order));
+            List<OrderMenu> orderMenuList = orderMenuRepository.findOneFetched(order.getId());
+            OrderDetailResDto orderDetailResDto = OrderDetailResDto.of(orderMenuList);
+            orderDetailResDtoList.add(orderDetailResDto);
         }
-        return orderDtoList;
+        return orderDetailResDtoList;
     }
 
     // 해당 샵의 특정시간 이후 주문 내역 조회

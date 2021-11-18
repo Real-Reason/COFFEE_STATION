@@ -30,10 +30,10 @@ public class PartnerOrderController {
 
     @GetMapping("/shop/orders")
     @ApiOperation(value = "전체 주문내역 조회")
-    public ResponseEntity<List<OrderResponseDto>> all(Authentication authentication) {
+    public ResponseEntity<List<OrderDetailResDto>> all(Authentication authentication) {
 
         String email = checkPrincipalReturnEmail(authentication);
-        List<OrderResponseDto> orderList = partnerOrderService.findByShop(email);
+        List<OrderDetailResDto> orderList = partnerOrderService.findByShop(email);
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
