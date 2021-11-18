@@ -8,6 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {TabCompletedContext} from '../TabCompleted';
+import styled from 'styled-components/native';
 
 const DATA = [
   {
@@ -24,11 +25,22 @@ const DATA = [
   },
 ];
 
+const StTouchable = styled.TouchableOpacity`
+  margin: 2px;
+`
+
+const StText = styled.Text`
+  padding: 10px;
+  /* font-size: 10px; */
+  font-family: "InfinitySans-Bold";
+`
+
+
 const Item = ({item, onPress, backgroundColor, textColor}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.orderId}</Text>
-    </TouchableOpacity>
+    <StTouchable onPress={onPress} style={[styles.item, backgroundColor]}>
+      <StText style={[styles.title, textColor]}>{item.orderId}</StText>
+    </StTouchable>
   );
 };
 
@@ -43,7 +55,7 @@ const CompletedOrder = ({}) => {
     setSelectedOrderMenus(item.menus);
   };
   const renderItem = ({item}) => {
-    const backgroundColor = item.orderId === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const backgroundColor = item.orderId === selectedId ? '#4A4A4A' : '#666666';
     const color = item.orderId === selectedId ? 'white' : 'black';
 
     return (
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
 });
 
