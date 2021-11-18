@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View, Image, ScrollView, TouchableOpacity, Pressable, ImageBackground } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image, ScrollView, TouchableOpacity, Pressable, ImageBackground, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
@@ -182,7 +182,7 @@ const Cafe = ({ navigation, route }) => {
       const imgListTemp = response.data.imgUrlList.slice();
       setCafeImgList(imgListTemp)
       getCafeMenus(response.data.menuList.menuList);
-
+      // console.log("카페 메뉴 리스트",cafeMenus[0].menuStatus);
     } catch (e) {
       console.log(e);
     }
@@ -238,7 +238,14 @@ const Cafe = ({ navigation, route }) => {
         <StTab>
           {cafeMenus.map((cafeMenu, index) => (
             // === 메뉴별 Row =====
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name})}>
+            <TouchableOpacity 
+            disabled={cafeMenu.menuStatus === 'SOLD_OUT'}
+            style={{ opacity: cafeMenu.menuStatus === 'SOLD_OUT'? 0.2 : 1 }}
+            key={index} 
+            onPress={() => 
+              navigation.navigate('Cafemenu', {id: route.params.id, menuInfo: cafeMenu, shopName: route.params.name}
+            )}
+            >
               <Row3>
                 {/* 메뉴 이름 및 가격 */}
                 <Col3>
@@ -263,7 +270,7 @@ const Cafe = ({ navigation, route }) => {
       <ScrollView>
         <StTab>
           <StIntroView>
-            <StIntro title>가게 소개</StIntro>
+            <StIntro title>가게 소개 </StIntro>
             <StIntro style={{marginBottom: 5}}>{ cafeDetail.intro }</StIntro>
             <View style={{height: 150, marginRight: 50}}>
               <SliderBox sliderBoxHeight={150} sliderBoxWidth={50} images={cafeImgList}></SliderBox>
@@ -333,10 +340,10 @@ const Cafe = ({ navigation, route }) => {
           <Col2>
             <Tab.Navigator
               screenOptions={{
-                tabBarPressColor: '#e91e63',
+                tabBarPressColor: '#FF7F00',
               }}>
-              <Tab.Screen name="메뉴" component={CafeMenuTab}></Tab.Screen>
-              <Tab.Screen name="가게소개" component={CafeIntroTab}></Tab.Screen>
+              <Tab.Screen name="메뉴 " component={CafeMenuTab}></Tab.Screen>
+              <Tab.Screen name="가게소개 " component={CafeIntroTab}></Tab.Screen>
             </Tab.Navigator>
           </Col2>
         </ImageBackground>
