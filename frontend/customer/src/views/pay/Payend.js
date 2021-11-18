@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, Image, Pressable } from 'react-native';
 import axios from 'axios';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MenuToCartContext } from '../Main';
 
 
 const ScrollContainer = styled.ScrollView`
@@ -104,6 +105,8 @@ const Payend = ({ navigation, route }) => {
   const [myDate, setMyDate] = useState('');
   const [myTime, setMyTime] = useState('');
 
+  const { setIsCart, setCartListItems, setShopName } = useContext(MenuToCartContext);
+
   useEffect(() => {
     console.log(route.params);
     endKakaopay();
@@ -134,6 +137,10 @@ const Payend = ({ navigation, route }) => {
     } catch (e) {
       console.log(e);
     }
+    setIsCart(false);
+    setCartListItems([]);
+    setShopName('');
+    await AsyncStorage.removeItem('cartList');
   }
 
   const goMain = () => {

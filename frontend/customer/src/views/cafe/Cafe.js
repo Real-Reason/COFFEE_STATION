@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Image, ScrollView, TouchableOpacity, Pressable, ImageBackground } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { SliderBox } from 'react-native-image-slider-box';
 import {Linking} from 'react-native'
+import { MenuToCartContext } from '../Main';
 // import CafeMenuTab from './CafeMenuTab';
 // import CafeIntroTab from './CafeIntroTab'
 
@@ -165,6 +166,8 @@ const Cafe = ({ navigation, route }) => {
   const [cafeMenus, getCafeMenus] = useState([]);
   const [cafeImgList, setCafeImgList] = useState({});
 
+  const {likeShopList, setLikeShopList} = useContext(MenuToCartContext);
+
   const setCafeDetail = async() => {
     console.log('get Cafe Detail');
     let JWTToken = await AsyncStorage.getItem('userToken');
@@ -187,6 +190,7 @@ const Cafe = ({ navigation, route }) => {
 
   const likeCafe = async() => {
     console.log(`${route.params.id}번 카페 좋아여`);
+    let likecafelist = likeShopList.slice();
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.post(
@@ -196,6 +200,8 @@ const Cafe = ({ navigation, route }) => {
       );
       setCustomerLikeShop(true);
       console.log(response.data);
+      likecafelist.push(response.data);
+      setLikeShopList(likecafelist);
     } catch (e) {
       console.log(e);
     }
@@ -203,15 +209,24 @@ const Cafe = ({ navigation, route }) => {
 
   const unlikeCafe = async() => {
     console.log(`${route.params.id}번 카페 좋아요 취소`);
+    let likecafelist = likeShopList.slice();
+    let targetIndex = -1;
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}api/customer/favorites/shop/${route.params.id}`,
         { headers: {"Authorization" : `Bearer ${JWTToken}`}}
       );
-      
       setCustomerLikeShop(false);
       console.log(response.data);
+      let target = response.data;
+      for (var i=0;i<likecafelist.length;i++) {
+        if (likecafelist[i].shop.id == target) {
+          targetIndex = i;
+        }
+      }
+      likecafelist.splice(targetIndex, 1);
+      setLikeShopList(likecafelist);
     } catch (e) {
       console.log(e);
     }

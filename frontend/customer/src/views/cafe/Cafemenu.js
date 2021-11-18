@@ -88,7 +88,7 @@ const Cafemenu = ({ route }) => {
   const [sizeIndex, setSizeIndex] = useState('');
   const [extraIndex, setExtraIndex] = useState('');
 
-  const {cartListItems, setCartListItems, setShopName} = useContext(MenuToCartContext);
+  const {cartListItems, setCartListItems, setShopName, likeMenuList, setLikeMenuList} = useContext(MenuToCartContext);
 
   useEffect(() => {
     console.log(' cafe menu mount');
@@ -256,6 +256,7 @@ const Cafemenu = ({ route }) => {
   }
 
   const likeMenu = async() => {
+    let likefoodlist = likeMenuList.slice();
     console.log(`${route.params.menuInfo.id}번 메뉴 좋아여`);
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
@@ -266,6 +267,8 @@ const Cafemenu = ({ route }) => {
       );
       setCustomerLikeMenu(true);
       console.log(response.data);
+      likefoodlist.push(response.data);
+      setLikeMenuList(likefoodlist);
     } catch (e) {
       console.log(e);
     }
@@ -273,6 +276,8 @@ const Cafemenu = ({ route }) => {
 
   const unLikeMenu = async() => {
     console.log(`${route.params.menuInfo.id}번 메뉴 좋아요 취소 !!`);
+    let likefoodlist = likeMenuList.slice();
+    let targetIndex = -1;
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.delete(
@@ -281,6 +286,14 @@ const Cafemenu = ({ route }) => {
       );
       setCustomerLikeMenu(false);
       console.log(response.data);
+      let target = response.data;
+      for (var i=0;i<likefoodlist.length;i++) {
+        if (likefoodlist[i].menu.id == target) {
+          targetIndex = i;
+        }
+      }
+      likefoodlist.splice(targetIndex, 1);
+      setLikeMenuList(likefoodlist);
     } catch (e) {
       console.log(e);
     }
