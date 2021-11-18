@@ -153,9 +153,10 @@ const AuthUser = ({navigation}) => {
       <Col1>
         <StyledText>사업장 소재지</StyledText>
         <TouchableOpacity
-          style={{backgroundColor: '#DDDDDD', width: '42%'}}
+          style={{width: '18%'}}
           onPressIn={() => setModal(true)}>
           <StyledInput placeholder="우편번호" value={zoncode} editable={false} />
+        </TouchableOpacity>
           <Modal visible={isModal}>
             <Postcode
               style={{flex: 1}}
@@ -175,7 +176,6 @@ const AuthUser = ({navigation}) => {
             />
           </Modal>
           <AddressInput placeholder="주소" value={address} editable={false} />
-        </TouchableOpacity>
         <AddressInput
           placeholder="상세주소"
           value={detailAddress}
