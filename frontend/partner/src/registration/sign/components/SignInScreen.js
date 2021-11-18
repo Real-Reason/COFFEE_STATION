@@ -73,14 +73,14 @@ const SignInScreen = ({navigation}) => {
           ref={refPassword}
           returnKeyType="done"
           secureTextEntry
-        />
+          />
+        <StyledButton title="Sign in" onPress={() => signIn({email, password})}>
+          <Text>로그인</Text>
+        </StyledButton>
         <StyledButton
           title="Sign Up"
           onPress={() => navigation.navigate('SignUp')}>
           <Text>회원가입</Text>
-        </StyledButton>
-        <StyledButton title="Sign in" onPress={() => signIn({email, password})}>
-          <Text>로그인</Text>
         </StyledButton>
       </View>
     </View>
