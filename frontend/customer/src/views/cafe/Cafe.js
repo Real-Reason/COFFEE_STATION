@@ -80,7 +80,7 @@ const Row4 = styled.View`
 `
 
 const Col1 = styled.View`
-  width: ${props => props.title ? "30%" : "50%"};
+  width: ${props => props.title ? "30%" : "70%"};
   justify-content: space-evenly;
 `
   
@@ -127,7 +127,8 @@ const StTab = styled.View`
   /* border: 1px; */
 `
 const StIntroView = styled.View`
-  padding: 10px;
+  padding-top: 30px;
+  padding-left: 0;
   margin-bottom: 5px;
   justify-content: center;
   align-items: flex-start;
@@ -138,11 +139,16 @@ const StIntroView = styled.View`
 const StIntro = styled.Text`
   margin-bottom: ${props => props.title ? "3px": "0px"};
   padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
   font-family: ${props => props.title ? "InfinitySans-Bold": "InfinitySansR"};
   font-size: ${props => props.title ? "15px": "15px"};
   color: black;
 `
-
+const IconImage = styled.Image`
+  height: 20px;
+  width: 20px;
+`
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -258,7 +264,7 @@ const Cafe = ({ navigation, route }) => {
               <Col1 title>
                 <StIntro> 운영시간 </StIntro>
                 <StIntro> 전화번호 </StIntro>
-                <StIntro> Instagram </StIntro>
+                <StIntro> <IconImage source={require('../../assets/icons/instagram.png')} /> </StIntro>
               </Col1>
               <Col1>
                 <StIntro>{ cafeDetail.open_at } ~ { cafeDetail.close_at }</StIntro>

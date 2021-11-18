@@ -8,7 +8,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import Main from './views/Main';
 import Signup from './views/user/Signup';
-import {Alert} from 'react-native';
+import {Alert, Image} from 'react-native';
 
 import styled from 'styled-components/native';
 
@@ -58,6 +58,10 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <Container>
+      <Image 
+      source={require('./assets/icons/logo1.png')}
+      style={{ width: 250, height: 70, alignSelf: 'center', marginTop: 30, marginBottom: 50}}
+      />
       <StTextInput
         placeholder="이메일"
         value={email}
@@ -206,11 +210,11 @@ const App = ({ navigation }) => {
             data
           );
           
-          console.log(response.data.token)
+          console.log(response.data)
           userToken = response.data.token
           await AsyncStorage.setItem('userToken', userToken);
           await AsyncStorage.setItem('email', data.email);
-          await AsyncStorage.setItem('nickname', data.nickname);
+          await AsyncStorage.setItem('nickname', response.data.nickname);
           dispatch({ type: 'SIGN_IN', token: userToken });
           // firebase 토큰 받아오기
           console.log("토큰 받아오는 중")

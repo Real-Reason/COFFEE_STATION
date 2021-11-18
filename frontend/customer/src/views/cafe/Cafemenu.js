@@ -256,11 +256,11 @@ const Cafemenu = ({ route }) => {
   }
 
   const likeMenu = async() => {
-    console.log(`${route.params.menuInfo.menuId}번 메뉴 좋아여`);
+    console.log(`${route.params.menuInfo.id}번 메뉴 좋아여`);
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.menuId}`, 
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.id}`, 
         {},
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
@@ -272,11 +272,11 @@ const Cafemenu = ({ route }) => {
   }
 
   const unLikeMenu = async() => {
-    console.log(`${route.params.menuInfo.menuId}번 메뉴 좋아요 취소 !!`);
+    console.log(`${route.params.menuInfo.id}번 메뉴 좋아요 취소 !!`);
     let JWTToken = await AsyncStorage.getItem('userToken');
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.menuId}`,
+        `${process.env.REACT_APP_BASE_URL}api/customer/favorites/menu/${route.params.menuInfo.id}`,
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
       setCustomerLikeMenu(false);
