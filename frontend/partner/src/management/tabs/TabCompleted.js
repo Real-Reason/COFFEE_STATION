@@ -155,7 +155,6 @@ const TabCompleted = ({navigation}) => {
 
               <StText price>총 {selectedOrder.totalPrice}원</StText>
             </Col2>
-
           </DeatailContainer>
         </Col1>
 

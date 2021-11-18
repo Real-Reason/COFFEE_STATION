@@ -72,4 +72,26 @@ public class ShopAndMenuResponseDto {
                 .build();
     }
 
+
+    public static ShopAndMenuResponseDto entityToDtoCanSale(Shop shop, List<String> imgUrlList, Boolean customerLikeShop) {
+        return ShopAndMenuResponseDto.builder()
+                .id(shop.getId())
+                .menuList(MenuListResponseDto.canSale(shop.getMenuList()))
+                .name(shop.getName())
+                .business_no(shop.getBusiness_no())
+                .phone_number(shop.getPhone_number())
+                .address(shop.getAddress())
+                .detail_address(shop.getDetail_address())
+                .zip_code(shop.getZip_code())
+                .x(shop.getLocation().getX())
+                .y(shop.getLocation().getY())
+                .status(shop.getStatus())
+                .open_at(shop.getOpen_at())
+                .close_at(shop.getClose_at())
+                .intro(shop.getIntro())
+                .instagram(shop.getInstagram())
+                .imgUrlList(imgUrlList)
+                .customerLikeShop(customerLikeShop)
+                .build();
+    }
 }

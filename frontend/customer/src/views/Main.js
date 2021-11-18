@@ -134,7 +134,7 @@ const MainTab = ({navigation}) => {
           },
           tabBarLabelStyle: {
             paddingBottom: 7,
-            fontSize: 13,
+            fontSize: 10,
             fontFamily: 'InfinitySansR'
           },
           tabBarLabel: route.name,
@@ -176,7 +176,7 @@ const MainTab = ({navigation}) => {
 
 const CustomTabBarButton = ({ children, onPress }) => {
   return(
-  <Pressable onPress={onPress}>
+  <Pressable onPress={onPress} style={{marginTop:5 }}>
     <View style={{ alignItems: 'center', marginRight:18, marginLeft:10 }}>
       <Image 
         source={require('../assets/icons/menu-dots.png')}
@@ -185,7 +185,7 @@ const CustomTabBarButton = ({ children, onPress }) => {
           height:23
         }}
       />
-      <Text>더보기</Text>
+      <Text style={{ fontSize: 10, color: 'gray', marginTop: 2}}> 더보기 </Text>
     </View>
   </Pressable>
   )
