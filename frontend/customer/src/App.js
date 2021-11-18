@@ -252,7 +252,7 @@ const App = ({ navigation }) => {
               name="Main" 
               component={Main} 
               options = {{
-                headerTitle: () => <StText>Cafe Station</StText>,
+                // headerTitle: () => <StText>Cafe Station</StText>,
                 headerRight: () => (
                   <StPressable onPress={() => authContext.signOut()}>
                     <StText>
