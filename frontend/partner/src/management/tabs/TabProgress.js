@@ -22,10 +22,6 @@ const StyledBtn = styled.Button`
 
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
-// 신규, 진행중 받아올 변수
-// let paiedOrders = [];
-// let preparingOrders = [];
-
 //TP Context 생성
 const TabProgressContext = createContext();
 
@@ -57,7 +53,7 @@ const TabProgress = ({navigation}) => {
       const response = await axios.get(
         BASE_URL + '/shop/orders/today/status/PAID',
       );
-      // paiedOrders = response.data;
+      console.log(response.data);
       setPaiedOrders(response.data);
       console.log('PAID ORDERS RECEIVED');
     } catch (e) {

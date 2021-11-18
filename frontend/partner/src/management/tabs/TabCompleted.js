@@ -41,6 +41,7 @@ const TabCompleted = ({navigation}) => {
     try {
       const response = await axios.get(BASE_URL + '/shop/orders');
       setCompletedOrders(response.data);
+      console.log(response.data)
       console.log('COMPLETED ORDERS RECEIVED');
     } catch (e) {
       console.log('COMPLETED 오더 정보 못받아옴', e);
@@ -57,12 +58,14 @@ const TabCompleted = ({navigation}) => {
         <Tab.Navigator style={{flex: 0.5}}>
           <Tab.Screen name="완료" component={CompletedOrder} />
         </Tab.Navigator>
+
         <DeatailContainer>
           <Text>주문번호 {selectedOrder.id}</Text>
           <Text>총 {selectedOrder.totalPrice}원</Text>
           <Text>요청사항 : {selectedOrder.request}</Text>
           <Text>주문시간 : {selectedOrder.date}</Text>
         </DeatailContainer>
+
       </Container>
     </TabCompletedContext.Provider>
   );
