@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button,  TouchableOpacity} from 'react-native';
+import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styled from 'styled-components/native';
 import axios from 'axios';
@@ -35,39 +35,45 @@ const Col1 = styled.View`
   width: 100%;
   padding: 10px;
   margin: 7px;
-  
+
   border-radius: 5px;
   background-color: white;
-`
+`;
 
 const Row = styled.View`
   flex-direction: row;
   width: 100%;
-  justify-content: ${props => props.instagram ? "center" : "space-between"};
+  justify-content: ${props => (props.instagram ? 'center' : 'space-between')};
   align-items: center;
-`
+`;
 
 const Image = styled.Image`
-  width: ${props => props.instagram ? "30px" : "250px"};
-  height: ${props => props.instagram ? "30px" : "250px"};
-  border-radius: ${props => props.instagram ? "0px" : "125px"};
-`
+  width: ${props => (props.instagram ? '30px' : '250px')};
+  height: ${props => (props.instagram ? '30px' : '250px')};
+  border-radius: ${props => (props.instagram ? '0px' : '125px')};
+`;
 
 const StText = styled.Text`
   padding: 7px;
-  font-size: ${props => props.title ? "25px" : "20px"};
-  font-family: ${props => props.title ? "InfinitySans-Bold": props.price ? "InfinitySans-Bold" : "InfinitySansR"};
+  font-size: ${props => (props.title ? '25px' : '20px')};
+  font-family: ${props =>
+    props.title
+      ? 'InfinitySans-Bold'
+      : props.price
+      ? 'InfinitySans-Bold'
+      : 'InfinitySansR'};
   color: black;
-`
-
+`;
 
 const TabInfo = ({navigation}) => {
   const [shopInfo, setShopInfo] = useState([]);
+  const [shopImageList, setShopImageList] = useState([]);
   // shopinfo 받아오기
   const getShopInfo = async () => {
     try {
       const response = await axios.get(BASE_URL + '/shop');
       setShopInfo(response.data);
+      setShopImageList(response.data.imgUrlList);
       console.log(shopInfo);
     } catch (e) {
       console.log(e);
@@ -117,7 +123,6 @@ const TabInfo = ({navigation}) => {
       );
       console.log(response.data);
     } catch (e) {
-      console.log('아오');
       console.log(e);
     }
   };
@@ -139,18 +144,19 @@ const TabInfo = ({navigation}) => {
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={() => setImage()}>
+          <TouchableOpacity onPress={() => setImage()}>
             <Image
               source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                uri: shopImageList[shopImageList.length - 1],
               }}
             />
           </TouchableOpacity>
         )}
         <StText title>가게명 : {shopInfo.name}</StText>
         <Row instagram>
-          <Image instagram source={require('../../assets/carousel/instagram.png')}></Image>
+          <Image
+            instagram
+            source={require('../../assets/carousel/instagram.png')}></Image>
           <StText title>Instagram : {shopInfo.instagram}</StText>
         </Row>
       </ImageContianer>
@@ -159,7 +165,7 @@ const TabInfo = ({navigation}) => {
         <Col1>
           <Row>
             <StText title>가게전화번호</StText>
-            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+            <StText style={{color: '#3c69c2'}}>수정🖋</StText>
           </Row>
           <StText>대표번호</StText>
           <StText>{shopInfo.phone_number}</StText>
@@ -167,19 +173,19 @@ const TabInfo = ({navigation}) => {
         <Col1>
           <Row>
             <StText title>가게소개</StText>
-            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+            <StText style={{color: '#3c69c2'}}>수정🖋</StText>
           </Row>
           <StText>{shopInfo.intro}</StText>
         </Col1>
         <Col1>
           <Row>
             <StText title>영업시간</StText>
-            <StText style={{color: "#3c69c2"}}>수정🖋</StText>
+            <StText style={{color: '#3c69c2'}}>수정🖋</StText>
           </Row>
           <StText>OPEN {shopInfo.open_at}</StText>
           <StText>CLOSE {shopInfo.close_at}</StText>
         </Col1>
-        <Col1 style={{backgroundColor: "#D7DBE2"}}>
+        <Col1 style={{backgroundColor: '#D7DBE2'}}>
           <StText>👀👂🏻</StText>
           <StText title>우리 가게의 이런 모습을 소개해보세요.</StText>
           <StText>1. 위치, 인테리어 등 매장에 대한 정보</StText>
