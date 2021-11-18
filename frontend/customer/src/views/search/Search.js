@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import { ScrollView, ImageErrorEventData, Image, TextInput, TouchableOpacity, Button } from 'react-native';
 import axios from 'axios';
 import styled from 'styled-components/native';
 
@@ -9,6 +9,8 @@ const StyledCafeList = styled.View`
   margin-bottom: 5px;
   border: 1px #dcdcdc;
   border-radius: 5px;
+  width: 95%;
+  align-self: center;
 `
 const Row = styled.View`
   flex-direction: row;
@@ -31,10 +33,10 @@ const Col3 = styled.View`
 `
 const SearchedImage = styled.Image`
   align-items: center;
-  margin: 5px;
+  margin: 8px;
   width: 80px;
-  height: 60px;
-  border-radius: 5px;
+  height: 80px;
+  border-radius: 40px;
 `
 const StyledCafeItem = styled.Text`
   font-size: ${props => props.title ? "16px" : "13px"};
@@ -52,22 +54,26 @@ const StyledDistance = styled.View`
 const SearchBar = styled.View`
   flex-direction: row;
   margin: 10px;
+  border: 1.5px #FF7F00;
+  border-radius: 5px;
+  width: 95%;
+  align-self: center;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 const SearchTextInput = styled.TextInput`
+  
   font-family: 'InfinitySansR';
   justify-content: center;
   align-items: center;
   height: 40px;
-  border-radius: 5px;
-  border-width: 2px;
-  border-color: #cacaca;
   flex-direction: column;
-  width: 80%;
-`;
+  width: 85%;
+`
 const SearchButton = styled.Pressable`
   justify-content: center;
   align-items: center;
-  background: #FF7F00;
+  /* background: #FF7F00; */
   height: 40px;
   border-radius: 5px;
   flex-direction: column;
@@ -114,23 +120,31 @@ const Search = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{backgroundColor:'#ffffff'}}>
+    <ScrollView style={{backgroundColor:'#ffffff', padding: 30}}>
 
-      <SearchText>Search Cafe</SearchText>
+      <SearchText>카페 찾기</SearchText>
 
       <SearchBar>
         <SearchTextInput
-          placeholder="cafename"
+          placeholder="카페명"
           value={cafename}
           onChangeText={setCafename}
         />
         <SearchButton onPress={() => searchCafe()}>
-          <SearchButtonText>카페 검색</SearchButtonText>
+          <Image 
+            source={require('../../assets/icons/search-inactive.png')}
+            style={{
+              width:20,
+              height:20
+            }}
+          />
         </SearchButton>
       </SearchBar>
 
       {cafeList.map((cafe, index) => (
-        <TouchableOpacity key={index} onPress={() => goCafeDetail({id: cafe.shopId, name: cafe.name})}>
+        <TouchableOpacity 
+          key={index} onPress={() => goCafeDetail({id: cafe.shopId, name: cafe.name})}
+        >
           <StyledCafeList>
             <Row>
               <Col1>
