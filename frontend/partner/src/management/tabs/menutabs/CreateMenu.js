@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Button, TextInput, Pressable, Image } from 'react-native';
+import {View, Text, Button, TextInput, Pressable, Image, ScrollView } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styled from 'styled-components/native';
 import axios from 'axios';
@@ -12,6 +12,22 @@ const CreateMenuView = styled.View`
   align-items: center;
   background-color: #ffffff;
 `
+const InputLabel = styled.Text`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'InfinitySans-Bold';
+`
+const InputLabelSub = styled.Text`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+  font-family: 'InfinitySans-Bold';
+`
+const InputInfo = styled.TextInput`
+margin: 10px;
+padding: 10px;
+border-radius: 20px;
+`
 const Row = styled.View`
   flex-direction: row;
   padding: 30px;
@@ -22,22 +38,58 @@ const Row = styled.View`
   width: 100%;
   margin-bottom: 5px;
 `
+const RowCategory = styled.View`
+  flex-direction: row;
+  background-color: white;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 5px;
+`
 const ColCategory = styled.View`
   justify-content: center;
+  align-items: center;
   flex-direction: column;
-  width: 20%;
+  width: 18%;
+  margin-right: 10px;
+  border-width: 1px;
+  border-radius: 10px;
+`
+const CategoryButton = styled.Pressable`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
 `
 const ColSize = styled.View`
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   width: 10%;
+  margin-right: 10px;
+  border-width: 1px;
+  border-radius: 10px;
 `
 const Col = styled.View`
-  justify-content: center;
   flex-direction: column;
   width: 50%;
+  margin-right: 40px;
 `
-
+const StButton = styled.Pressable`
+  border: #ff7f00;
+  margin-top: 50px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  width: 80%;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+`
+const SizeButton = styled.Pressable`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+`
 
 const CreateMenu = ({navigation}) => {
 
@@ -59,6 +111,21 @@ const CreateMenu = ({navigation}) => {
   const menuSizeName = ['one size', 'Small', 'Medium', 'Large', 'Tall', 'Grande', 'Venti'];
   
   const formData = new FormData();
+
+
+  // const addImage = () => {
+  //   launchCamera({}, response => {
+  //     console.log(response);
+  //     setMenuImage(response.uri);
+  //   });
+  // };
+  // const pickImage = () => {
+  //   launchImageLibrary({}, response => {
+  //     setMenuImage(response.assets[0].uri);
+  //     console.log('됐다 이제', shopImage);
+  //   });
+  // };
+
 
   const setImage = () => {
     launchImageLibrary({}, response => {
@@ -96,110 +163,123 @@ const CreateMenu = ({navigation}) => {
 
   const addMenu = async() => {
     console.log('메뉴추가요');
-    try {
-      let userToken = await AsyncStorage.getItem('userToken');
-      const response = await axios.post(
-        BASE_URL + `/menu`,
-        {categoryId, imgUrl, name, price, signiture},
-        {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
+    if (isResist) {
+      alert('이미 메뉴 등록을 하셨어요!!!')
+    } else {
+      try {
+        let userToken = await AsyncStorage.getItem('userToken');
+        const response = await axios.post(
+          BASE_URL + `/menu`,
+          {categoryId, imgUrl, name, price, signiture},
+          {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+            },
           },
-        },
-      );
-      console.log(response.data);
-      setMenuId(response.data.menuId);
-      setIsResist(true);
-    } catch (e) {
-      console.log(e);
+        );
+        console.log(response.data);
+        setMenuId(response.data.menuId);
+        setIsResist(true);
+      } catch (e) {
+        console.log(e);
+      }
+      alert('등록 완료! 이어서 사이즈와 추가사항을 넣어주세요!');
     }
   }
 
   const resistSize = async(sizeId, price) => {
-    let userToken = await AsyncStorage.getItem('userToken');
-    let resist = isMenuResist.slice();
-    if (resist[sizeId-1]) {
-      console.log('메뉴 사이즈 삭제');
-      try {
-        const response = await axios.delete(
-          BASE_URL + `/menu/${menuId}/size/${sizeId}`,
-          {menuId, sizeId},
-          {
-            headers: {
-              Authorization: 'Bearer ' + userToken,
+    if (isResist) {
+      let userToken = await AsyncStorage.getItem('userToken');
+      let resist = isMenuResist.slice();
+      if (resist[sizeId-1]) {
+        console.log('메뉴 사이즈 삭제');
+        try {
+          const response = await axios.delete(
+            BASE_URL + `/menu/${menuId}/size/${sizeId}`,
+            {menuId, sizeId},
+            {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              },
             },
-          },
-        );
-        console.log(response.data);
+          );
+          console.log(response.data);
+          resist[sizeId-1] = false;
+        } catch (e) {
+          console.log(e);
+        }
         resist[sizeId-1] = false;
-      } catch (e) {
-        console.log(e);
-      }
-      resist[sizeId-1] = false;
-    } else {
-      console.log('메뉴 사이즈 등록');
-      try {
-        const response = await axios.post(
-          BASE_URL + `/menu/${menuId}/size`,
-          {price, sizeId},
-          {
-            headers: {
-              Authorization: 'Bearer ' + userToken,
+      } else {
+        console.log('메뉴 사이즈 등록');
+        try {
+          const response = await axios.post(
+            BASE_URL + `/menu/${menuId}/size`,
+            {price, sizeId},
+            {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              },
             },
-          },
-        );
-        console.log(response.data);
-        resist[sizeId-1] = true;
-      } catch (e) {
-        console.log(e);
+          );
+          console.log(response.data);
+          resist[sizeId-1] = true;
+        } catch (e) {
+          console.log(e);
+        }
       }
+      setIsMenuResist(resist);
+    } else {
+      alert('메뉴 등록을 먼저 해주세요!!!')
     }
-    setIsMenuResist(resist);
   }
 
   const resistExtra = async() => {
     console.log('메뉴 추가사항 등록');
-    let userToken = await AsyncStorage.getItem('userToken');
-    let extratmp = extraList.slice();
-    try {
-      const response = await axios.post(
-        BASE_URL + `/menu/${menuId}/extra`,
-        {name:extraName, price:extraPrice},
-        {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
+    if (isResist) {
+      let userToken = await AsyncStorage.getItem('userToken');
+      let extratmp = extraList.slice();
+      try {
+        const response = await axios.post(
+          BASE_URL + `/menu/${menuId}/extra`,
+          {name:extraName, price:extraPrice},
+          {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+            },
           },
-        },
-      );
-      console.log(response.data);
-      extratmp.push({name:extraName, price:extraPrice});
-      setExtraList(extratmp);
-      setExtraName('');
-      setExtraPrice('');
-    } catch (e) {
-      console.log(e);
+        );
+        console.log(response.data);
+        extratmp.push({name:extraName, price:extraPrice});
+        setExtraList(extratmp);
+        setExtraName('');
+        setExtraPrice('');
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      alert('메뉴 등록을 먼저 해주세요!!!!!');
     }
   }
 
   return (
-    <CreateMenuView>
-      <Row>
-        <Col> 
-          <Text>CreateMenu</Text>
-            <Text>메뉴이름</Text>
-            <TextInput 
+    <ScrollView>
+      <CreateMenuView>
+        <Text> ----- </Text>
+        <Row>
+          <Col> 
+            <InputLabel>메뉴이름</InputLabel>
+            <InputInfo 
               value={name}
               onChangeText={setName}
-              style={{ borderColor:'black', borderWidth:2 }}
+              style={{ borderColor:'black', borderWidth:1 }}
             />
-            <Text>{name}</Text>
-            <Text>메뉴가격</Text>
-            <TextInput 
+            <InputLabel>메뉴가격</InputLabel>
+            <InputInfo 
               value={price}
               onChangeText={setPrice}
-              style={{ borderColor:'black', borderWidth:2 }}
+              style={{ borderColor:'black', borderWidth:1 }}
             />
-            <Text>{price}</Text>
+            <InputLabel>메뉴 이미지 등록</InputLabel>
             <Pressable
               style={{height: 200, width: 200, backgroundColor: '#ffffff', alignItems: 'center'}}
               onPress={() => setImage()}
@@ -208,68 +288,84 @@ const CreateMenu = ({navigation}) => {
                 style={{height: 180, width: 180}}
                 source={{uri: imgUrl}}
               />
-              <Text>메뉴 이미지 업로드</Text>
+              <Text>클릭 시 이미지 업로드</Text>
             </Pressable>
-          <Row>
-            {categoryIdName.map((cName, index) => (
-              <ColCategory key={index} style={{ backgroundColor: index+1 == categoryId ? '#ff7f00':'#cacaca' }}>
-                <Pressable onPress={() => setCategoryId(index+1)}>
-                  <Text>{ cName }</Text>
-                </Pressable>
+            <InputLabel>메뉴 카테고리 등록</InputLabel>
+            <RowCategory>
+              {categoryIdName.map((cName, index) => (
+                <ColCategory key={index} style={{ borderColor: index+1 == categoryId ? '#ff7f00':'#cacaca' }}>
+                  <CategoryButton onPress={() => setCategoryId(index+1)}>
+                    <Text>{ cName }</Text>
+                  </CategoryButton>
+                </ColCategory>
+              ))}
+            </RowCategory>
+            <InputLabel>is Signiture?</InputLabel>
+            <RowCategory>
+              <ColCategory style={{ borderColor: signiture ? '#ff7f00':'#cacaca' }}>
+                <CategoryButton onPress={() => setSigniture(!signiture)}>
+                  {
+                    signiture
+                    ? (<Text>Yes!!</Text>)
+                    : (<Text>No!</Text>)
+                  }
+                </CategoryButton>
               </ColCategory>
-            ))}
-          </Row>
-          <Pressable onPress={() => setSigniture(!signiture)}>
-            <Text>is Signiture?</Text>
-          </Pressable>
-          <Button title="메뉴등록" onPress={() => addMenu()} />
-          {
-            isResist
-            ? (<Text>등록 완료! 이어서 사이즈와 추가사항을 넣어주세요!</Text>)
-            : (<Text>메뉴 등록 먼저!</Text>)
-          }
-        </Col>
+            </RowCategory>
+            <View style={{ alignItems: 'center' }}>
+              <StButton onPress={() => addMenu()}>
+                <Text>메뉴 등록</Text>
+              </StButton>
+              {
+                isResist
+                ? (<Text>등록 완료! 이어서 사이즈와 추가사항을 넣어주세요!</Text>)
+                : (<Text>메뉴 등록 먼저!</Text>)
+              }
+            </View>
+          </Col>
 
-        <Col>
-          <Text>사이즈랑 엑스트라 올 곳</Text>
-          <Text>사이즈 등록</Text>
-          <Row>
-            {menuSizeName.map((sName, index) => (
-              <ColSize key={index} style={{ backgroundColor: isMenuResist[index] ? '#ff7f00':'#cacaca' }}>
-                <Pressable onPress={() => resistSize(index+1, menuSizePrice[index])}>
-                  <Text>{sName}</Text>
-                </Pressable>
-              </ColSize>
-            ))}
-          </Row>
-          <Text>메뉴 추가 사항 등록</Text>
-          <Text>추가사항 명</Text>
-          <TextInput 
-            value={extraName}
-            onChangeText={setExtraName}
-            style={{ borderColor:'black', borderWidth:2 }}
-          />
-          <Text>{extraName}</Text>
-          <Text>추가사항 가격</Text>
-          <TextInput 
-            value={extraPrice}
-            onChangeText={setExtraPrice}
-            style={{ borderColor:'black', borderWidth:2 }}
-          />
-          <Text>{extraPrice}</Text>
-          <Button title="추가사항등록" onPress={() => resistExtra()} />
-          {extraList.map((extrainfo, index) => (
-            <Text key={index}>{extrainfo.name} : {extrainfo.price}</Text>
-          ))}
-        </Col>
+          <Col>
+            <InputLabel>사이즈 등록</InputLabel>
+            <RowCategory>
+              {menuSizeName.map((sName, index) => (
+                <ColSize key={index} style={{ borderColor: isMenuResist[index] ? '#ff7f00':'#cacaca' }}>
+                  <SizeButton onPress={() => resistSize(index+1, menuSizePrice[index])}>
+                    <Text>{sName}</Text>
+                  </SizeButton>
+                </ColSize>
+              ))}
+            </RowCategory>
+            <InputLabel>메뉴 추가 사항 등록</InputLabel>
+            <InputLabelSub> - 추가사항 명</InputLabelSub>
+            <InputInfo 
+              value={extraName}
+              onChangeText={setExtraName}
+              style={{ borderColor:'black', borderWidth:1 }}
+            />
+            <InputLabelSub> - 추가사항 가격</InputLabelSub>
+            <InputInfo 
+              value={extraPrice}
+              onChangeText={setExtraPrice}
+              style={{ borderColor:'black', borderWidth:1 }}
+            />
+            <View style={{ alignItems: 'center' }}>
+              <StButton onPress={() => resistExtra()}>
+                <Text>추가사항 등록</Text>
+              </StButton>
+              {extraList.map((extrainfo, index) => (
+                <Text style={{margin:10}} key={index}>추가사항 : {extrainfo.name}, 가격 : {extrainfo.price}</Text>
+              ))}
+            </View>
+          </Col>
 
-      </Row>
-      
-      {/* <Button
-        onPress={() => navigation.navigate('TabDone')}
-        title="Go to TabDone"
-      /> */}
-    </CreateMenuView>
+        </Row>
+        
+        {/* <Button
+          onPress={() => navigation.navigate('TabDone')}
+          title="Go to TabDone"
+        /> */}
+      </CreateMenuView>
+    </ScrollView>
   );
 };
 
