@@ -55,4 +55,18 @@ public class MenuNSizeNExtraResponseDto {
                 .build();
     }
 
+    public static MenuNSizeNExtraResponseDto entityToDto(Menu menu) {
+        return MenuNSizeNExtraResponseDto.builder()
+                .id(menu.getId())
+                .shop(new ShopSimpleResponseDto(menu.getShop()))
+                .extraList(ExtraListResponseDto.of(menu.getExtraList()))
+                .menuSizeList(MenuSizeListResponseDto.of(menu.getMenuSizeList()))
+                .name(menu.getName())
+                .imgUrl(menu.getImgUrl())
+                .price(menu.getPrice())
+                .isSignature(menu.isSignature())
+                .menuStatus(menu.getMenuStatus())
+                .build();
+    }
+
 }

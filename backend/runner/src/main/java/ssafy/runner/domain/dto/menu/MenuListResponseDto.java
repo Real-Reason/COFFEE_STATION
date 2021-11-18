@@ -13,13 +13,12 @@ import java.util.List;
 @Getter @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class MenuListResponseDto {
-    List<MenuResponseDto> menuList = new ArrayList<>();
-
+    List<MenuNSizeNExtraResponseDto> menuList = new ArrayList<>();
 
     public static MenuListResponseDto of(List<Menu> menuList) {
         MenuListResponseDto menuListResponseDto = new MenuListResponseDto();
         menuList.forEach(m -> {
-            menuListResponseDto.getMenuList().add(MenuResponseDto.of(m));
+            menuListResponseDto.getMenuList().add(MenuNSizeNExtraResponseDto.entityToDto(m));
         });
         return menuListResponseDto;
     }
