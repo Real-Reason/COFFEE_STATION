@@ -14,7 +14,7 @@ import { AuthContext } from '../App';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const StPressable = styled.Pressable`
+const StPressable = styled.TouchableOpacity`
   background: white;
   margin-bottom: 5px;
   border-radius: 5px;
@@ -177,10 +177,11 @@ const MainTab = ({navigation}) => {
 const CustomTabBarButton = ({ children, onPress }) => {
   return(
   <Pressable onPress={onPress} style={{marginTop:5 }}>
-    <View style={{ alignItems: 'center', marginRight:18, marginLeft:10 }}>
+    <View style={{ alignItems: 'center', marginRight: 18, marginLeft: 10}}>
       <Image 
         source={require('../assets/icons/menu-dots.png')}
         style={{
+          alignSelf: 'center',
           width:23,
           height:23
         }}
@@ -243,7 +244,10 @@ const Main = ({navigation}) => {
         options = {{
           headerTitle: () => <StText></StText>,
           headerRight: () => (
-            <StPressable onPress={() => navigation.navigate('Search')}>
+            <StPressable 
+              style={{  width: 60 }}
+              onPress={() => navigation.navigate('Search')}
+            >
               <Image 
                 source={require('../assets/icons/search-inactive.png')}
                 style={{
