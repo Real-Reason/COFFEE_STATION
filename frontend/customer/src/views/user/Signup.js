@@ -55,7 +55,7 @@ const Signup = ({ navigation }) => {
         data
       );
       console.log(response.data);
-      // navigation.navigate('SignInScreen');
+      navigation.navigate('SignInScreen');
     }
     catch (e) {
       console.log('회원가입 실패')

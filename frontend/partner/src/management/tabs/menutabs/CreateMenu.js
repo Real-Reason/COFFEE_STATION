@@ -114,7 +114,7 @@ const CreateMenu = ({navigation}) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [categoryId, setCategoryId] = useState(1);
-  const [imgUrl, setImgUrl] = useState('https://reactnative.dev/img/tiny_logo.png');
+  const [imgUrl, setImgUrl] = useState('https://cdn.discordapp.com/attachments/880707219098853400/910884675751407646/image_6.png');
   const [signiture, setSigniture] = useState(false);
   const [menuImage, setMenuImage] = useState();
   const [isResist, setIsResist] = useState(false);
@@ -299,16 +299,16 @@ const CreateMenu = ({navigation}) => {
             />
             <InputLabel>메뉴 이미지 등록</InputLabel>
             <Pressable
-              style={{height: 200, width: 200, backgroundColor: '#ffffff', alignItems: 'center'}}
+              style={{marginLeft:10, height: 200, width: 200, backgroundColor: '#ffffff', alignItems: 'flex-start'}}
               onPress={() => setImage()}
             >
               <Image 
-                style={{height: 180, width: 180}}
+                style={{height: 140, width: 140, marginTop: 10, marginBottom: 5}}
                 source={{uri: imgUrl}}
               />
               <SubText>클릭 시 이미지 업로드</SubText>
             </Pressable>
-            <InputLabel>메뉴 카테고리 등록</InputLabel>
+            <InputLabel style={{marginTop: 10}}>메뉴 카테고리 등록</InputLabel>
             <RowCategory>
               {categoryIdName.map((cName, index) => (
                 <ColCategory key={index} style={{ borderColor: index+1 == categoryId ? '#ff7f00':'#cacaca' }}>
