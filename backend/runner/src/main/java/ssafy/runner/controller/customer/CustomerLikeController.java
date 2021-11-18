@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.customer.Like.LikeMenuListResponseDto;
+import ssafy.runner.domain.dto.customer.Like.LikeMenuResponseDto;
 import ssafy.runner.domain.dto.customer.Like.LikeShopListResponseDto;
+import ssafy.runner.domain.dto.customer.Like.LikeShopResponseDto;
 import ssafy.runner.domain.enums.UserType;
 import ssafy.runner.service.CustomerMenuService;
 import ssafy.runner.service.CustomerShopService;
@@ -27,46 +29,46 @@ public class CustomerLikeController {
 
     @PostMapping("/shop/{shopId}")
     @ApiOperation(value = "가게 즐겨찾기 등록")
-    public ResponseEntity likeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
+    public ResponseEntity<LikeShopResponseDto> likeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
 
         String email = checkPrincipalReturnEmail(authentication);
         System.out.println("email = " + email);
-        customerShopService.likeShop(shopId, email);
+        LikeShopResponseDto likeShopResponseDto = customerShopService.likeShop(shopId, email);
 
-        return new ResponseEntity<>("가게 좋아요 등록 성공", HttpStatus.CREATED);
+        return new ResponseEntity<>(likeShopResponseDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/shop/{shopId}")
     @ApiOperation(value = "가게 즐겨찾기 취소")
-    public ResponseEntity unLikeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
+    public ResponseEntity<Long> unLikeShop(Authentication authentication, @PathVariable("shopId") Long shopId) {
 
         String email = checkPrincipalReturnEmail(authentication);
         System.out.println("email = " + email);
         customerShopService.unLikeShop(shopId, email);
 
-        return new ResponseEntity<>("가게 좋아요 취소 성공", HttpStatus.CREATED);
+        return new ResponseEntity<>(shopId, HttpStatus.CREATED);
     }
 
     @PostMapping("/menu/{menuId}")
     @ApiOperation(value = "메뉴 즐겨찾기 등록")
-    public ResponseEntity likeMenu(Authentication authentication,
-                                   @PathVariable("menuId") Long menuId) {
+    public ResponseEntity<LikeMenuResponseDto> likeMenu(Authentication authentication,
+                                                        @PathVariable("menuId") Long menuId) {
 
         String email = checkPrincipalReturnEmail(authentication);
-        customerMenuService.likeMenu(menuId, email);
+        LikeMenuResponseDto likeMenuResponseDto = customerMenuService.likeMenu(menuId, email);
 
-        return new ResponseEntity<>("메뉴 좋아요 등록 성공", HttpStatus.CREATED);
+        return new ResponseEntity<>(likeMenuResponseDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/menu/{menuId}")
     @ApiOperation(value = "메뉴 즐겨찾기 취소")
-    public ResponseEntity unLikeMenu(Authentication authentication,
+    public ResponseEntity<Long> unLikeMenu(Authentication authentication,
                                    @PathVariable("menuId") Long menuId) {
 
         String email = checkPrincipalReturnEmail(authentication);
         customerMenuService.unLikeMenu(menuId, email);
 
-        return new ResponseEntity<>("메뉴 좋아요 취소 성공", HttpStatus.CREATED);
+        return new ResponseEntity<>(menuId, HttpStatus.CREATED);
     }
 
 

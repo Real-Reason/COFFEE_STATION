@@ -27,20 +27,22 @@ public class CustomerShopService {
     private final CustomerRepository customerRepository;
 
     @Transactional
-    public void likeShop(Long shopId, String email) {
+    public LikeShopResponseDto likeShop(Long shopId, String email) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(NoSuchElementException::new);
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         CustomerShop customerShop = new CustomerShop(shop, customer);
 
         customerShopRepository.save(customerShop);
+        return LikeShopResponseDto.of(customerShop);
     }
 
     @Transactional
-    public void unLikeShop(Long shopId, String email) {
+    public Long unLikeShop(Long shopId, String email) {
 
         Customer customer = customerRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         customerShopRepository.unLikeShop(customer.getId(), shopId);
+        return shopId;
     }
 
     public LikeShopListResponseDto getLikeShopList(String email) {
