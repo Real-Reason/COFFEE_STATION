@@ -70,7 +70,11 @@ const ManageMenu = ({navigation}) => {
     try {
       const response = await axios.get(BASE_URL + '/menu');
       setMenu(response.data.menuList);
-      selecteMenu(response.data.menuList[0]);
+      // console.log(response.data.menuList[0]);
+      // 만약 데이터 메뉴 리스트가 빈 배열이라면
+      if (response.data.menuList.length !== 0) {
+        selecteMenu(response.data.menuList[0]);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -119,20 +123,26 @@ const ManageMenu = ({navigation}) => {
         />
         <Text>{selectedMenu.name}</Text>
         <Text>{selectedMenu.price}원</Text>
-        {sizeList.map((size, index) => (
-          <View key={index}>
-            <Text>사이즈정보</Text>
-            <Text>{size.menuSizeName}</Text>
-            <Text>{size.price}원</Text>
-          </View>
-        ))}
-        {extraList.map((extra, index) => (
-          <View key={index}>
-            <Text>엑스트라 정보</Text>
-            <Text>{extra.name}</Text>
-            <Text>{extra.price}원</Text>
-          </View>
-        ))}
+        {sizeList.length !== 0 ? (
+          <>
+            {sizeList.map((size, index) => (
+              <View key={index}>
+                <Text>사이즈정보</Text>
+                <Text>{size.menuSizeName}</Text>
+                <Text>{size.price}원</Text>
+              </View>
+            ))}
+            {extraList.map((extra, index) => (
+              <View key={index}>
+                <Text>엑스트라 정보</Text>
+                <Text>{extra.name}</Text>
+                <Text>{extra.price}원</Text>
+              </View>
+            ))}
+          </>
+        ) : (
+          <Text>메뉴 정보가 없습니다.</Text>
+        )}
       </ColumnContainer>
     </Container>
   );
