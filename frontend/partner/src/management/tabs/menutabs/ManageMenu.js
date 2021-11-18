@@ -18,17 +18,18 @@ const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 const Container = styled.View`
   flex-direction: row;
   flex: 1;
-  background-color: #ffffff;
 `;
 const TopContainer = styled.View`
   flex-direction: row;
-  margin: 20px;
+  margin: 10px;
+  padding: 10px;
   justify-content: space-between;
+  background-color: white;
 `;
-const ColumnContainer = styled.View`
+const ColumnContainer = styled.ScrollView`
   flex-direction: column;
   flex: 1;
-  padding: 50px;
+  padding: 20px;
 `;
 const HeadButtonBox = styled.View`
   flex-direction: row;
@@ -55,8 +56,10 @@ const SubText = styled.Text`
   font-size: 15px;
   margin-left: 10px;
 `
-const InfoBox = styled.View`
-  margin-left: 20px;
+const WhiteBox = styled.View`
+  margin: 10px;
+  padding: 20px;
+  background-color: white;
 `
 const Row = styled.View`
   flex-direction: row;
@@ -74,6 +77,10 @@ const StText = styled.Text`
   padding: 10px;
   font-size: 20px;
   font-family: "InfinitySans-Bold";
+`
+const InsideText = styled.Text`
+  margin: 10px;
+  font-family: "InfinitySansR";
 `
 
 
@@ -173,41 +180,46 @@ const ManageMenu = ({navigation}) => {
             </HeadButton>
           </HeadButtonBox>
         </TopContainer>
-        <InfoBox>
-          <View style={{alignItems:'center'}}>
-            <Image
-              style={{height: 200, width: 200}}
-              source={{uri: selectedMenu.imgUrl}}
-            />
-            <HeadButtonText>{selectedMenu.name}</HeadButtonText>
-            <HeadButtonText>{selectedMenu.price}원</HeadButtonText>
-          </View>
 
-          {sizeList.length !== 0 ? (
-            <>
-              <SubText> - 사이즈정보</SubText>
+        <WhiteBox style={{alignItems:'center'}}>
+          <Image
+            style={{height: 200, width: 200}}
+            source={{uri: selectedMenu.imgUrl}}
+          />
+          <HeadButtonText>{selectedMenu.name}</HeadButtonText>
+          <HeadButtonText>{selectedMenu.price}원</HeadButtonText>
+        </WhiteBox>
+
+        {sizeList.length !== 0 ? (
+          <>
+            <WhiteBox>
+              <SubText> - 사이즈 목록</SubText>
               <Row>
                 {sizeList.map((size, index) => (
                   <ColSize key={index}>
-                    <Text>{size.menuSizeName}</Text>
-                    <Text>{size.price}원</Text>
+                    <InsideText>{size.menuSizeName}</InsideText>
+                    <InsideText>{size.price}원</InsideText>
                   </ColSize>
                 ))}
               </Row>
-              <SubText> - 엑스트라 정보</SubText>
+            </WhiteBox>
+            <WhiteBox>
+              <SubText> - 추가 사항 목록</SubText>
               <Row>
               {extraList.map((extra, index) => (
                 <ColSize key={index}>
-                  <Text>{extra.name}</Text>
-                  <Text>{extra.price}원</Text>
+                  <InsideText>{extra.name}</InsideText>
+                  <InsideText>{extra.price}원</InsideText>
                 </ColSize>
               ))}
               </Row>
-            </>
-          ) : (
-            <Text>메뉴 정보가 없습니다.</Text>
-          )}
-        </InfoBox>
+            </WhiteBox>
+          </>
+        ) : (
+          <WhiteBox>
+            <InsideText>메뉴 정보가 없습니다.</InsideText>
+          </WhiteBox>
+        )}
       </ColumnContainer>
     </Container>
   );
