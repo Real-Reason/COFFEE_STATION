@@ -3,6 +3,8 @@ package ssafy.runner.controller.partner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssafy.runner.domain.dto.ResultResponseDto;
@@ -112,6 +114,23 @@ public class MenuController {
         if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new IllegalStateException("점주가 아니면 메뉴를 생성할 수 없습니다.");
 
         return menuSizeService.updateMenuSize(principal.getEmail(), requestDto.getMenuSizeId(), menuId, requestDto.getSizeId(), requestDto.getPrice());
+    }
+
+    @DeleteMapping("/{menuId}/size/{sizeId}")
+    @ApiOperation(value = "메뉴 사이즈 삭제")
+    public ResponseEntity<String> removeMenuSize(Authentication authentication,
+                                         @PathVariable("menuId") Long menuId,
+                                         @PathVariable("sizeId") Long sizeId) {
+        CustomPrincipal principal = (CustomPrincipal) authentication.getPrincipal();
+        if (principal.getRole().equals(UserType.CUSTOMER.toString()))throw new IllegalStateException("점주가 아니면 메뉴를 생성할 수 없습니다.");
+
+        String message = menuSizeService.deleteMenuSize(principal.getEmail(), menuId, sizeId);
+        if (message.equals("삭제 완료")){
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/{menuId}/status")

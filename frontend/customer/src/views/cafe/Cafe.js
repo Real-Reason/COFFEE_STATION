@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { SliderBox } from 'react-native-image-slider-box';
+import {Linking} from 'react-native'
 // import CafeMenuTab from './CafeMenuTab';
 // import CafeIntroTab from './CafeIntroTab'
 
@@ -15,19 +16,18 @@ const StCafeImg = styled.Image`
 `
 
 const MenuImage = styled.Image`
-  align-items: center;
   margin: 5px;
-  width: 80px;
-  height: 60px;
-  border-radius: 5px;
+  width: 70px;
+  height: 70px;
+  border-radius: 40px;
 `
 
 const StCafeTitle = styled.View`
+  align-self: center;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-  margin-left: 15%;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 70%;
   height: 18%;
   background-color: white;
@@ -60,9 +60,11 @@ const Row3 = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 5px;
-  width: 86%;
+  width: 90%;
   background-color: white;
-
+  padding:10px;
+  align-items: center;
+  border: #cacaca 0.5px;
   /* border: 1px;
   border-color: red; */
 `
@@ -89,12 +91,12 @@ const Col2 = styled.View`
 
 const Col3 = styled.View`
   flex-direction: column;
-  justify-content: ${props => props.img ? "center" : "space-evenly"};
-  align-items: ${props => props.img ? "center" : "flex-start"};
+  /* justify-content: ${props => props.img ? "flex-end" : "flex-start"}; */
+  align-items: ${props => props.img ? "flex-end" : "flex-start"};
   margin-left: 5px;
   margin-right: 5px;
   width: ${props => props.img ? "30%" : "50%"};
-
+  padding-left: 50px;
   /* border: 1px;
   border-color: red; */
 `
@@ -121,6 +123,7 @@ const StCafeTitleItem = styled.Text`
 const StTab = styled.View`
   justify-content: center;
   align-items: center;
+  background-color: white;
   /* border: 1px; */
 `
 const StIntroView = styled.View`
@@ -136,7 +139,7 @@ const StIntro = styled.Text`
   margin-bottom: ${props => props.title ? "3px": "0px"};
   padding: 3px;
   font-family: ${props => props.title ? "InfinitySans-Bold": "InfinitySansR"};
-  font-size: ${props => props.title ? "15px": "12px"};
+  font-size: ${props => props.title ? "15px": "15px"};
   color: black;
 `
 
@@ -210,7 +213,7 @@ const Cafe = ({ navigation, route }) => {
 
   function CafeMenuTab() {
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: 'white'}}>
         <StTab>
           {cafeMenus.map((cafeMenu, index) => (
             // === 메뉴별 Row =====
@@ -287,7 +290,9 @@ const Cafe = ({ navigation, route }) => {
             </StCafeTitleName>
             <Row1>
               <Row4>
+                <TouchableOpacity onPress={()=>Linking.openURL(`tel:${cafeDetail.phone_number}`)}>
                 <Image source={require('../../assets/icons/call.png')} style={{width: 24, height: 24}}></Image>
+                </TouchableOpacity>
                 <StCafeTitleItem>전화</StCafeTitleItem>
               </Row4>
               <Row4>
@@ -305,7 +310,10 @@ const Cafe = ({ navigation, route }) => {
         
           {/* 메뉴/가게소개 Tab 및 스크롤 */}
           <Col2>
-            <Tab.Navigator>
+            <Tab.Navigator
+              screenOptions={{
+                tabBarPressColor: '#e91e63',
+              }}>
               <Tab.Screen name="메뉴" component={CafeMenuTab}></Tab.Screen>
               <Tab.Screen name="가게소개" component={CafeIntroTab}></Tab.Screen>
             </Tab.Navigator>

@@ -73,7 +73,7 @@ const StMenuStatusText = styled.Text`
 const StMenuStatus = styled.View`
   padding: 5px;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 20px;
   background-color: orange;
 `
 

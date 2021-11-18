@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.runner.domain.dto.menu.MenuSizeResponseDto;
 import ssafy.runner.domain.entity.*;
-import ssafy.runner.domain.repository.MenuRepository;
-import ssafy.runner.domain.repository.MenuSizeRepository;
-import ssafy.runner.domain.repository.PartnerRepository;
-import ssafy.runner.domain.repository.SizeRepository;
+import ssafy.runner.domain.repository.*;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -21,6 +19,7 @@ public class MenuSizeService {
     private final MenuRepository menuRepository;
     private final SizeRepository sizeRepository;
     private final MenuSizeRepository menuSizeRepository;
+    private final ShopRepository shopRepository;
 
     @Transactional
     public MenuSizeResponseDto createMenuSize(String email, Long menuId, Long sizeId, int price) {
@@ -47,5 +46,17 @@ public class MenuSizeService {
         MenuSize menuSize = optionalMenuSize.get();
         menuSize.changeMenuSize(optionalMenu.get(), optionalSize.get(), price);
         return MenuSizeResponseDto.of(menuSize);
+    }
+
+    @Transactional
+    public String deleteMenuSize(String email, Long menuId, Long sizeId) {
+        Shop shop = shopRepository.findShopByEmail(email).orElseThrow(NoSuchElementException::new);
+        Menu menu = menuRepository.findById(menuId).orElseThrow(NoSuchElementException::new);
+        if (shop == menu.getShop()){
+            MenuSize menuSize = menuSizeRepository.findByMenuAndSize(menuId, sizeId).orElseThrow(NoSuchElementException::new);
+            menuSizeRepository.delete(menuSize);
+            return "삭제 완료";
+        }
+        return "왜 남의 사이즈를 삭제하려고 하시나요!";
     }
 }
