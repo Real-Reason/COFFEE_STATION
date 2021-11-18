@@ -7,6 +7,25 @@ import Geocoder from 'react-native-geocoding';
 
 const baseURL = 'http://3.38.99.110:8080/api/partner';
 
+const Row = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin: 10px;
+  width: 100%;
+
+  /* border: 1px;
+  border-color: red; */
+`
+const Col1 = styled.View`
+  flex-direction: column;
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+
+  /* border: 1px;
+  border-color: orange; */
+`
+
 const Container = styled.View`
   justify-content: center;
   /* align-items: center; */
@@ -18,15 +37,29 @@ const StyledInput = styled.TextInput`
   width: 200px;
   font-size: 24px;
 `;
+
 const StyledText = styled.Text`
-  font-size: 24px;
+  text-align: ${props => props.btn ? "center" : "left"};
   padding: 10px;
-  margin: 10px 0;
+  font-size: ${props => props.btn ? "20px" : "24px"};
+  font-family: ${props => props.btn ?"InfinitySansR" : "InfinitySans-Bold"};
+  color: ${props => props.btn ? "white" : "black"};
+  /* margin: 10px 0; */
 `;
+
+const StBtnView = styled.TouchableOpacity`
+  /* justify-content: center; */
+  width: ${props => props.next ? "95%" : "10%"};
+  height: ${props => props.next ? "8%" : "70%"};
+  border-radius: 10px;
+  background-color: #FF7F00;
+`
+
 const StyledBtn = styled.Button`
   font-size: 18px;
   margin: 10px 0;
 `;
+
 // custom
 const RegisterBtn = styled(StyledBtn)`
   border-width: 0;
@@ -91,58 +124,65 @@ const AuthUser = ({navigation}) => {
   };
   return (
     <Container>
-      <StyledText>사업자 등록번호</StyledText>
-      <StyledInput
-        value={b_no}
-        onChangeText={setb_no}
-        ref={refb_no}
-        returnKeyType="next"
-        onSubmitEditing={() => refShopName.current.focus()}
-      />
-      <StyledBtn title="사업자 확인" onPress={() => validateBuis({b_no})} />
-      <StyledText>상호</StyledText>
-      <StyledInput
-        value={shopName}
-        onChangeText={setShopName}
-        ref={refShopName}
-        returnKeyType="done"
-      />
-      <StyledText>사업장 소재지</StyledText>
-      <TouchableOpacity
-        style={{backgroundColor: '#DDDDDD', width: '42%'}}
-        onPressIn={() => setModal(true)}>
-        <StyledInput placeholder="우편번호" value={zoncode} editable={false} />
-        <Modal visible={isModal}>
-          <Postcode
-            style={{flex: 1}}
-            jsOptions={{
-              animation: true,
-              animationType: 'slide',
-              hideMapBtn: true,
-            }}
-            onSelected={data => {
-              // 여기서 setData로 넘겨줘야 할 듯
-              setZoncode(data.zonecode);
-              setAddress(data.address);
-              // alert(JSON.stringify(data));
-              setXY(data.address);
-              setModal(false);
-            }}
-          />
-        </Modal>
-        <AddressInput placeholder="주소" value={address} editable={false} />
-      </TouchableOpacity>
-      <AddressInput
-        placeholder="상세주소"
-        value={detailAddress}
-        onChangeText={setDetailAddress}
-      />
-      <RegisterBtn
-        // 1. 사업자 등록번호
-        // 2. 상호
-        // 3. 사업장 소재지(우편번호, 주소, 상세주소)
-        // 4. x,y 좌표
-        title="다음"
+      <Col1>
+        <StyledText>사업자 등록번호</StyledText>
+        <Row>
+            <StyledInput
+              value={b_no}
+              onChangeText={setb_no}
+              ref={refb_no}
+              returnKeyType="next"
+              onSubmitEditing={() => refShopName.current.focus()}
+            />
+            <StBtnView onPress={() => validateBuis({b_no})}>
+              <StyledText btn>사업자 확인</StyledText>
+            </StBtnView>
+        </Row>
+      </Col1>
+
+      <Col1>
+        <StyledText>상호</StyledText>
+        <StyledInput
+          value={shopName}
+          onChangeText={setShopName}
+          ref={refShopName}
+          returnKeyType="done"
+        />
+      </Col1>
+
+      <Col1>
+        <StyledText>사업장 소재지</StyledText>
+        <TouchableOpacity
+          style={{backgroundColor: '#DDDDDD', width: '42%'}}
+          onPressIn={() => setModal(true)}>
+          <StyledInput placeholder="우편번호" value={zoncode} editable={false} />
+          <Modal visible={isModal}>
+            <Postcode
+              style={{flex: 1}}
+              jsOptions={{
+                animation: true,
+                animationType: 'slide',
+                hideMapBtn: true,
+              }}
+              onSelected={data => {
+                // 여기서 setData로 넘겨줘야 할 듯
+                setZoncode(data.zonecode);
+                setAddress(data.address);
+                // alert(JSON.stringify(data));
+                setXY(data.address);
+                setModal(false);
+              }}
+            />
+          </Modal>
+          <AddressInput placeholder="주소" value={address} editable={false} />
+        </TouchableOpacity>
+        <AddressInput
+          placeholder="상세주소"
+          value={detailAddress}
+          onChangeText={setDetailAddress}
+        />
+      </Col1>
+      <StBtnView next style={{marginLeft: "2.5%"}}
         onPress={() =>
           isValidated
             ? shopName != ''
@@ -163,7 +203,17 @@ const AuthUser = ({navigation}) => {
                 : alert('주소는 빈 값일수 없습니다.')
               : alert('상호는 빈 값일수 없습니다')
             : alert('사업자 검증을 완료해주세요.')
-        }></RegisterBtn>
+        }>
+        <StyledText btn> 다음 </StyledText>
+      </StBtnView>
+
+      
+      {/* <RegisterBtn
+        // 1. 사업자 등록번호
+        // 2. 상호
+        // 3. 사업장 소재지(우편번호, 주소, 상세주소)
+        // 4. x,y 좌표
+        title="다음"></RegisterBtn> */}
     </Container>
   );
 };

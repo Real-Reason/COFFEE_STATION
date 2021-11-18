@@ -64,6 +64,18 @@ Number.prototype.zf = function (len) {
   return this.toString().zf(len);
 };
 
+const Col1 = styled.View`
+  flex-direction: column;
+  background-color: white;
+  padding: 15px;
+  margin: 5px;
+
+  border-radius: 5px;
+
+  /* border: 1px;
+  border-color: orange; */
+`
+
 const MainContainer = styled.View`
   flex-direction: row;
 `;
@@ -76,22 +88,34 @@ const TimeContainer = styled(MainContainer)`
   justify-content: flex-start;
 `;
 const StyledInput = styled.TextInput`
-  border: 1px solid #111111;
   padding: 10px;
   margin: 10px 10px;
   width: 500px;
   height: 50px;
   font-size: 18px;
+
+  border: 1px;
+  border-radius: 10px;
+  border-color: #cacaca;
 `;
 const StyledText = styled.Text`
-  font-size: 18px;
+  text-align: ${props => props.btn ? "center" : "left"};
   padding: 10px;
-  margin: 10px 0;
+  font-size: ${props => props.btn ? "16px" : "20px"};
+  font-family: ${props => props.btn ?"InfinitySansR" : "InfinitySans-Bold"};
+  color: ${props => props.btn ? "white" : "black"};
 `;
 const StyledBtn = styled.Button`
   font-size: 18px;
   margin: 10px 0;
 `;
+
+const StBtnView = styled.TouchableOpacity`
+  /* justify-content: center; */
+  width: 100%;
+  border-radius: 5px;
+  background-color: #FF7F00;
+`
 
 const RegiStore = ({route, navigation}) => {
   // Authcontext
@@ -146,91 +170,106 @@ const RegiStore = ({route, navigation}) => {
 
   return (
     <MainContainer>
+      {/* <Text>가게등록</Text> */}
       <Container>
-        <StyledText>로고 사진등록</StyledText>
-        <StyledText>이미지 인풋자리</StyledText>
-        <StyledText>가게명</StyledText>
-        <StyledInput value={shopName} editable={false} />
-        <StyledText>가게소개</StyledText>
-        <StyledInput
-          style={{height: 150}}
-          value={intro}
-          ref={refIntro}
-          onChangeText={setIntro}
-          returnKeyType="next"
-          onSubmitEditing={() => refInstagram.current.focus()}
-        />
-        <StyledText>Instagram</StyledText>
-        <StyledInput
-          value={instagram}
-          ref={refInstagram}
-          onChangeText={setInstagram}
-          returnKeyType="next"
-          onSubmitEditing={() => refPhoneNumber.current.focus()}
-        />
+        <Col1>
+          <StyledText>로고 사진등록</StyledText>
+          <StyledText>이미지 인풋자리</StyledText>
+        </Col1>
+        <Col1>
+          <StyledText>가게명</StyledText>
+          <StyledInput value={shopName} editable={false} />
+        </Col1>
+        <Col1>
+          <StyledText>가게소개</StyledText>
+          <StyledInput
+            style={{height: 150}}
+            value={intro}
+            ref={refIntro}
+            onChangeText={setIntro}
+            returnKeyType="next"
+            onSubmitEditing={() => refInstagram.current.focus()}
+          />
+        </Col1>
+        <Col1>
+          <StyledText>Instagram</StyledText>
+          <StyledInput
+            value={instagram}
+            ref={refInstagram}
+            onChangeText={setInstagram}
+            returnKeyType="next"
+            onSubmitEditing={() => refPhoneNumber.current.focus()}
+          />
+        </Col1>
       </Container>
       <Container>
-        <StyledText>가게 전화번호</StyledText>
-        <StyledInput
-          value={phoneNumber}
-          ref={refPhoneNumber}
-          onChangeText={setPhoneNumber}
-          returnKeyType="done"
-        />
-        {/* 운영시간 */}
-        <StyledText>운영시간</StyledText>
-        <TimeContainer>
-          <TouchableOpacity onPress={fromShowTimepicker}>
-            <StyledInput
-              placeholder="from"
-              value={from}
-              editable={false}
-              style={{width: 200}}
-            />
-            {fromShow && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={fromDate}
-                mode="time"
-                is24Hour={true}
-                display="default"
-                onChange={onFromChange}
+        <Col1>
+          <StyledText>가게 전화번호</StyledText>
+          <StyledInput
+            value={phoneNumber}
+            ref={refPhoneNumber}
+            onChangeText={setPhoneNumber}
+            returnKeyType="done"
+          />
+        </Col1>
+        <Col1>
+          <StyledText>운영시간</StyledText>
+          <TimeContainer>
+            <TouchableOpacity onPress={fromShowTimepicker}>
+              <StyledInput
+                placeholder="from"
+                value={from}
+                editable={false}
+                style={{width: 200}}
               />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toShowTimepicker}>
-            <StyledInput
-              value={to}
-              onChange={setTo}
-              placeholder="to"
-              editable={false}
-              style={{width: 200}}
-            />
-            {toShow && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={toDate}
-                mode="time"
-                is24Hour={true}
-                display="default"
-                onChange={onToChange}
+              {fromShow && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={fromDate}
+                  mode="time"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onFromChange}
+                />
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toShowTimepicker}>
+              <StyledInput
+                value={to}
+                onChange={setTo}
+                placeholder="to"
+                editable={false}
+                style={{width: 200}}
               />
-            )}
-          </TouchableOpacity>
-        </TimeContainer>
-        <StyledText>운영 상태</StyledText>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={selectedState}
-          onValueChange={(itemValue, itemIndex) => setSelectedState(itemValue)}>
-          <Picker.Item label="OPEN" value="OPEN" />
-          <Picker.Item label="CLOSE" value="CLOSE" />
-          <Picker.Item label="READY" value="READY" />
-        </Picker>
+              {toShow && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={toDate}
+                  mode="time"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onToChange}
+                />
+              )}
+            </TouchableOpacity>
+          </TimeContainer>
+        </Col1>
+        <Col1>
+          {/* 운영시간 */}
+          <StyledText>운영 상태</StyledText>
+          <Picker
+            mode={'dropdown'}
+            selectedValue={selectedState}
+            onValueChange={(itemValue, itemIndex) => setSelectedState(itemValue)}>
+            <Picker.Item label="OPEN" value="OPEN" />
+            <Picker.Item label="CLOSE" value="CLOSE" />
+            <Picker.Item label="READY" value="READY" />
+          </Picker>
+        </Col1>
         {/* address, business_no, close_at, detail_address, instagram */}
         {/* intro, name, open_at, phone_number, status, x, y, zip_code */}
-        <StyledBtn
-          title="가게등록"
+
+        <StBtnView style={{marginTop: 10}}
           onPress={() => {
             registerShop({
               address: generalAddress.address,
@@ -248,7 +287,11 @@ const RegiStore = ({route, navigation}) => {
               zip_code: generalAddress.zoncode,
             });
           }}
-        />
+        >
+          <StyledText btn>
+            가게등록
+          </StyledText>
+        </StBtnView>
       </Container>
     </MainContainer>
   );
