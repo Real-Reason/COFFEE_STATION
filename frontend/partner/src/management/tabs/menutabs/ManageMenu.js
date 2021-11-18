@@ -34,7 +34,7 @@ const Item = ({item, onPress, backgroundColor, textColor}) => (
   </TouchableOpacity>
 );
 
-const ManageMenu = () => {
+const ManageMenu = ({navigation}) => {
   const [menu, setMenu] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [selectedMenu, setSelectedMenu] = useState([]);
@@ -85,7 +85,7 @@ const ManageMenu = () => {
         <Container style={{flex: 0.3}}>
           <Text>메뉴정보</Text>
           <Button title="삭제" />
-          <Button title="추가" />
+          <Button title="추가" onPress={() => navigation.navigate('CreateMenu')} />
         </Container>
         <Text>메뉴정보</Text>
         <Image
