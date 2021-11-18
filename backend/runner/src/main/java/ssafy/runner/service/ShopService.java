@@ -69,7 +69,9 @@ public class ShopService {
         Long shopId = partner.getShop().getId();
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(NoSuchElementException::new);
-        return ShopResDto.entityToDto(shop);
+        List<String> imgUrlList = shopImageRepository.findAllByShopId(shopId);
+
+        return ShopResDto.entityToDto(shop, imgUrlList);
     }
 
     @Transactional
