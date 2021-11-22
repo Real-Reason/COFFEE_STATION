@@ -251,7 +251,7 @@ const Cafe = ({ navigation, route }) => {
               <Row3>
               <MenuImage 
                   style={{ position: 'absolute', left: '5%', top: '0%', marginTop:0, opacity: cafeMenu.menuStatus === 'SOLD_OUT'? 1 : 0 ,
-                  alignSelf:'center', borderRadius: 0, width: 60, height: 60,  }} 
+                  alignSelf:'center', borderRadius: 0, width: 60, height: 60}} 
                   source={require('../../assets/icons/out-of-stock1.png')}/>
                 {/* 메뉴 이름 및 가격 */}
                 <Col3>
@@ -325,20 +325,19 @@ const Cafe = ({ navigation, route }) => {
             </StCafeTitleName>
             <Row1>
               <Row4>
-                <TouchableOpacity onPress={()=>Linking.openURL(`tel:${cafeDetail.phone_number}`)}>
-                <Image source={require('../../assets/icons/call.png')} style={{width: 24, height: 24}}></Image>
+                <TouchableOpacity onPress={()=>Linking.openURL(`tel:${cafeDetail.phone_number}`)} style={{flexDirection : "row", width: "100%", justifyContent: "center", alignItems: "center"}}>
+                  <Image source={require('../../assets/icons/call.png')} style={{width: 24, height: 24}}></Image>
+                  <StCafeTitleItem>전화</StCafeTitleItem>
                 </TouchableOpacity>
-                <StCafeTitleItem>전화</StCafeTitleItem>
               </Row4>
               <Row4>
-                <TouchableOpacity onPress={customerLikeShop ? () => unlikeCafe() : () => likeCafe()}>
+                <TouchableOpacity onPress={customerLikeShop ? () => unlikeCafe() : () => likeCafe()} style={{flexDirection : "row", width: "100%", justifyContent: "center", alignItems: "center"}}>
                   <Image source={customerLikeShop ? require('../../assets/icons/like-active.png') : require('../../assets/icons/like-inactive.png')}
-                   style={{width: 24, height: 24}}
-                   >
+                  style={{width: 24, height: 24}}
+                  >
                   </Image>
+                  <StCafeTitleItem >좋아요</StCafeTitleItem>
                 </TouchableOpacity>
-                
-                <StCafeTitleItem >좋아요</StCafeTitleItem>
               </Row4>
             </Row1>
           </StCafeTitle>
