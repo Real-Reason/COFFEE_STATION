@@ -27,27 +27,37 @@ const DATA = [
 
 const StTouchable = styled.TouchableOpacity`
   margin: 2px;
-`
+`;
 
 const StText = styled.Text`
   padding: 10px;
   /* font-size: 10px; */
-  font-family: "InfinitySans-Bold";
-`
+  font-family: 'InfinitySans-Bold';
+`;
 
-
-const Item = ({item, onPress, backgroundColor, textColor, borderColor }) => {
+const Item = ({item, onPress, backgroundColor, textColor, borderColor}) => {
   return (
-    <StTouchable onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
-      <StText style={[styles.title, textColor]}>{item.orderId}</StText>
+    <StTouchable
+      onPress={onPress}
+      style={[styles.item, backgroundColor, borderColor]}>
+      <StText style={[styles.title, textColor]}>
+        {item.menus[0].menuName} ({item.menus[0].quantity}){' '}
+        {item.menus.length === 1 ? '' : '외 '}
+        {item.menus.length === 1 ? 1 : item.menus.length - 1}건
+      </StText>
     </StTouchable>
   );
 };
 
 const CompletedOrder = ({}) => {
   // const [selectedId, setSelectedId] = useState(null);
-  const {selectedId, setSelectedId, setSelectedOrder, setSelectedOrderMenus, completedOrders} =
-    useContext(TabCompletedContext);
+  const {
+    selectedId,
+    setSelectedId,
+    setSelectedOrder,
+    setSelectedOrderMenus,
+    completedOrders,
+  } = useContext(TabCompletedContext);
 
   const setCompleted = item => {
     setSelectedId(item.orderId);

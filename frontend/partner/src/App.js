@@ -216,6 +216,7 @@ export default function App({navigation}) {
               });
           })
           .catch(function (error) {
+            console.log('와이라노;;');
             console.log(error);
           });
       },

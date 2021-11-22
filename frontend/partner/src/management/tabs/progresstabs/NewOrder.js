@@ -8,51 +8,59 @@ import {
   StatusBar,
 } from 'react-native';
 import {TabProgressContext} from '../TabProgress';
-import {AuthContext} from '../../../App';
 import styled from 'styled-components/native';
 
 const StTouchable = styled.TouchableOpacity`
   margin: 2px;
-`
+`;
 
 const StText = styled.Text`
   padding: 10px;
   /* font-size: 10px; */
-  font-family: "InfinitySans-Bold";
-`
+  font-family: 'InfinitySans-Bold';
+`;
 
 const Item = ({item, onPress, backgroundColor, textColor, borderColor}) => {
   return (
-    <StTouchable onPress={onPress} style={[styles.item, backgroundColor, borderColor]}>
-      <StText style={[styles.title, textColor]}>{item.orderId}</StText>
+    <StTouchable
+      onPress={onPress}
+      style={[styles.item, backgroundColor, borderColor]}>
+      <StText style={[styles.title, textColor]}>
+        {item.menus[0].menuName} ({item.menus[0].quantity}){' '}
+        {item.menus.length === 1 ? '' : '외 '}
+        {item.menus.length === 1 ? 1 : item.menus.length - 1}건
+      </StText>
     </StTouchable>
   );
 };
 
 const NewOrder = ({}) => {
-  const {selectedNewId, setSelectedNewId, setSelectedOrder, paidOrders, setSelectedOrderMenus, selectedOrderMenus} =
-    useContext(TabProgressContext);
-  // const {paidOrders} = useContext(AuthContext);
+  const {
+    selectedNewId,
+    setSelectedNewId,
+    setSelectedOrder,
+    paidOrders,
+    setSelectedOrderMenus,
+  } = useContext(TabProgressContext);
 
   const setNewOrder = item => {
     setSelectedNewId(item.orderId);
     setSelectedOrder(item);
-    setSelectedOrderMenus(item.menus)
-    console.log("================================", selectedOrderMenus)
+    setSelectedOrderMenus(item.menus);
   };
   useEffect(() => {
+    console.log(paidOrders);
     if (paidOrders.length !== 0) {
       setSelectedNewId(paidOrders[0].orderId);
+      // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
       setSelectedOrder(paidOrders[0]);
     }
   }, []);
-
   const renderItem = ({item}) => {
     const backgroundColor =
       item.orderId === selectedNewId ? '#ff7f00' : 'white';
     const color = item.orderId === selectedNewId ? 'white' : 'black';
     const borderColor = item.orderId === selectedNewId ? 'white' : '#ff7f00';
-
 
     return (
       <Item
