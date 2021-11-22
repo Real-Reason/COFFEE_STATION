@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "700340758136",
+    "project_id": "runner-b31dd",
+    "storage_bucket": "runner-b31dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700340758136:android:f2e3fea56228c078c8ef8d",
+        "android_client_info": {
+          "package_name": "com.ssafy.runner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700340758136-ce2kj78sjc5rrae7i0mra539883ek8j9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssafy.runner",
+            "certificate_hash": "b2446ac3c2af9cfb06136de3e33c3380287d7621"
+          }
+        },
+        {
+          "client_id": "700340758136-q478hvh368osj1077lj2esrps1a1pm51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdv5-uViQP7X6PhxfLJmp5i-1Ha9UQe7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700340758136-q478hvh368osj1077lj2esrps1a1pm51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
