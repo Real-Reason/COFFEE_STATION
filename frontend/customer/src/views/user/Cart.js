@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {   RefreshControl, Pressable, Alert, View } from 'react-native';
+import { RefreshControl, Pressable, Alert, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderNow from './OrderNow';
@@ -164,8 +164,16 @@ const Cart = ({ navigation }) => {
     navigation.navigate('MainScreen');
   }
 
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
-      <ScrollContainer>
+      <ScrollContainer
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={getCartList} 
+          />
+        }>
         {
           cartListItems.length > 0
           ?(<View style={{flexDirection: 'row', height: 60 }}>
