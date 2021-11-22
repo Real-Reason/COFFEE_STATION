@@ -1,5 +1,5 @@
 import React, {useEffect, createContext, useState} from 'react';
-import {View, Text, Button, BackHandler} from 'react-native';
+import {View, Text, Button, BackHandler, Alert} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import NewOrder from './progresstabs/NewOrder';
 import OnGoingOrder from './progresstabs/OnGoingOrder';
@@ -162,6 +162,7 @@ const TabProgress = ({navigation}) => {
   // 접수 처리
   const acceptOrder = async () => {
     const data = {status: 'PREPARING'};
+  
     try {
       await axios.patch(
         BASE_URL + `/shop/orders/${selectedOrder.orderId}/status`,
