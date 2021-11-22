@@ -42,7 +42,7 @@ public class Orders {
 
     @NotNull
     @CreatedDate
-    private LocalDateTime date = LocalDateTime.now();
+    private LocalDateTime date = LocalDateTime.now().plusHours(9L);
 
     // DB에 Enum 상수값을 그대로 저장하기 위한 어노테이션
     @Enumerated(EnumType.STRING)
