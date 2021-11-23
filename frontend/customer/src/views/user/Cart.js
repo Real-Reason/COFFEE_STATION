@@ -253,11 +253,17 @@ const CartAndOrder = () => {
         name="Paying" 
         component={Paying} 
         options = {{ title: '결제 중....' }}
+        options={{
+          headerShown: false
+        }}
       />
       <Stack.Screen 
         name="Payend" 
         component={Payend} 
         options = {{ title: '결제 완료!' }}
+        options={{
+          headerShown: false
+        }}
       />
     </Stack.Navigator>
   );
