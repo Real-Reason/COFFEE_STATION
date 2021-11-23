@@ -55,8 +55,10 @@ const OnGoingOrder = ({}) => {
       setSelectedPreparingId(preparingOrders[0].orderId);
       // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
       setSelectedOrder(preparingOrders[0]);
+      // selectedOrderMenus는 NewOrder가 먼저 선택되니까 빼주자
+      // setSelectedOrderMenus(preparingOrders[0].menus);
     }
-  }, []);
+  }, [preparingOrders]);
 
   const renderItem = ({item}) => {
     const backgroundColor =

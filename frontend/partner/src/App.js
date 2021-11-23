@@ -95,7 +95,7 @@ export default function App({navigation}) {
               // TabProgress의 신규 리스트 갱신
               console.log(remoteMessage['data'].orderId);
               // PaidOrderList 갱신
-              updateOrderStatus(remoteMessage['data'].orderId, 'PREPARING');
+              updateOrderStatus(remoteMessage['data'].orderId, 'PAID');
               Alert.alert('주문을 확인해주세요.');
             },
           },
