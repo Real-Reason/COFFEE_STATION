@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Orderdetail from './Orderdetail';
 import { View, RefreshControl } from 'react-native';
+import { MenuToCartContext } from '../Main';
+
 const Stack = createNativeStackNavigator();
 
 const TouchableOpacity = styled.TouchableOpacity`
@@ -94,7 +96,8 @@ const Image = styled.Image`
 `
 const Orderlist = ({ navigation }) => {
 
-  const [myOrderList, setMyOrderList] = useState([]);
+  // const [myOrderList, setMyOrderList] = useState([]);
+  const { myOrderList, setMyOrderList } = useContext(MenuToCartContext);
   
   useEffect(() => {
     getOrder();
@@ -108,6 +111,7 @@ const Orderlist = ({ navigation }) => {
         `${process.env.REACT_APP_BASE_URL}api/customer/orders`, 
         { headers: {"Authorization" : `Bearer ${JWTToken}`} }
       );
+      console.log('========주문리스트임=======');
       console.log(response.data);
       setMyOrderList(response.data);
     } catch (e) {
