@@ -19,12 +19,12 @@ public class CustomerShop {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="shop_id", nullable = false)
     private Shop shop;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
     
