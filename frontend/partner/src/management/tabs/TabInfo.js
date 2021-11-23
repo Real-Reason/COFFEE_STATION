@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, TouchableOpacity} from 'react-native';
+import {View, Text, Button, TouchableOpacity, Pressable } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styled from 'styled-components/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
@@ -65,16 +67,50 @@ const StText = styled.Text`
   color: black;
 `;
 
+const RowStatus = styled.View`
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+const StateButton = styled.Pressable`
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px;
+  margin-bottom: 5px;
+  align-items: center;
+  justify-content: center;
+  `
+
 const TabInfo = ({navigation}) => {
   const [shopInfo, setShopInfo] = useState([]);
   const [shopImageList, setShopImageList] = useState([]);
+
+  const [shopStateReady, setShopStateReady] = useState(0);
+  const [shopStateOpen, setShopStateOpen] = useState(0);
+  const [shopStateClose, setShopStateClose] = useState(0);
+
   // shopinfo 받아오기
   const getShopInfo = async () => {
     try {
       const response = await axios.get(BASE_URL + '/shop');
       setShopInfo(response.data);
       setShopImageList(response.data.imgUrlList);
-      console.log('요가역여ㅣ기', shopInfo);
+      console.log('==========샵인포==========', response.data);
+      if (response.data.status == 'READY') {
+        setShopStateReady(1);
+        setShopStateOpen(0);
+        setShopStateClose(0);
+      } else if (response.data.status == 'OPEN') {
+        setShopStateReady(0);
+        setShopStateOpen(1);
+        setShopStateClose(0);
+      } else if (response.data.status == 'CLOSE') {
+        setShopStateReady(0);
+        setShopStateOpen(0);
+        setShopStateClose(1);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -125,6 +161,44 @@ const TabInfo = ({navigation}) => {
       console.log(e);
     }
   };
+
+  const changeStatus = async(status)  => {
+    console.log(status);
+    let userToken = await AsyncStorage.getItem('userToken');
+    try {
+      const response = await axios.patch(
+        BASE_URL + `/shop/status`,
+        {status},
+        {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          },
+        },
+      );
+      console.log(response.data);
+      if (response.data) {
+        if (status == 'READY') {
+          setShopStateReady(1);
+          setShopStateOpen(0);
+          setShopStateClose(0);
+          Alert.alert('READY');
+        } else if (status == 'OPEN') {
+          setShopStateReady(0);
+          setShopStateOpen(1);
+          setShopStateClose(0);
+          Alert.alert('가게를 오픈합니다.');
+        } else if (status == 'CLOSE') {
+          setShopStateReady(0);
+          setShopStateOpen(0);
+          setShopStateClose(1);
+          Alert.alert('가게를 닫습니다.');
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     getShopInfo();
   }, []);
@@ -152,6 +226,35 @@ const TabInfo = ({navigation}) => {
             source={require('../../assets/carousel/instagram.png')}></Image>
           <StText title>Instagram : {shopInfo.instagram}</StText>
         </Row>
+        <RowStatus>
+          <StateButton 
+            style={{
+              borderColor: shopStateReady ? '#ffffff':'#ff7f00', 
+              backgroundColor: shopStateReady ? '#ff7f00':'#ffffff' 
+            }}
+            onPress={() => changeStatus('READY')}
+          >
+            <Text style={{color: shopStateReady ? '#ffffff':'#000000'}}>READY</Text>
+          </StateButton>
+          <StateButton
+            style={{
+              borderColor: shopStateOpen ? '#ffffff':'#ff7f00', 
+              backgroundColor: shopStateOpen ? '#ff7f00':'#ffffff' 
+            }}
+            onPress={() => changeStatus('OPEN')}
+          >
+            <Text style={{color: shopStateOpen ? '#ffffff':'#000000'}}>OPEN</Text>
+          </StateButton>
+          <StateButton
+            style={{
+              borderColor: shopStateClose ? '#ffffff':'#ff7f00', 
+              backgroundColor: shopStateClose ? '#ff7f00':'#ffffff'
+            }}
+            onPress={() => changeStatus('CLOSE')}
+          >
+            <Text style={{color: shopStateClose ? '#ffffff':'#000000'}}>CLOSE</Text>
+          </StateButton>
+        </RowStatus>
       </ImageContianer>
 
       <TextContainer>
