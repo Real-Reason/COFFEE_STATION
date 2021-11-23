@@ -134,7 +134,7 @@ const Payend = ({ navigation, route }) => {
   const [myDate, setMyDate] = useState('');
   const [myTime, setMyTime] = useState('');
 
-  const { setIsCart, setCartListItems, setShopName } = useContext(MenuToCartContext);
+  const { setIsCart, setCartListItems, setShopName, myOrderList, setMyOrderList } = useContext(MenuToCartContext);
 
   useEffect(() => {
     console.log(route.params);
@@ -159,6 +159,9 @@ const Payend = ({ navigation, route }) => {
       );
       console.log('주문내역');
       console.log(response.data);
+      let tmpOrderList = myOrderList.slice();
+      tmpOrderList.unshift(response.data);
+      setMyOrderList(tmpOrderList);
       setMyOrderDetail(response.data);
       setmyOrderDetailMenus(response.data.menus);
       setMyDate(response.data.date.slice(0, 10));

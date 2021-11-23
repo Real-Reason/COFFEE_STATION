@@ -108,6 +108,8 @@ const MainTab = ({navigation}) => {
 
   const [likeShopList, setLikeShopList] = useState([]);
   const [likeMenuList, setLikeMenuList] = useState([]);
+
+  const [myOrderList, setMyOrderList] = useState([]);
   
   const value = {
     cartListItems,
@@ -119,7 +121,9 @@ const MainTab = ({navigation}) => {
     likeShopList,
     setLikeShopList,
     likeMenuList,
-    setLikeMenuList
+    setLikeMenuList,
+    myOrderList,
+    setMyOrderList
   }
 
   return (
