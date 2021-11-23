@@ -57,15 +57,15 @@ const Col3 = styled(Col1)`
 
 const StTitle = styled.Text`
   padding: 10px;
-  font-size: 24px;
+  font-size: 28px;
   font-family: 'InfinitySans-Bold';
   color: black;
 `;
 
 const StText = styled.Text`
-  padding: 5px;
+  padding: ${props => props.title ? "10px" : "5px"};
   text-align: ${props => (props.price ? 'right' : 'left')};
-  font-size: ${props => (props.title ? '20px' : props.price ? '17px' : '15px')};
+  font-size: ${props => (props.title ? '24px' : props.price ? '22px' : '20px')};
   font-family: ${props =>
     props.title
       ? 'InfinitySans-Bold'
@@ -86,6 +86,9 @@ const TabCompleted = ({navigation}) => {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [selectedOrderMenus, setSelectedOrderMenus] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
+  const [selectedOrderDate, setSelectedOrderDate] = useState([]);
+  const [selectedOrderTime, setSelectedOrderTime] = useState([]);
+
   const value = {
     selectedId,
     setSelectedId,
@@ -95,6 +98,11 @@ const TabCompleted = ({navigation}) => {
     setSelectedOrderMenus,
     completedOrders,
     setCompletedOrders,
+
+    selectedOrderDate,
+    setSelectedOrderDate,
+    selectedOrderTime,
+    setSelectedOrderTime
   };
 
   const showCompletedOrderList = async () => {
@@ -127,7 +135,7 @@ const TabCompleted = ({navigation}) => {
               <Col3>
                 <StText title>접수 정보</StText>
                 <StText>{selectedOrder.shopName}</StText>
-                <StText>주문시간 : {selectedOrder.date}</StText>
+                <StText>주문시간 : {selectedOrderDate} / {selectedOrderTime}</StText>
               </Col3>
               <Col3>
                 <StText title>요청사항</StText>

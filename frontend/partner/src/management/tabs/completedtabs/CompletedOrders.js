@@ -57,13 +57,27 @@ const CompletedOrder = ({}) => {
     setSelectedOrder,
     setSelectedOrderMenus,
     completedOrders,
+    setSelectedOrderDate,
+    setSelectedOrderTime
   } = useContext(TabCompletedContext);
 
   const setCompleted = item => {
     setSelectedId(item.orderId);
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
+    setSelectedOrderDate(item.date.split('T')[0]);
+    setSelectedOrderTime(item.date.split('T')[1]);
   };
+
+  useEffect(() => {
+    console.log(completedOrders);
+    if (completedOrders.length !== 0) {
+      setSelectedId(completedOrders[0].orderId);
+      setSelectedOrder(completedOrders[0]);
+      setSelectedOrderMenus(completedOrders[0].menus);
+    }
+  }, [completedOrders]);
+
   const renderItem = ({item}) => {
     const backgroundColor = item.orderId === selectedId ? '#ff7f00' : 'white';
     const color = item.orderId === selectedId ? 'white' : 'black';

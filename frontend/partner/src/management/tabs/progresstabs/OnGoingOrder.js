@@ -41,12 +41,16 @@ const OnGoingOrder = ({}) => {
     setSelectedOrder,
     preparingOrders,
     setSelectedOrderMenus,
+    setSelectedOrderDate,
+    setSelectedOrderTime,
   } = useContext(TabProgressContext);
 
   const setPreparingOrder = item => {
     setSelectedPreparingId(item.orderId);
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
+    setSelectedOrderDate(item.date.split('T')[0]);
+    setSelectedOrderTime(item.date.split('T')[1]);
   };
 
   useEffect(() => {
@@ -55,8 +59,10 @@ const OnGoingOrder = ({}) => {
       setSelectedPreparingId(preparingOrders[0].orderId);
       // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
       setSelectedOrder(preparingOrders[0]);
+      // selectedOrderMenus는 NewOrder가 먼저 선택되니까 빼주자
+      // setSelectedOrderMenus(preparingOrders[0].menus);
     }
-  }, []);
+  }, [preparingOrders]);
 
   const renderItem = ({item}) => {
     const backgroundColor =
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
 });
 

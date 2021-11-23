@@ -42,21 +42,25 @@ const NewOrder = ({}) => {
     setSelectedOrder,
     paidOrders,
     setSelectedOrderMenus,
+    setSelectedOrderDate,
+    setSelectedOrderTime
   } = useContext(TabProgressContext);
 
   const setNewOrder = item => {
     setSelectedNewId(item.orderId);
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
+    setSelectedOrderDate(item.date.split('T')[0]);
+    setSelectedOrderTime(item.date.split('T')[1]);
   };
   useEffect(() => {
     console.log(paidOrders);
     if (paidOrders.length !== 0) {
       setSelectedNewId(paidOrders[0].orderId);
-      // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
       setSelectedOrder(paidOrders[0]);
+      setSelectedOrderMenus(paidOrders[0].menus);
     }
-  });
+  }, [paidOrders]);
   const renderItem = ({item}) => {
     const backgroundColor =
       item.orderId === selectedNewId ? '#ff7f00' : 'white';
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
 });
 
