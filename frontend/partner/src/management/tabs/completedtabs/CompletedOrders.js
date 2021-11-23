@@ -85,7 +85,7 @@ const CompletedOrder = ({}) => {
       <FlatList
         data={completedOrders}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.orderId}
         extraData={selectedId}
       />
     </SafeAreaView>
