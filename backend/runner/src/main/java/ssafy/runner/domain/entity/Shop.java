@@ -21,7 +21,7 @@ public class Shop {
     @Column(name = "shop_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // mappedBy가 아님, 영속화를 partner와 맞춰준다
+    @OneToOne(fetch = FetchType.LAZY) // mappedBy가 아님, 영속화를 partner와 맞춰준다
     @JoinColumn(name = "partner_id") // partner의 어떤 필드와 연결시켜줄지 이름을 지정한다
     private Partner partner;
 

@@ -26,7 +26,7 @@ public class Partner {
     private String password;
     private String firebaseToken = "";
 
-    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Shop shop;
 
     @Builder
