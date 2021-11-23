@@ -4,7 +4,7 @@ import {View, Text, Button} from 'react-native';
 import styled from 'styled-components/native';
 import axios from 'axios';
 import CompletedOrder from './completedtabs/CompletedOrders';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
@@ -28,49 +28,53 @@ const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-`
+`;
 
 const Col1 = styled.View`
   flex-direction: column;
   flex: 1;
   padding: 5px;
 
-  border: ${props => props.menu ? "0.5px" : "0px"};
-  border-color: ${props => props.menu ? "#cacaca" : "opacity"};
+  border: ${props => (props.menu ? '0.5px' : '0px')};
+  border-color: ${props => (props.menu ? '#cacaca' : 'opacity')};
 
   /* border: 1px; */
-`
+`;
 
 const Col2 = styled(Col1)`
   width: 50%;
   /* margin: 10px; */
-  
+
   /* border: 1px;
   border-color: green; */
-`
+`;
 
 const Col3 = styled(Col1)`
   margin: 10px;
   height: 50%;
   background-color: white;
-`
+`;
 
 const StTitle = styled.Text`
   padding: 10px;
   font-size: 24px;
-  font-family: "InfinitySans-Bold";
+  font-family: 'InfinitySans-Bold';
   color: black;
-`
+`;
 
 const StText = styled.Text`
   padding: 5px;
-  text-align: ${props => props.price ? "right" : "left"};
-  font-size: ${props => props.title ? "20px" : props.price ? "17px" : "15px"};
-  font-family: ${props => props.title ? "InfinitySans-Bold": props.price ? "InfinitySans-Bold" : "InfinitySansR"};
+  text-align: ${props => (props.price ? 'right' : 'left')};
+  font-size: ${props => (props.title ? '20px' : props.price ? '17px' : '15px')};
+  font-family: ${props =>
+    props.title
+      ? 'InfinitySans-Bold'
+      : props.price
+      ? 'InfinitySans-Bold'
+      : 'InfinitySansR'};
   color: black;
-  /* background-color: ${props => props.price ? "#cacaca" : "opacity"}; */
-`
-
+  /* background-color: ${props => (props.price ? '#cacaca' : 'opacity')}; */
+`;
 
 //Context 생성
 const TabCompletedContext = createContext();
@@ -97,7 +101,7 @@ const TabCompleted = ({navigation}) => {
     try {
       const response = await axios.get(BASE_URL + '/shop/orders');
       setCompletedOrders(response.data);
-      console.log(response.data)
+      // console.log(response.data)
       // console.log(response.data[0].menus[0].extras)
       console.log('COMPLETED ORDERS RECEIVED');
     } catch (e) {
@@ -108,7 +112,6 @@ const TabCompleted = ({navigation}) => {
   useEffect(() => {
     showCompletedOrderList();
   }, []);
-
 
   return (
     <TabCompletedContext.Provider value={value}>
@@ -132,13 +135,15 @@ const TabCompleted = ({navigation}) => {
               </Col3>
             </Col2>
 
-            <Col2 style={{height: "96%", margin: 10, backgroundColor: "white"}}>
+            <Col2 style={{height: '96%', margin: 10, backgroundColor: 'white'}}>
               <StText title>주문내역</StText>
 
-              <ScrollView style={{padding : 5}}>
+              <ScrollView style={{padding: 5}}>
                 {selectedOrderMenus.map((menu, index) => (
                   <Col1 key={index} menu>
-                    <StText style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
+                    <StText style={{fontFamily: 'InfinitySans-Bold'}}>
+                      {menu.menuName}
+                    </StText>
                     <StText>사이즈 : {menu.menuSize}</StText>
                     <Row>
                       <StText>수량 : {menu.quantity}</StText>
@@ -146,8 +151,10 @@ const TabCompleted = ({navigation}) => {
                     </Row>
                     {menu.extras.map((extra, exIndex) => {
                       <Row key={exIndex}>
-                        <Text>{extra.name} {extra.price}</Text>
-                      </Row>
+                        <Text>
+                          {extra.name} {extra.price}
+                        </Text>
+                      </Row>;
                     })}
                   </Col1>
                 ))}
@@ -157,7 +164,6 @@ const TabCompleted = ({navigation}) => {
             </Col2>
           </DeatailContainer>
         </Col1>
-
       </Container>
     </TabCompletedContext.Provider>
   );

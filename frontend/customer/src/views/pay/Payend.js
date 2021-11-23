@@ -37,6 +37,35 @@ const Col2 = styled.View`
   flex-direction: column;
   width: 100%;
 `
+const OrderMain = styled.View`
+  width: 100%;
+  background-color: #FFEDDC;
+  padding: 20px;
+  min-height: 120px;
+`
+const OrderSub = styled.View`
+  justify-content: center;
+  width: 100%;
+  min-height: 120px;
+`
+const themeColor = '#ff7f00'
+const GoHomeButton = styled.Pressable`
+  border: ${themeColor};
+  border-radius: 15px;
+  margin: 5px;
+  margin-bottom: 10px;
+  width: 200;
+  height: 60;
+  align-items: center;
+`
+
+const GoHomeText = styled.Text`
+  font-family: 'InfinitySansR';
+  padding: 15px;
+  color: ${themeColor};
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+`
 
 const Col3 = styled.View`
   flex-direction: column;
@@ -144,30 +173,31 @@ const Payend = ({ navigation, route }) => {
   }
 
   const goMain = () => {
-    navigation.navigate('MainScreen');
+    navigation.navigate('Cart');
+    navigation.navigate('MainCafeList');
   }
 
   return (
     <ScrollContainer>
-    <View style={{flexDirection: 'row'}}>
-      <View>
-        <TitleText>주문이 완료되었습니다!!</TitleText>
+      <View style={{flexDirection: 'row'}}>
+        <View>
+          <TitleText>주문이 완료되었습니다!!</TitleText>
+        </View>
       </View>
-    </View>
       <View style={{flexDirection: 'row'}}>
         <View>
           <TitleText>{ myOrderDetail.shopName }</TitleText>
         </View>
       </View>
 
-      <Col1 style={{marginBottom: 5}}>
+      <OrderMain style={{marginBottom: 5}}>
         <DateText>{ myDate } { myTime }</DateText>
         <MyText style={{ alignSelf: 'flex-start', fontFamily: 'InfinitySans-Bold'}}>요청사항</MyText>
         <RequestText>{ myOrderDetail.request }</RequestText>
         <PriceText>총 { myOrderDetail.totalPrice }원</PriceText>
-      </Col1>
+      </OrderMain>
 
-      <Col2>
+      <OrderSub>
         {myOrderDetailMenus.map((menu, index) => (
           <Row key={ index }>
             <Col3>
@@ -186,10 +216,12 @@ const Payend = ({ navigation, route }) => {
             </Col4>
           </Row>
         ))}
-      </Col2>
-      <Pressable onPress={() => goMain()}>
-        <MyText style={{ fontFamily: 'InfinitySans-Bold', fontSize: 15, alignSelf: 'flex-start'}}> 메인으로 돌아가기 </MyText>
-      </Pressable>
+      </OrderSub>
+      <View style={{ alignItems: 'center', margin: 40}}>
+        <GoHomeButton onPress={() => goMain()}>
+          <GoHomeText> 메인으로 돌아가기 </GoHomeText>
+        </GoHomeButton>
+      </View>
       <View><MyText style={{height: 1, color: '#ffffff'}}>dd</MyText></View>
     </ScrollContainer>
   );

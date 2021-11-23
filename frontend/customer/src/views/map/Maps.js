@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import NaverMapView, {Circle, Marker, Path, Polyline, Polygon} from "react-native-nmap";
+import NaverMapView, {Circle, Marker, Path, Polyline, Polygon, ImageBackground } from "react-native-nmap";
+import { View, Text, Image } from 'react-native';
 
 
 
@@ -9,6 +10,7 @@ const Maps = ({ navigation, route }) => {
 
   useEffect(() => {
     console.log(' map mount');
+    console.log('========== cafe list on map ==========')
     console.log(route.params.cafeList)
     setMypoint(route.params.cafeList)
     return () => console.log('map Unmount');
@@ -36,9 +38,22 @@ const Maps = ({ navigation, route }) => {
         <Marker key={index} coordinate={point} onClick={() => goCafeDetail(point)}></Marker>
       ))} */}
       {mypoints.map((point, index) => (
-        <Marker key={index} coordinate={{longitude: point.lat, latitude: point.lng}} onClick={() => goCafeDetail(point)}></Marker>
+        <Marker key={index} coordinate={{longitude: point.lat, latitude: point.lng}} onClick={() => goCafeDetail(point)} caption={{text:`${point.name}`, textSize:15 }}></Marker>
       ))}
+      <Marker pinColor="red" coordinate={{longitude: route.params.mypoint.x, latitude: route.params.mypoint.y}} caption={{text:'현재 내 위치', textSize:15 }} ></Marker>
       
+      {/* <Marker coordinate={{longitude: route.params.mypoint.x, latitude: route.params.mypoint.y}} width={120} height={120}>
+        <View>
+          <View style={{backgroundColor: 'white', borderWidth: 1, borderRadius: 20, borderColor: '#ff7f00', alignItems:'center'}}>
+            <Image 
+              style={{width: 100, height: 100}}
+              source={{uri: 'https://cdn.discordapp.com/attachments/880707219098853400/910884675751407646/image_6.png'}}
+            />
+            <Text>현재 내 위치</Text>
+          </View>
+        </View>
+      </Marker>  */}
+
       {/* { isload ? ( <Text>null</Text> ) : ( <Text>true</Text> ) } */}
 
       {/* <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
