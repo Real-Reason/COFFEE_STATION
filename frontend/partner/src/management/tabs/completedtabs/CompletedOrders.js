@@ -75,7 +75,6 @@ const CompletedOrder = ({}) => {
       setSelectedId(completedOrders[0].orderId);
       setSelectedOrder(completedOrders[0]);
       setSelectedOrderMenus(completedOrders[0].menus);
-      console.log('ㅗㅑㅇㄹgdㄹ');
     }
   }, [completedOrders]);
 
