@@ -58,8 +58,9 @@ const NewOrder = ({}) => {
     if (paidOrders.length !== 0) {
       setSelectedNewId(paidOrders[0].orderId);
       setSelectedOrder(paidOrders[0]);
+      setSelectedOrderMenus(paidOrders[0].menus);
     }
-  });
+  }, [paidOrders]);
   const renderItem = ({item}) => {
     const backgroundColor =
       item.orderId === selectedNewId ? '#ff7f00' : 'white';

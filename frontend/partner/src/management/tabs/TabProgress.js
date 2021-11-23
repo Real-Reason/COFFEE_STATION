@@ -5,7 +5,7 @@ import NewOrder from './progresstabs/NewOrder';
 import OnGoingOrder from './progresstabs/OnGoingOrder';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 // styled components
 const Container = styled.View`
@@ -26,7 +26,7 @@ const StyledBtn = styled.TouchableOpacity`
   width: 40%;
   height: 100%;
   border-radius: 30px;
-  background-color: ${props => props.cancle ? "#F65E7A": "#1A7CFE"};
+  background-color: ${props => (props.cancle ? '#F65E7A' : '#1A7CFE')};
 `;
 
 const StTitle = styled.Text`
@@ -43,10 +43,10 @@ const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: ${props => props.btn ? "40%" : "100%"};
-  
+  width: ${props => (props.btn ? '40%' : '100%')};
+
   /* border: 1px; */
-`
+`;
 
 const StText = styled.Text`
   padding: ${props => props.btn ? "10px": props.title ? "10px" : "5px"};
@@ -58,31 +58,30 @@ const StText = styled.Text`
   
   /* border: 1px;
   border-color: red; */
-`
+`;
 
 const Col1 = styled.View`
   flex-direction: column;
   flex: 1;
   padding: 5px;
 
-  border: ${props => props.menu ? "0.5px" : "0px"};
-  border-color: ${props => props.menu ? "#cacaca" : "opacity"};
+  border: ${props => (props.menu ? '0.5px' : '0px')};
+  border-color: ${props => (props.menu ? '#cacaca' : 'opacity')};
 
   /* border: 1px;
   border-color: red; */
-`
+`;
 
 const Col2 = styled(Col1)`
   width: 50%;
 
   /* border: 1px; */
-`
+`;
 const Col3 = styled(Col1)`
   margin: 10px;
   height: 50%;
   background-color: white;
-`
-
+`;
 
 const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 
@@ -171,7 +170,7 @@ const TabProgress = ({navigation}) => {
   // 접수 처리
   const acceptOrder = async () => {
     const data = {status: 'PREPARING'};
-  
+
     try {
       await axios.patch(
         BASE_URL + `/shop/orders/${selectedOrder.orderId}/status`,
@@ -228,9 +227,13 @@ const TabProgress = ({navigation}) => {
               </StyledBtn>
               <StyledBtn
                 onPress={() => {
-                  selectedOrder.status === 'PAID' ? acceptOrder() : completeOrder();
+                  selectedOrder.status === 'PAID'
+                    ? acceptOrder()
+                    : completeOrder();
                 }}>
-                <StText btn>{selectedOrder.status === 'PAID' ? '접수' : '완료 처리'}</StText>
+                <StText btn>
+                  {selectedOrder.status === 'PAID' ? '접수' : '완료 처리'}
+                </StText>
               </StyledBtn>
             </Row>
           </Row>
@@ -246,13 +249,15 @@ const TabProgress = ({navigation}) => {
                 <StText menu>{selectedOrder.request}</StText>
               </Col3>
             </Col2>
-            <Col2 style={{height: "96%", margin: 10, backgroundColor: "white"}}>
+            <Col2 style={{height: '96%', margin: 10, backgroundColor: 'white'}}>
               <StText title>주문내역</StText>
 
-              <ScrollView style={{padding : 5}}>
+              <ScrollView style={{padding: 5}}>
                 {selectedOrderMenus.map((menu, index) => (
                   <Col1 key={index} menu>
-                    <StText menu style={{fontFamily : "InfinitySans-Bold"}}>{menu.menuName}</StText>
+                    <StText menu style={{fontFamily: 'InfinitySans-Bold'}}>
+                      {menu.menuName}
+                    </StText>
                     <StText menu>사이즈 : {menu.menuSize}</StText>
                     <Row>
                       <StText>수량 : {menu.quantity}</StText>
@@ -260,8 +265,10 @@ const TabProgress = ({navigation}) => {
                     </Row>
                     {menu.extras.map((extra, exIndex) => {
                       <Row key={exIndex}>
-                        <Text>{extra.name} {extra.price}</Text>
-                      </Row>
+                        <Text>
+                          {extra.name} {extra.price}
+                        </Text>
+                      </Row>;
                     })}
                   </Col1>
                 ))}
@@ -271,7 +278,6 @@ const TabProgress = ({navigation}) => {
             </Col2>
           </DeatailContainer>
         </Col1>
-
       </Container>
     </TabProgressContext.Provider>
   );

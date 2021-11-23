@@ -24,6 +24,7 @@ public class OrderDetailResDto {
     // 가게정보
     private Long shopId;
     private String shopName;
+    private String shopImgUrl;
     // 주문정보
     private LocalDateTime date;
     private OrderStatus status;
@@ -48,6 +49,7 @@ public class OrderDetailResDto {
                 order.getId(),
                 shop.getId(),
                 shop.getName(),
+                shop.getShopImageList().get(0).getImgUrl(),
                 order.getDate(),
                 order.getStatus(),
                 order.getTotalPrice(),
