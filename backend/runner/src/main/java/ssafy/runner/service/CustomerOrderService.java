@@ -86,8 +86,7 @@ public class CustomerOrderService {
 //            System.out.println("===============조회종료-inner====================");
 
         });
-//        System.out.println("===============조회종료====================");
-        // 분해조립해서 알맞은 dto로 만들어주어야 함
+
         return OrderDetailResDto.of(orderMenuList);
     }
 
