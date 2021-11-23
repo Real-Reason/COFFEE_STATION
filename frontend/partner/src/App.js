@@ -1,12 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {View, Text, Button, TextInput} from 'react-native';
-import {NavigationContainer, StackActions} from '@react-navigation/native';
+import React, {createContext, useEffect, useMemo, useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -15,7 +8,6 @@ import RegiMain from './registration/store/RegiMain';
 import ManageMain from './management/ManageMain';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
-import {TabProgressContext} from './management/tabs/TabProgress';
 import SplashScreen from './registration/sign/SplashScreen';
 import {LogBox} from 'react-native';
 
@@ -72,10 +64,9 @@ export default function App({navigation}) {
     },
   );
 
+  // Firebase Alert
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // const orderId = remoteMessage['data'].orderId;
-      // console.log(orderId);
       Alert.alert(
         // 말그대로 Alert를 띄운다
         '주문이 들어왔습니다', // 첫번째 text: 타이틀 제목
@@ -161,8 +152,8 @@ export default function App({navigation}) {
       });
   };
 
+  // Restore
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
       let hasRegistered;
@@ -170,22 +161,18 @@ export default function App({navigation}) {
         userToken = await AsyncStorage.getItem('userToken');
         hasRegistered = JSON.parse(await AsyncStorage.getItem('hasRegistered'));
         axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
-        // 여기서도 P`aidOrderList를 재생시켜줘야 하는데
+        // 여기서도 PaidOrderList를 재생시켜줘야 하는데
       } catch (e) {
         console.log(e);
         // Restoring token failed
       }
-
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       // 레지스터도 리스토어 시켜줘야 할 거 같은데
       dispatch({type: 'RESTORE_STATE', token: userToken, regi: hasRegistered});
     };
 
     bootstrapAsync();
   }, []);
+
   // useMemo = 메모이제이션된 값을 반환.
   const authContext = useMemo(
     () => ({
@@ -245,10 +232,8 @@ export default function App({navigation}) {
       },
       registerShop: async data => {
         try {
-          console.log(data);
           const response = await axios.post(BASE_URL + '/shop', data);
           console.log(response.data);
-          // dispatch 필요
           dispatch({type: 'REGI_SHOP'});
         } catch (e) {
           console.log('whyrano', e);
