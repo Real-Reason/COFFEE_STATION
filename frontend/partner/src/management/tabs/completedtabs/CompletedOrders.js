@@ -64,6 +64,17 @@ const CompletedOrder = ({}) => {
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
   };
+
+  useEffect(() => {
+    console.log(completedOrders);
+    if (completedOrders.length !== 0) {
+      setSelectedId(completedOrders[0].orderId);
+      setSelectedOrder(completedOrders[0]);
+      setSelectedOrderMenus(completedOrders[0].menus);
+      // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
+    }
+  }, [completedOrders]);
+
   const renderItem = ({item}) => {
     const backgroundColor = item.orderId === selectedId ? '#ff7f00' : 'white';
     const color = item.orderId === selectedId ? 'white' : 'black';
