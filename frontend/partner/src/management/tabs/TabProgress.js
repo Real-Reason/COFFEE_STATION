@@ -31,9 +31,12 @@ const StyledBtn = styled.TouchableOpacity`
 
 const StTitle = styled.Text`
   padding: 10px;
-  font-size: 24px;
+  font-size: 28px;
   font-family: "InfinitySans-Bold";
   color: black;
+
+  /* border: 1px;
+  border-color: red; */
 `
 
 const Row = styled.View`
@@ -46,10 +49,10 @@ const Row = styled.View`
 `
 
 const StText = styled.Text`
-  padding: ${props => props.btn ? "10px": "5px"};
+  padding: ${props => props.btn ? "10px": props.title ? "10px" : "5px"};
 
   text-align: ${props => props.title ? "left" : props.menu ? "left" : props.price ? "right" : "center"};
-  font-size: ${props => props.title ? "20px" : props.btn ? "20px" : "17px"};
+  font-size: ${props => props.title ? "24px" : props.btn ? "20px" : "20px"};
   font-family: ${props => props.title ? "InfinitySans-Bold": props.btn ? "InfinitySans-Bold" : "InfinitySansR"};
   color: ${props => props.btn ? "white": "black"};
   
@@ -97,6 +100,8 @@ const TabProgress = ({navigation}) => {
   const [selectedPreparingId, setSelectedPreparingId] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [selectedOrderMenus, setSelectedOrderMenus] = useState([]);
+  const [selectedOrderDate, setSelectedOrderDate] = useState([]);
+  const [selectedOrderTime, setSelectedOrderTime] = useState([]);
   
   const value = {
     selectedNewId,
@@ -108,6 +113,10 @@ const TabProgress = ({navigation}) => {
 
     selectedOrderMenus,
     setSelectedOrderMenus,
+    selectedOrderDate,
+    setSelectedOrderDate,
+    selectedOrderTime,
+    setSelectedOrderTime,
 
     paidOrders,
     setPaidOrders,
@@ -211,7 +220,7 @@ const TabProgress = ({navigation}) => {
         </Tab.Navigator>
 
         <Col1>
-          <Row>
+          <Row style={{padding: 5}}>
             <StTitle>주문번호 {selectedOrder.orderId}</StTitle>
             <Row btn>
               <StyledBtn onPress={() => rejectOrder()} cancle>
@@ -229,7 +238,7 @@ const TabProgress = ({navigation}) => {
             <Col2>
               <Col3>
                 <StText title>접수 정보</StText>
-                <StText menu>주문시간 : {selectedOrder.date}</StText>
+                <StText menu>주문시간 : {selectedOrderDate} / {selectedOrderTime} </StText>
                 <StText menu>접수번호 : {selectedOrder.orderId}</StText>
               </Col3>
               <Col3>

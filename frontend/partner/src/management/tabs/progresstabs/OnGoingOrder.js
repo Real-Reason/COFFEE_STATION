@@ -41,12 +41,16 @@ const OnGoingOrder = ({}) => {
     setSelectedOrder,
     preparingOrders,
     setSelectedOrderMenus,
+    setSelectedOrderDate,
+    setSelectedOrderTime,
   } = useContext(TabProgressContext);
 
   const setPreparingOrder = item => {
     setSelectedPreparingId(item.orderId);
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
+    setSelectedOrderDate(item.date.split('T')[0]);
+    setSelectedOrderTime(item.date.split('T')[1]);
   };
 
   useEffect(() => {
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
 });
 

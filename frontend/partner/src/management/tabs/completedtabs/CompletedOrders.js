@@ -57,12 +57,16 @@ const CompletedOrder = ({}) => {
     setSelectedOrder,
     setSelectedOrderMenus,
     completedOrders,
+    setSelectedOrderDate,
+    setSelectedOrderTime
   } = useContext(TabCompletedContext);
 
   const setCompleted = item => {
     setSelectedId(item.orderId);
     setSelectedOrder(item);
     setSelectedOrderMenus(item.menus);
+    setSelectedOrderDate(item.date.split('T')[0]);
+    setSelectedOrderTime(item.date.split('T')[1]);
   };
   const renderItem = ({item}) => {
     const backgroundColor = item.orderId === selectedId ? '#ff7f00' : 'white';
