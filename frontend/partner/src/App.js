@@ -79,23 +79,24 @@ export default function App({navigation}) {
       Alert.alert(
         // 말그대로 Alert를 띄운다
         '주문이 들어왔습니다', // 첫번째 text: 타이틀 제목
-        JSON.stringify(remoteMessage['notification']),
+        JSON.stringify(remoteMessage['notification'].body),
         [
-          {
-            text: '확인', // 버튼 제목
-            onPress: () => {
-              // TabProgress의 신규 리스트 갱신
-              console.log(remoteMessage['data'].orderId);
-              // PaidOrderList 갱신
-              Alert.alert('주문을 확인해주세요.');
-            },
-          },
           {
             text: '거절하기',
             onPress: () => {
               updateOrderStatus(remoteMessage['data'].orderId, 'REJECT');
               console.log(remoteMessage['data'].orderId);
               Alert.alert('주문을 거절했습니다.');
+            },
+          },
+          {
+            text: '수락하기', // 버튼 제목
+            onPress: () => {
+              // TabProgress의 신규 리스트 갱신
+              console.log(remoteMessage['data'].orderId);
+              // PaidOrderList 갱신
+              updateOrderStatus(remoteMessage['data'].orderId, 'PREPARING');
+              Alert.alert('주문을 확인해주세요.');
             },
           },
         ],

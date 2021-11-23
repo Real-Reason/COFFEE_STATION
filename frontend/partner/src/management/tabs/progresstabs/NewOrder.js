@@ -38,6 +38,7 @@ const NewOrder = ({}) => {
   const {
     selectedNewId,
     setSelectedNewId,
+    selectedOrder,
     setSelectedOrder,
     paidOrders,
     setSelectedOrderMenus,
@@ -55,7 +56,7 @@ const NewOrder = ({}) => {
       // console.log('ㅗㅑㅇㄹㄴㅇㄹ');
       setSelectedOrder(paidOrders[0]);
     }
-  }, []);
+  });
   const renderItem = ({item}) => {
     const backgroundColor =
       item.orderId === selectedNewId ? '#ff7f00' : 'white';
