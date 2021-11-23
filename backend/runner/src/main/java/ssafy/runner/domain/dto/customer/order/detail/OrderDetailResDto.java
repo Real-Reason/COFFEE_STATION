@@ -24,7 +24,7 @@ public class OrderDetailResDto {
     // 가게정보
     private Long shopId;
     private String shopName;
-    private String shopImageUrl;
+    private String shopImgUrl;
     // 주문정보
     private LocalDateTime date;
     private OrderStatus status;
