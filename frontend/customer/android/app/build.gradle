@@ -143,6 +143,7 @@ android {
         applicationId "com.ssafy.runner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        // versionCode
         versionCode 2
         versionName "1.1"
     }
