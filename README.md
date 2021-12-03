@@ -19,9 +19,9 @@
 
 [Click here ✨](README_Cooperation.md)
 
-| GitLab                                                    | JIRA                                                         | Jenkins                                                   | Swagger                                                      |
-| --------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------ |
-| [gitlab Link](https://lab.ssafy.com/s05-final/S05P31B203) | [JIRA Link](https://jira.ssafy.com/projects/S05P31B203/summary) | [Jenkins Link](http://k5b203.p.ssafy.io:7777/job/Runner/) | [Swagger Link](http://k5b203.p.ssafy.io:8080/swagger-ui/index.html#) |
+| GitLab                                                    | JIRA                                                         | Jenkins                                                   | Swagger                                                      | Figma                                                        |
+| --------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [gitlab Link](https://lab.ssafy.com/s05-final/S05P31B203) | [JIRA Link](https://jira.ssafy.com/projects/S05P31B203/summary) | [Jenkins Link](http://k5b203.p.ssafy.io:7777/job/Runner/) | [Swagger Link](http://k5b203.p.ssafy.io:8080/swagger-ui/index.html#) | [Figma Link](https://www.figma.com/file/Ga7BAfSNpEEQBctYCYPy3S/%EC%B9%B4%ED%8E%98%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%85%98%3F?node-id=0%3A1) |
 
 
 
