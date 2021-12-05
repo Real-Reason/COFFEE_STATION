@@ -59,13 +59,7 @@
 
 ## 아키텍처
 
-
-
-
-
-
-
-
+<img src="https://cdn.discordapp.com/attachments/898086737878855702/917094667823235102/unknown.png">
 
 
 
