@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 // import {REACT_APP_BASE_URL} from "@env"
 
-
 const Container = styled.View`
   flex-direction: row;
   flex: 1;
@@ -144,6 +143,7 @@ const TabInfo = ({navigation}) => {
       uploadImage();
     });
   };
+  // image DB 저장
   const uploadImage = async () => {
     try {
       console.log(shopInfo.id);
