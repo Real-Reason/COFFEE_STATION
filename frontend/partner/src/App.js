@@ -19,6 +19,7 @@ const BASE_URL = 'http://3.38.99.110:8080/api/partner';
 export default function App({navigation}) {
   let firebaseToken;
   const [state, dispatch] = React.useReducer(
+    //reducer 함수
     (prevState, action) => {
       console.log('=-=-=-=-=-=-=- action =-=-=-=-=-=-=-', action);
       switch (action.type) {
@@ -56,6 +57,7 @@ export default function App({navigation}) {
           };
       }
     },
+    // 초기 상태
     {
       isLoading: true,
       isSignout: false,
@@ -117,7 +119,7 @@ export default function App({navigation}) {
     console.log('====usertoken========' + userToken);
     if (userToken !== null) {
       await axios
-        .patch(BASE_URL + '/firebase-token', data, {
+        .patch(process.env.REACT_APP_BASE_URL_PARTNER + '/firebase-token', data, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           },
@@ -136,7 +138,7 @@ export default function App({navigation}) {
     console.log('====usertoken========' + userToken);
     await axios
       .patch(
-        BASE_URL + `/shop/orders/${orderId}/status`,
+        process.env.REACT_APP_BASE_URL_PARTNER + `/shop/orders/${orderId}/status`,
         {status: status},
         {
           headers: {
@@ -152,7 +154,7 @@ export default function App({navigation}) {
       });
   };
 
-  // Restore
+  // Restore mount 될 때
   useEffect(() => {
     const bootstrapAsync = async () => {
       let userToken;
@@ -166,22 +168,22 @@ export default function App({navigation}) {
         console.log(e);
         // Restoring token failed
       }
-      // 레지스터도 리스토어 시켜줘야 할 거 같은데
+      // userToken과 hasRegistered를 RESTORE하기 위한 dispatch
       dispatch({type: 'RESTORE_STATE', token: userToken, regi: hasRegistered});
     };
-
     bootstrapAsync();
   }, []);
 
   // useMemo = 메모이제이션된 값을 반환.
   const authContext = useMemo(
     () => ({
+      // 로그인
       signIn: async data => {
         let userToken;
         let hasRegistered;
 
         await axios
-          .post(BASE_URL + '/login', data)
+          .post(process.env.REACT_APP_BASE_URL_PARTNER + '/login', data)
           .then(function (response) {
             userToken = response.data.token;
             // axios default header 설정
@@ -193,6 +195,7 @@ export default function App({navigation}) {
             AsyncStorage.setItem('userToken', userToken);
             AsyncStorage.setItem('hasRegistered', hasRegistered);
             // 로그인을 하면 해당 가게에 대한 PAID ORDER를 받아와야 한다.
+            // userToken, hasRegistered state를 변경하기 위한 dispatch
             dispatch({type: 'SIGN_IN', token: userToken, regi: hasRegistered});
 
             // firebase 토큰 받아오기
@@ -204,23 +207,26 @@ export default function App({navigation}) {
               });
           })
           .catch(function (error) {
-            console.log('와이라노;;');
             console.log(error);
           });
       },
+      // 로그아웃
       signOut: async () => {
         try {
+          // AsyncStorage의 Item들을 비워주고 axios header를 초기화
           await AsyncStorage.removeItem('userToken');
           await AsyncStorage.removeItem('hasRegistered');
           axios.defaults.headers.common['Authorization'] = undefined;
+          // state를 초기화 하기 위한 dispatch
           dispatch({type: 'SIGN_OUT'});
         } catch {
           console.warn('SIGN OUT FAIL!');
         }
       },
+      // 회원가입
       signUp: async data => {
         await axios
-          .post(BASE_URL + '/join', data)
+          .post(process.env.REACT_APP_BASE_URL_PARTNER + '/join', data)
           .then(function (response) {
             console.log('Sign Up!', response.data);
             alert('회원가입 성공');
@@ -230,10 +236,12 @@ export default function App({navigation}) {
             console.log(error);
           });
       },
+      // 가게 등록 회원가입 후 가게를 등록한 사용자와 그렇지 않은 사용자를 구분하기 위함
       registerShop: async data => {
         try {
-          const response = await axios.post(BASE_URL + '/shop', data);
+          const response = await axios.post(process.env.REACT_APP_BASE_URL_PARTNER + '/shop', data);
           console.log(response.data);
+          // hasRegeistered state를 변경하기 위한 dispatch
           dispatch({type: 'REGI_SHOP'});
         } catch (e) {
           console.log('whyrano', e);
@@ -253,11 +261,12 @@ export default function App({navigation}) {
           screenOptions={{
             headerShown: false,
           }}>
+          {/* 로딩일 시 SplashScreen을 보여준다 */}
           {state.isLoading ? (
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
+            // 유저 토큰이 없음, sign in 되지 않은 상태 로그인을 위한 Sign Component를 Screen
           ) : state.userToken == null ? (
-            // 유저 토큰이 없음, sign in 되지 않은 상태
             <Stack.Screen
               name="Sign"
               component={Sign}
@@ -267,11 +276,11 @@ export default function App({navigation}) {
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
               }}
             />
+            // 로그인은 했지만 가게등록을 하지 않은 상태 RegiMain을 Screen
           ) : state.hasRegistered == false ? (
-            // 로그인은 했지만 가게등록을 하지 않은 상태
             <Stack.Screen name="Home" component={RegiMain} />
           ) : (
-            // 가게까지 등록한 상태
+            // 가게까지 등록한 상태 ManageMain을 Screen
             <Stack.Screen name="Main" component={ManageMain} />
           )}
         </Stack.Navigator>
